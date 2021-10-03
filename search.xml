@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/10/02/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<h2 id="扩及扩及-hello-hex"><a class="header-anchor" href="#扩及扩及-hello-hex">¶</a>扩及扩及 hello hex</h2>
+<h2 id="Quick-Start"><a class="header-anchor" href="#Quick-Start">¶</a>Quick Start</h2>
+<h3 id="Create-a-new-post"><a class="header-anchor" href="#Create-a-new-post">¶</a>Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a class="header-anchor" href="#Run-server">¶</a>Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a class="header-anchor" href="#Generate-static-files">¶</a>Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a class="header-anchor" href="#Deploy-to-remote-sites">¶</a>Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>古典密码</title>
+    <url>/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h1>Crypto入门之古典篇</h1>
+<h2 id="1-古典密码概述"><a class="header-anchor" href="#1-古典密码概述">¶</a>1.古典密码概述</h2>
+<blockquote>
+<ul>
+<li>古典密码是密码学中的其中一个类型，其大部分加密方式都是利用<em><strong>替换式密码</strong></em> 或 <em><strong>移项式密码</strong></em>，有时则是两者的混合。其于历史中经常使用，但现代已经很少使用，大部分的已经不再使用了。一般而言，经典密码是基于一个拼音字母（像是A-Z）、动手操作或是简单的设备。它们可能是一种简单的密码法，以致于不可信赖的地步，特别是有新技术被发展出来后。</li>
+</ul>
+</blockquote>
+   <span id="more"></span>
+<p>古典密码通常极容易破解，大部分经典密码都很容易受到唯密文攻击法攻击（cipher text only attack）。而像凯撒这种密钥数有限的密码则容易受到爆破密钥的方式破解，替代式密码有比较大的密钥数，但是容易被频率分析，因为每个密码字母各代表了一个明文字母。多字母替代式密码密码，像是维吉尼亚密码使用多个替换防止了简单的频率分析，然而，更先进的技术卡西斯基试验就可用来破解这类密码。<br>
+所以，在主流的CTF比赛中，一般不会把某种古典密码作为一个题目的核心知识点来考，在比赛中遇到时，一般在搜索引擎中搜索就可以解决。</p>
+<h2 id="2-编码"><a class="header-anchor" href="#2-编码">¶</a>2.编码</h2>
+<h3 id="2-1-base编码"><a class="header-anchor" href="#2-1-base编码">¶</a>2.1 base编码</h3>
+<pre><code>Base64
+    Base64是目前网络上最常见的用于传输8bit字节码的编码方式之一，是一种基于64个可打印字符来表示二进制数据的方法。在编码时，3个字节的数据先后（先来的字节占高位）放入一个24位的缓冲区，数据不足3字节时则用0来补足。每次选出6bit按照其值来选择 &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot; 中的字符作为编码输出，若原数据长度len mod 3 = 1 则在编码后加两个&quot;=&quot;,若len mod 3 =2 则加一个&quot;=&quot;,而当刚好为3的倍数时则不会出现等号，如下图。从下图中不难发现当原数据长度不为3的倍数时，在编码时会再末位补0使其成为6的倍数，而在解码时会自动去掉所补的0，如果在编码的时候不全用0位填充而将我们想隐藏的数据放入其中，也并不会影响编码的结果，这就引出了另外一个CTF题型：Base64隐写。
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/088gcrbndggz0d84gpzhfe19/20191230221011783.png" alt="20191230221011783.png-15.6kB"><br>
+<img src="http://static.zybuluo.com/hgggg/mluejayhvknagd7w429ope1h/20191230221143554%20%281%29.png" alt="20191230221143554 (1).png-15.2kB"><br>
+<img src="http://static.zybuluo.com/hgggg/d87dlk5xkqgua437bou3wyt2/20191230221118387.png" alt="20191230221118387.png-14.3kB"></p>
+<pre><code>其它Base编码
+    除了Base64以外，Baes32和Base16也是较为常见的Base编码，它们的编码原理和Basa64一样，后者Base16也是我们常说的Hex编码即16进制，除此之外还有Base58、Baes36、Base91、uuencode、xxencode等也曾出现在CTF的比赛中，它们原理类似，只不过它们使用的码表不同，而在比赛中也常有替换码表的Baes题目。
+</code></pre>
+<h3 id="2-2-其他常见编码"><a class="header-anchor" href="#2-2-其他常见编码">¶</a>2.2 其他常见编码</h3>
+<pre><code>ASCII码：包含大小写字母，数字，常见符号等，是互联网通用语言
+摩斯电码：由点（.）、划（—）组成
+URL编码：又称百分号编码、只是简单的在特殊字符的各个字节前加上%
+jjencode&amp;aaencode:针对JS的编码方式，前者将JS代码转为符号和字符串、后者将之转换为常用网络表情
+一般地，编码只是对原始数据进行一定地处理，使其变得方便传输、储存等操作，并不是为了加密信息，也没有密钥等额外信息，只要知道编码方式就可以还原得到数据内容。
+</code></pre>
+<h2 id="3-单表替换密码"><a class="header-anchor" href="#3-单表替换密码">¶</a>3.单表替换密码</h2>
+<h3 id="3-1单表替换原理"><a class="header-anchor" href="#3-1单表替换原理">¶</a>3.1单表替换原理</h3>
+<pre><code>单表代换是指英文字母在进行密码编码替换的时候，有一张对照表，也就是说，对于每一个字母，都是唯一对应的。
+例如源字母表为：abcdefghijklmnopqrstuvwxyz
+码表为：qwertyuiopasdfghjklzxcvbnm
+</code></pre>
+<p>加密：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#s为码表,m为密文</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span>(<span class="params">m,s</span>)&#123;</span></span><br><span class="line"><span class="function">    <span class="title">c</span> = &quot;&quot;</span></span><br><span class="line"><span class="function">    <span class="title">for</span> <span class="title">i</span> <span class="title">in</span> <span class="title">range</span> (<span class="params"><span class="number">0</span>,<span class="built_in">len</span>(<span class="params">m</span>)</span>):</span></span><br><span class="line">        k = <span class="built_in">ord</span>(m[i])-<span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">        c += s[k]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解密：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span>(<span class="params">c,s</span>):</span></span><br><span class="line">    t = <span class="string">&quot;&quot;</span></span><br><span class="line">    m = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(c)):</span><br><span class="line">        t = c[i]</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">if</span> t==s[k]:</span><br><span class="line">                m += <span class="built_in">chr</span>(<span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)+k)</span><br><span class="line">    <span class="keyword">return</span> m</span><br></pre></td></tr></table></figure>
+<h3 id="凯撒密码"><a class="header-anchor" href="#凯撒密码">¶</a>凯撒密码</h3>
+<pre><code>凯撒密码是一种最为简单的替换密码，即字母表上的所有的字母向一个方向偏移n位后被替换为密文，如：当n=2时，A就被替换成了C，凯撒及其变种经常会出现在CTF古典密码学的题目中，其加解密公式为：
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/fyyuo0q5dhv857h3n7ga45ap/123456.png" alt="123456.png-10.7kB"></p>
+<pre><code>    由此可以看出，当我们知道一串密文是由凯撒加密得来的时候，即使我们不知到密钥，也可以通过穷举法轻易的破解。
+</code></pre>
+<h3 id="仿射密码（Affine-cipher）"><a class="header-anchor" href="#仿射密码（Affine-cipher）">¶</a>仿射密码（Affine cipher）</h3>
+<pre><code>仿射密码作为一种单表替换密码，码表的每个字母相应的值使用一个简单的数学函数对应一个数值
+其加解密公式如下：
+</code></pre>
+<p>加密：<img src="http://static.zybuluo.com/hgggg/ipwe3sgrjdy67i3wrq742axh/123456%20%282%29.png" alt="123456 (2).png-2.8kB"><br>
+解密：<img src="http://static.zybuluo.com/hgggg/mrl6gjagmgqzmwfwp9r8rc4t/123456%20%283%29.png" alt="123456 (3).png-3.1kB"><br>
+乘法逆元求法：<img src="http://static.zybuluo.com/hgggg/xw1my1dv05jobvaaocdtgzyd/123456%20%284%29.png" alt="123456 (4).png-1.8kB"><br>
+<em><strong>关于公式</strong></em></p>
+<pre><code>a与m互素，m=26,x为原文，b为偏移量
+</code></pre>
+<p><em><strong>关于乘法逆元</strong></em></p>
+<pre><code>    例如，求5关于模14的乘法逆元：14=5*2+4，5=4*1+1说明5与14互素，存在5关于14的乘法逆元。1=5-4=5-(14-5*2)=5*3-14因此，5关于模14的乘法逆元为3。
+</code></pre>
+<p><em><strong>破解</strong></em></p>
+<pre><code>若a=1,则刚好就是凯撒密码。
+若a!=1,我们可以知道m=26，a与m互素，即可得到的取值范围为：1，3，5，7，9，11，13，15，17，19，21，23，25中的一个，所以一共有12*26=312种可能的密钥，此时采用穷举法即可攻击。
+若我们已经知道了两个加密后的字母c1,c2。那么通过公式c1 = a(x1+b) mod m ; c2 = a(x2+b) mod m;则c1-c2可得：c1-c2=a(x1-x2) mod m即可求解a，再用穷举法得到b。
+</code></pre>
+<h2 id="4-多表替换密码"><a class="header-anchor" href="#4-多表替换密码">¶</a>4.多表替换密码</h2>
+<h3 id="4-1多表替换原理"><a class="header-anchor" href="#4-1多表替换原理">¶</a>4.1多表替换原理</h3>
+<pre><code>由于单表替换密码容易被频率分析破解，人们提出了多表替换加密，即用多个码表来依次对明文消息的字母进行代换。相较于单表替换，多表替换后，密文几乎不再保持原来的频率，所以更加难以破解，我们一般只能通过寻找算法实现对应的弱点进行破解。在多表替换中，以Playfair、Vigenere、Nihilist、Hill等较为出名，这里我们指选择分析其中的几种。
+</code></pre>
+<h3 id="4-2autokey-维吉尼亚"><a class="header-anchor" href="#4-2autokey-维吉尼亚">¶</a>4.2autokey/维吉尼亚</h3>
+<pre><code>维吉尼亚密码，作为最经典的多表密码，其码表如下图：
+码表第一排对应明文，第一列对应密钥。例如：
+明文为：i like crypto
+密钥为：nssctf
+密文为：v damx heqhvh
+</code></pre>
+<p>破解<br>
+由于维吉尼亚密码属于多表加密，所以一个字母可能被加密成不同的密文，由于密钥是重复使用的，所以只要知道了密钥的长度，就可以将其看成是交织在一起的凯撒密码，每一个都可以单独破解。密钥长度可以使用卡西斯基试验来得到。</p>
+<p><img src="http://static.zybuluo.com/hgggg/er0k0mqmiaxoeo4ktiw98ioc/1587018-20191126194722022-992570273.jpg" alt="1587018-20191126194722022-992570273.jpg-207.2kB"></p>
+<pre><code>Autokey与维吉尼亚密码密码类似，自动密钥密码（Autokey）主要有两种，关键词自动密钥密码和原文自动密钥密码。所以它比维吉尼亚更加安全。下面我们以关键词自动密钥为例：
+明文：THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+关键词：CULTURE
+自动生成密钥：CULTURE THE QUICK BROWN FOX JUMPS OVER THE
+密文：VBP JOZGD IVEQV HYY AIICX CSNL FWW ZVDP WVK
+</code></pre>
+<h3 id="4-3希尔密码"><a class="header-anchor" href="#4-3希尔密码">¶</a>4.3希尔密码</h3>
+<pre><code>希尔密码（Hill）使用每个字母在字母表中的顺序作为其对应的数字，即A=0，B=1，C=2 等，然后将明文转化为 n 维向量，跟一个 n × n 的矩阵相乘，再将得出的结果模 26。加密矩阵必须是可逆的，否则就不可能解码。只有矩阵的行列式和 26 互质，才是可逆的。
+</code></pre>
+<p>加密：<br>
+<img src="http://static.zybuluo.com/hgggg/geep66492gw4cd9jwo6yamm1/123456%20%285%29.png" alt="123456 (5).png-68.1kB"><br>
+解密：<br>
+求出加密矩阵的逆矩阵然后同密文相乘后再对等到的矩阵模26(人懒就不上图了)</p>
+<h2 id="5-其他密码"><a class="header-anchor" href="#5-其他密码">¶</a>5.其他密码</h2>
+<h4 id="培根密码："><a class="header-anchor" href="#培根密码：">¶</a>培根密码：</h4>
+<p><img src="http://static.zybuluo.com/hgggg/7alys7nj2040f01lc4mmbzj7/123456.png" alt="123456.png-19.2kB"></p>
+<h4 id="栅栏密码："><a class="header-anchor" href="#栅栏密码：">¶</a>栅栏密码：</h4>
+<pre><code>所谓栅栏密码，就是把要加密的明文分成N个一组，然后把每组的第1个字连起来，形成一段无规律的话。
+</code></pre>
+<h4 id="JSFuck"><a class="header-anchor" href="#JSFuck">¶</a>JSFuck:</h4>
+<p>形如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+(![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+[+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]])()</span><br><span class="line">原作者github:https://github.com/aemkei/jsfuck</span><br></pre></td></tr></table></figure>
+<h4 id="BrainFuck"><a class="header-anchor" href="#BrainFuck">¶</a>BrainFuck</h4>
+<pre><code>一种极小众的计算机语言，由“&gt;、&lt;、+、-、.、,、[、]&quot;八个符号组成。该语言由目前有专门的解释器，感兴趣可以自行了解。
+</code></pre>
+<h4 id="猪圈及其变形"><a class="header-anchor" href="#猪圈及其变形">¶</a>猪圈及其变形</h4>
+<pre><code>猪圈密码（亦称朱高密码、共济会暗号、共济会密码或共济会员密码），是一种以格子为基础的简单替代式密码。即使使用符号，也不会影响密码分析，亦可用在其它替代式的方法。
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/j5ds8cf7kr3ivkob7dbyhniv/123456.jpg" alt="123456.jpg-26.6kB"></p>
+<h4 id="跳舞的小人"><a class="header-anchor" href="#跳舞的小人">¶</a>跳舞的小人</h4>
+<pre><code>出自《福尔摩斯》的密码
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/g6nj57kk1444l2zizplrhla0/123456%20%282%29.jpg" alt="123456 (2).jpg-23.3kB"></p>
+<h4 id="来自宇宙的信号"><a class="header-anchor" href="#来自宇宙的信号">¶</a>来自宇宙的信号</h4>
+<p><img src="http://static.zybuluo.com/hgggg/9rbnfvwqapog0zs4at0bqzuw/20180310123813709.png" alt="20180310123813709.png-92.4kB"></p>
+<h4 id="古精灵码"><a class="header-anchor" href="#古精灵码">¶</a>古精灵码</h4>
+<p><img src="http://static.zybuluo.com/hgggg/zrn18wxlgf7gi88475gs61ni/55409313b07eca805f84325b982397dda044835e.jpg" alt="55409313b07eca805f84325b982397dda044835e.jpg-29.3kB"></p>
+<pre><code>除了以上列出来的这些，还有盲文、数字盲文、音符加密、01248、与佛论禅等也曾出现在CTF比赛中。
+</code></pre>
+<h3 id="6-常用网站"><a class="header-anchor" href="#6-常用网站">¶</a>6.常用网站</h3>
+<pre><code>http://ctf.ssleye.com/#
+https://quipqiup.com/
+</code></pre>
+]]></content>
+      <categories>
+        <category>Crypto</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>古典密码</tag>
+      </tags>
+  </entry>
+</search>
