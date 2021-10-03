@@ -20,23 +20,44 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Harkui">
-<meta property="og:url" content="https://hgg-bat.github.io/index.html">
+<meta name="description" content="Crypto 古典篇   1.古典密码概述 2.编码 * 2.1 base编码 * 2.2 其他编码 3.单表替换密码 * 3.1单表替换原理 * 3.2 凯撒密码 * 3.3 仿射密码 4.多表替换密码 * 4.1多表替换原理 * 4.2autoky&#x2F;维吉尼亚 * 4.3 Hill 5.其他加密 6.常用加&#x2F;解密网站   ¶1.古典密码概述   古典密码是密码学中的其中一个类型，其大部分加密方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="古典密码">
+<meta property="og:url" content="https://hgg-bat.github.io/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/index.html">
 <meta property="og:site_name" content="Harkui">
+<meta property="og:description" content="Crypto 古典篇   1.古典密码概述 2.编码 * 2.1 base编码 * 2.2 其他编码 3.单表替换密码 * 3.1单表替换原理 * 3.2 凯撒密码 * 3.3 仿射密码 4.多表替换密码 * 4.1多表替换原理 * 4.2autoky&#x2F;维吉尼亚 * 4.3 Hill 5.其他加密 6.常用加&#x2F;解密网站   ¶1.古典密码概述   古典密码是密码学中的其中一个类型，其大部分加密方式">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/088gcrbndggz0d84gpzhfe19/20191230221011783.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/mluejayhvknagd7w429ope1h/20191230221143554%20%281%29.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/d87dlk5xkqgua437bou3wyt2/20191230221118387.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/fyyuo0q5dhv857h3n7ga45ap/123456.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/ipwe3sgrjdy67i3wrq742axh/123456%20%282%29.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/mrl6gjagmgqzmwfwp9r8rc4t/123456%20%283%29.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/xw1my1dv05jobvaaocdtgzyd/123456%20%284%29.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/er0k0mqmiaxoeo4ktiw98ioc/1587018-20191126194722022-992570273.jpg">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/geep66492gw4cd9jwo6yamm1/123456%20%285%29.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/7alys7nj2040f01lc4mmbzj7/123456.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/j5ds8cf7kr3ivkob7dbyhniv/123456.jpg">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/g6nj57kk1444l2zizplrhla0/123456%20%282%29.jpg">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/9rbnfvwqapog0zs4at0bqzuw/20180310123813709.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/zrn18wxlgf7gi88475gs61ni/55409313b07eca805f84325b982397dda044835e.jpg">
+<meta property="article:published_time" content="2021-10-03T04:42:28.000Z">
+<meta property="article:modified_time" content="2021-10-03T04:50:07.962Z">
 <meta property="article:author" content="haruki">
+<meta property="article:tag" content="Crypto">
+<meta property="article:tag" content="古典密码">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.zybuluo.com/hgggg/088gcrbndggz0d84gpzhfe19/20191230221011783.png">
 
 
-<link rel="canonical" href="https://hgg-bat.github.io/">
+<link rel="canonical" href="https://hgg-bat.github.io/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hgg-bat.github.io/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/","path":"2021/10/03/古典密码/","title":"古典密码"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Harkui</title>
+<title>古典密码 | Harkui</title>
   
 
 
@@ -101,7 +122,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -114,6 +135,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Crypto 古典篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1.古典密码概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%BC%96%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">2.编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-base%E7%BC%96%E7%A0%81"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 base编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%85%B6%E4%BB%96%E5%B8%B8%E8%A7%81%E7%BC%96%E7%A0%81"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 其他常见编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">3.单表替换密码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1单表替换原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.2.</span> <span class="nav-text">凯撒密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E5%AF%86%E7%A0%81%EF%BC%88Affine-cipher%EF%BC%89"><span class="nav-number">1.3.3.</span> <span class="nav-text">仿射密码（Affine cipher）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%A4%9A%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%AF%86%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">4.多表替换密码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1%E5%A4%9A%E8%A1%A8%E6%9B%BF%E6%8D%A2%E5%8E%9F%E7%90%86"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1多表替换原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2autokey-%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2autokey&#x2F;维吉尼亚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3%E5%B8%8C%E5%B0%94%E5%AF%86%E7%A0%81"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3希尔密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%85%B6%E4%BB%96%E5%AF%86%E7%A0%81"><span class="nav-number">1.5.</span> <span class="nav-text">5.其他密码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%B9%E6%A0%B9%E5%AF%86%E7%A0%81%EF%BC%9A"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">培根密码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%85%E6%A0%8F%E5%AF%86%E7%A0%81%EF%BC%9A"><span class="nav-number">1.5.0.2.</span> <span class="nav-text">栅栏密码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BrainFuck"><span class="nav-number">1.5.0.3.</span> <span class="nav-text">BrainFuck</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%AA%E5%9C%88%E5%8F%8A%E5%85%B6%E5%8F%98%E5%BD%A2"><span class="nav-number">1.5.0.4.</span> <span class="nav-text">猪圈及其变形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%B3%E8%88%9E%E7%9A%84%E5%B0%8F%E4%BA%BA"><span class="nav-number">1.5.0.5.</span> <span class="nav-text">跳舞的小人</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A5%E8%87%AA%E5%AE%87%E5%AE%99%E7%9A%84%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.5.0.6.</span> <span class="nav-text">来自宇宙的信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%A4%E7%B2%BE%E7%81%B5%E7%A0%81"><span class="nav-number">1.5.0.7.</span> <span class="nav-text">古精灵码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%AB%99"><span class="nav-number">1.6.</span> <span class="nav-text">6.常用网站</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -185,16 +207,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -207,9 +230,9 @@
       <meta itemprop="name" content="Harkui">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/" class="post-title-link" itemprop="url">古典密码</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          古典密码
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -242,7 +265,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1>Crypto 古典篇</h1>
+        <h1>Crypto 古典篇</h1>
 <blockquote>
 <ul>
 <li>1.古典密码概述</li>
@@ -379,7 +402,6 @@ jjencode&amp;aaencode:针对JS的编码方式，前者将JS代码转为符号和
 https://quipqiup.com/
 </code></pre>
 
-      
     </div>
 
     
@@ -387,88 +409,40 @@ https://quipqiup.com/
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="reward-container">
+  <div>助力每一个梦想</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/p.png" alt="haruki 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Crypto/" rel="tag"># Crypto</a>
+              <a href="/tags/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/" rel="tag"># 古典密码</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/02/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/02/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Harkui">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/02/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-02 13:50:38 / 修改时间：15:26:05" itemprop="dateCreated datePublished" datetime="2021-10-02T13:50:38+08:00">2021-10-02</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="扩及扩及-hello-hex"><a href="#扩及扩及-hello-hex" class="headerlink" title="扩及扩及 hello hex"></a>扩及扩及 hello hex</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
