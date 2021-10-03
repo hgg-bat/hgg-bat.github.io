@@ -2728,6 +2728,7 @@ ul.breadcrumb li:last-child {
 .post-block,
 .comments {
   padding: 40px;
+  background: rgba(255,255,255,0.5);
 }
 .post-eof {
   display: none;
@@ -2778,8 +2779,10 @@ body {
   background-position: 50% 50%;
   background-size: 100% 100%;
 }
-.content-wrap {
-  opacity: 0.5;
+.post-block,
+.comments {
+  padding: 40px;
+  background: rgba(255,255,255,0.5);
 }
 .sidebar {
   opacity: 0.9;
@@ -2790,10 +2793,36 @@ body {
 .popup {
   opacity: 0.9;
 }
+.header-inner {
+  opacity: 0.9;
+}
+.main-inner {
+  opacity: 0.9;
+}
 body {
-  background: url("/images/gura.jpg");
+  background: url("/images/gura1.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;
   background-size: 100% 100%;
+}
+.post-block,
+.comments {
+  padding: 40px;
+  background: rgba(255,255,255,0.5);
+}
+.sidebar {
+  opacity: 0.9;
+}
+.header-inner {
+  background: rgba(255,255,255,0.9);
+}
+.popup {
+  opacity: 0.9;
+}
+.header-inner {
+  opacity: 0.9;
+}
+.main-inner {
+  opacity: 0.9;
 }
