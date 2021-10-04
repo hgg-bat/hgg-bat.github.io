@@ -22,23 +22,45 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Haruki">
-<meta property="og:url" content="https://hgg-bat.github.io/index.html">
+<meta name="description" content="house of orange ¶利用场景 无free函数的堆溢出：没有free函数，或者是无法调用free函数free指定的堆块  ¶malloc top chunk 源码分析  如图所示，当我们可以从heap处溢出的时候，就可以覆盖top chunk的size和p_size（上面这张图画的时候画错了P打成D了） 接下来来看top chunk的源码 12345678910111213141516">
+<meta property="og:type" content="article">
+<meta property="og:title" content="house_of_orange">
+<meta property="og:url" content="https://hgg-bat.github.io/2021/10/04/house-of-orange/index.html">
 <meta property="og:site_name" content="Haruki">
+<meta property="og:description" content="house of orange ¶利用场景 无free函数的堆溢出：没有free函数，或者是无法调用free函数free指定的堆块  ¶malloc top chunk 源码分析  如图所示，当我们可以从heap处溢出的时候，就可以覆盖top chunk的size和p_size（上面这张图画的时候画错了P打成D了） 接下来来看top chunk的源码 12345678910111213141516">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/l40dvsvhi9dxg2pbicbn4yiz/9.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/o5w1swm10mrscnnqtes1l2bo/10.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/1rppiar2k3d5r9q6vdluva12/11.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/0hej1whkm528phy92uxta6qc/12.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/ji99l97thw1lo8txj2w6ft3z/13.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/bgduyroukjb5oux25dfmyqvl/14.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/8v00ux1tq8602vb38j6t6ju0/15.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/m21uqe95v4smhqlw49ggw41g/16.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/ml2vafj9lvudw6idwgn4yxj8/17.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/dbljk3vs6nsagkwu9xo0jnne/18.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/q3w0yq81kitpr4og8h94bmpm/19.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/utb61irhn7pfb8divn1r5gcm/20.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/myib49627xjbzmxixn6uh05q/21.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/6vla2w4fpv4bnyi7a9oekzn9/22.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/70yvps4st5g58xgbznkad2rl/23.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/2lsotbhov1sfzdv9d462p2es/24.png">
+<meta property="article:published_time" content="2021-10-04T05:43:30.000Z">
+<meta property="article:modified_time" content="2021-10-04T05:58:04.603Z">
 <meta property="article:author" content="haruki">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.zybuluo.com/hgggg/l40dvsvhi9dxg2pbicbn4yiz/9.png">
 
 
-<link rel="canonical" href="https://hgg-bat.github.io/">
+<link rel="canonical" href="https://hgg-bat.github.io/2021/10/04/house-of-orange/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hgg-bat.github.io/2021/10/04/house-of-orange/","path":"2021/10/04/house-of-orange/","title":"house_of_orange"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Haruki</title>
+<title>house_of_orange | Haruki</title>
   
 
 
@@ -103,7 +125,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -116,6 +138,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">house of orange</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">利用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#malloc-top-chunk-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">malloc top chunk 源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#malloc-printerr-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">malloc_printerr 源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E9%A2%98"><span class="nav-number">1.5.</span> <span class="nav-text">列题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hitcon-2016-houseoforange"><span class="nav-number">1.5.1.</span> <span class="nav-text">hitcon_2016_houseoforange</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IDA%E5%88%86%E6%9E%90"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">IDA分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1-%E4%BF%AE%E6%94%B9top-chunk-size"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">Step1 修改top chunk size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-unsorted-bin-attack-%E6%B3%84%E9%9C%B2%E5%9C%B0%E5%9D%80"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">Step2 unsorted bin attack 泄露地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step3-%E4%BC%AA%E9%80%A0-IO-FILE%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">Step3 伪造_IO_FILE结构体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4exp"><span class="nav-number">1.5.1.5.</span> <span class="nav-text">完整exp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%A5%E4%BA%91%E6%9D%AF2021-note"><span class="nav-number">1.5.2.</span> <span class="nav-text">祥云杯2021_note</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IDA%E5%88%86%E6%9E%90-v2"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">IDA分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step1%E6%B3%84%E9%9C%B2%E5%A0%86%E5%9C%B0%E5%9D%80"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">Step1泄露堆地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step2-house-of-orange%E5%BE%97%E5%88%B0unsorted-bin"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">Step2 house of orange得到unsorted bin</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%80%9D"><span class="nav-number">1.6.</span> <span class="nav-text">反思</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">1.7.</span> <span class="nav-text">参考链接</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,16 +210,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/house-of-orange/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -209,9 +233,9 @@
       <meta itemprop="name" content="Haruki">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/house-of-orange/" class="post-title-link" itemprop="url">house_of_orange</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          house_of_orange
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -244,7 +268,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1>house of orange</h1>
+        <h1>house of orange</h1>
 <h2 id="利用场景"><a class="header-anchor" href="#利用场景">¶</a>利用场景</h2>
 <pre><code>无free函数的堆溢出：没有free函数，或者是无法调用free函数free指定的堆块
 </code></pre>
@@ -384,7 +408,6 @@ bypass思路：__overflow-&gt;_IO_strn_jump-&gt;_IO_str_finish(_IO_FILE+0x38 = /
 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/hetianlab/p/13884739.html">https://www.cnblogs.com/hetianlab/p/13884739.html</a><br>
 <a target="_blank" rel="noopener" href="https://blog.csdn.net/seaaseesa/article/details/104314949">https://blog.csdn.net/seaaseesa/article/details/104314949</a></p>
 
-      
     </div>
 
     
@@ -392,345 +415,21 @@ bypass思路：__overflow-&gt;_IO_strn_jump-&gt;_IO_str_finish(_IO_FILE+0x38 = /
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fas fa-angle-double-up"></i> 笔记</a>
+          </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/shellcode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/shellcode/" class="post-title-link" itemprop="url">shellcode</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-04 10:51:34 / 修改时间：11:15:14" itemprop="dateCreated datePublished" datetime="2021-10-04T10:51:34+08:00">2021-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>Shellcode</h1>
-<h3 id="原理"><a class="header-anchor" href="#原理">¶</a>原理</h3>
-<pre><code>在pwn中shellcode利用方式一般为触发中断（int 0x80 或 syscall）来进行系统调用
-system(&quot;/bin/sh&quot;)，实际上就是调用execve(&quot;/bin/sh&quot;,0,0)
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/04/shellcode/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">pwn入门之环境搭建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-04 10:32:23 / 修改时间：10:40:45" itemprop="dateCreated datePublished" datetime="2021-10-04T10:32:23+08:00">2021-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>VMware下的ctf(pwn)入门环境搭建</h1>
-<h2 id="工具"><a class="header-anchor" href="#工具">¶</a>工具</h2>
-<p>VMware15</p>
-<p>unbuntu20.0镜像 下载地址：</p>
-<pre><code>http://mirrors.163.com/ubuntu-releases/20.04/
-</code></pre>
-<p>详情请见https://blog.csdn.net/weixin_44169941/article/details/109263134</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/04/shellcode/" rel="prev" title="shellcode">
+                  <i class="fa fa-chevron-left"></i> shellcode
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/" class="post-title-link" itemprop="url">古典密码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-03 12:42:28 / 修改时间：17:37:47" itemprop="dateCreated datePublished" datetime="2021-10-03T12:42:28+08:00">2021-10-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Crypto/" itemprop="url" rel="index"><span itemprop="name">Crypto</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>Crypto入门之古典篇</h1>
-<h2 id="1-古典密码概述"><a class="header-anchor" href="#1-古典密码概述">¶</a>1.古典密码概述</h2>
-<blockquote>
-<ul>
-<li>古典密码是密码学中的其中一个类型，其大部分加密方式都是利用<em><strong>替换式密码</strong></em> 或 <em><strong>移项式密码</strong></em>，有时则是两者的混合。其于历史中经常使用，但现代已经很少使用，大部分的已经不再使用了。一般而言，经典密码是基于一个拼音字母（像是A-Z）、动手操作或是简单的设备。它们可能是一种简单的密码法，以致于不可信赖的地步，特别是有新技术被发展出来后。</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+            <div class="post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/02/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/02/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-02 13:50:38" itemprop="dateCreated datePublished" datetime="2021-10-02T13:50:38+08:00">2021-10-02</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-03 17:38:30" itemprop="dateModified" datetime="2021-10-03T17:38:30+08:00">2021-10-03</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/02/hello-world/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
@@ -739,6 +438,8 @@ system(&quot;/bin/sh&quot;)，实际上就是调用execve(&quot;/bin/sh&quot;,0,
 
 
 
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NDQxMC8zMDg4MQ=="></div>
 </div>
   </main>
 
