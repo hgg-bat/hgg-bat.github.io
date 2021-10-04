@@ -83,7 +83,8 @@ P-&gt;bk = chunk - 0x10 = 0x602030
         <category>pwn</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
+        <tag>pwn笔记</tag>
+        <tag>glibc堆</tag>
       </tags>
   </entry>
   <entry>
@@ -184,7 +185,8 @@ bss段没有足够的空间来写入/bin/sh所以要往data段写
         <category>pwn</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
+        <tag>pwn笔记</tag>
+        <tag>glibc堆</tag>
       </tags>
   </entry>
   <entry>
@@ -331,8 +333,8 @@ python ./ALPHA3.py x64 ascii mixedcase rax --input=&quot;sc.bin&quot; &gt; out.b
         <category>pwn</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>环境搭建</tag>
+        <tag>pwn笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -459,11 +461,11 @@ https://quipqiup.com/
 </code></pre>
 ]]></content>
       <categories>
-        <category>Crypto</category>
+        <category>crypto</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>古典密码</tag>
+        <tag>crypto笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -536,7 +538,7 @@ chmod +x install_all.sh
         <category>pwn</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
+        <tag>pwn笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -687,7 +689,8 @@ bypass思路：__overflow-&gt;_IO_strn_jump-&gt;_IO_str_finish(_IO_FILE+0x38 = /
         <category>pwn</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
+        <tag>pwn笔记</tag>
+        <tag>glibc堆</tag>
       </tags>
   </entry>
   <entry>
