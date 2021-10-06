@@ -919,7 +919,7 @@ Step1: 获得key<br>
 <p>过滤了一半拿来读文件的一些命令以及空格</p>
 <p>payload</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tac$IFS<span class="variable">$9flag</span></span><br></pre></td></tr></table></figure>
-<h3 id="pwn2-4"><a class="header-anchor" href="#pwn2-4">¶</a>pwn2~4</h3>
+<h4 id="pwn2-4"><a class="header-anchor" href="#pwn2-4">¶</a>pwn2~4</h4>
 <p>这三个题都是《CTF从0到1》上的模板，直接照着打就行<br>
 pwn2：修改返回地址为gift<br>
 pwn3：puts泄露libc地址，ret2libc<br>
