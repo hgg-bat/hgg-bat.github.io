@@ -947,7 +947,7 @@ pwn4: 由于开了pie,格式化字符串泄露程序地址和libc地址，然后
   </entry>
   <entry>
     <title>NSSCTF crypto 刷题记录(持续更新)</title>
-    <url>/2021/10/08/1/</url>
+    <url>/2021/10/08/NSSCTF%20crypto%20%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>这是一个记录在NSSCTF平台上刷crypto题的博客，题目顺序按照刷题的先后顺序</p>
 <span id="more"></span>
 <h2 id="羊城杯-2021-Bigrsa"><a class="header-anchor" href="#羊城杯-2021-Bigrsa">¶</a>[羊城杯 2021]Bigrsa</h2>
