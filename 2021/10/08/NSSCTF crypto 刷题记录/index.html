@@ -30,7 +30,7 @@
 <meta property="og:description" content="这是一个记录在NSSCTF平台上刷crypto题的博客，题目顺序按照刷题的先后顺序">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-08T09:50:31.000Z">
-<meta property="article:modified_time" content="2021-10-08T09:52:53.943Z">
+<meta property="article:modified_time" content="2021-10-09T15:07:00.352Z">
 <meta property="article:author" content="haruki">
 <meta property="article:tag" content="wp">
 <meta name="twitter:card" content="summary">
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BE%8A%E5%9F%8E%E6%9D%AF-2021-Bigrsa"><span class="nav-number">1.</span> <span class="nav-text">[羊城杯 2021]Bigrsa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">1.3.</span> <span class="nav-text">exp</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BE%8A%E5%9F%8E%E6%9D%AF-2021-Bigrsa"><span class="nav-number">1.</span> <span class="nav-text">[羊城杯 2021]Bigrsa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">1.3.</span> <span class="nav-text">exp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SWPU-2020-happy"><span class="nav-number">2.</span> <span class="nav-text">[SWPU 2020]happy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE-v2"><span class="nav-number">2.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90-v2"><span class="nav-number">2.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exp-v2"><span class="nav-number">2.3.</span> <span class="nav-text">exp</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -227,10 +227,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-10-08 17:50:31 / 修改时间：17:52:53" itemprop="dateCreated datePublished" datetime="2021-10-08T17:50:31+08:00">2021-10-08</time>
+      <time title="创建时间：2021-10-08 17:50:31" itemprop="dateCreated datePublished" datetime="2021-10-08T17:50:31+08:00">2021-10-08</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-10-09 23:07:00" itemprop="dateModified" datetime="2021-10-09T23:07:00+08:00">2021-10-09</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -260,7 +266,16 @@
 <p>n1 和 n2 存在公因数</p>
 <h3 id="exp"><a class="header-anchor" href="#exp">¶</a>exp</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span>  *</span><br><span class="line"></span><br><span class="line">n1 = <span class="number">103835296409081751860770535514746586815395898427260334325680313648369132661057840680823295512236948953370895568419721331170834557812541468309298819497267746892814583806423027167382825479157951365823085639078738847647634406841331307035593810712914545347201619004253602692127370265833092082543067153606828049061</span></span><br><span class="line">n2 = <span class="number">115383198584677147487556014336448310721853841168758012445634182814180314480501828927160071015197089456042472185850893847370481817325868824076245290735749717384769661698895000176441497242371873981353689607711146852891551491168528799814311992471449640014501858763495472267168224015665906627382490565507927272073</span></span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#c = pow(m, e, n1)</span></span><br><span class="line"><span class="comment">#c = pow(c, e, n2)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># output</span></span><br><span class="line">c = <span class="number">60406168302768860804211220055708551816238816061772464557956985699400782163597251861675967909246187833328847989530950308053492202064477410641014045601986036822451416365957817685047102703301347664879870026582087365822433436251615243854347490600004857861059245403674349457345319269266645006969222744554974358264</span></span><br><span class="line"></span><br><span class="line">p = gcd(n1,n2)</span><br><span class="line"></span><br><span class="line">q1 = n1 // p</span><br><span class="line">q2 = n2 // p</span><br><span class="line"></span><br><span class="line">phi1 = (p-<span class="number">1</span>)*(q1-<span class="number">1</span>)</span><br><span class="line">phi2 = (p-<span class="number">1</span>)*(q2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">d1 = invert(e,phi1)</span><br><span class="line">d2 = invert(e,phi2)</span><br><span class="line"></span><br><span class="line">c = <span class="built_in">pow</span>(c,d2,n2)</span><br><span class="line">m = <span class="built_in">pow</span>(c,d1,n1)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br></pre></td></tr></table></figure>
-
+<h2 id="SWPU-2020-happy"><a class="header-anchor" href="#SWPU-2020-happy">¶</a>[SWPU 2020]happy</h2>
+<h3 id="题目-v2"><a class="header-anchor" href="#题目-v2">¶</a>题目</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(&#x27;c=&#x27;, &#x27;0x7a7e031f14f6b6c3292d11a41161d2491ce8bcdc67ef1baa9eL&#x27;)</span><br><span class="line">(&#x27;e=&#x27;, &#x27;0x872a335&#x27;)</span><br><span class="line">#q + q*p^3 =1285367317452089980789441829580397855321901891350429414413655782431779727560841427444135440068248152908241981758331600586</span><br><span class="line">#qp + q *p^2 = 1109691832903289208389283296592510864729403914873734836011311325874120780079555500202475594</span><br></pre></td></tr></table></figure>
+<h3 id="分析-v2"><a class="header-anchor" href="#分析-v2">¶</a>分析</h3>
+<p>$hint1 = q + qp^3 = (1+p^3)q = q(1+p)(p^2-p+1)$<br>
+$hint2 = qp + qp^2 = q(1+p)p$<br>
+gcd(hint1,hint2) = q(1+p)<br>
+p = hint2 / q(1+p)</p>
+<h3 id="exp-v2"><a class="header-anchor" href="#exp-v2">¶</a>exp</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span>  *</span><br><span class="line"></span><br><span class="line">c=<span class="number">0x7a7e031f14f6b6c3292d11a41161d2491ce8bcdc67ef1baa9e</span></span><br><span class="line">e=<span class="number">0x872a335</span></span><br><span class="line"><span class="comment">#q + q*p^3 =1285367317452089980789441829580397855321901891350429414413655782431779727560841427444135440068248152908241981758331600586</span></span><br><span class="line"><span class="comment">#qp + q *p^2 = 1109691832903289208389283296592510864729403914873734836011311325874120780079555500202475594</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">hint1 = <span class="number">1285367317452089980789441829580397855321901891350429414413655782431779727560841427444135440068248152908241981758331600586</span></span><br><span class="line">hint2 = <span class="number">1109691832903289208389283296592510864729403914873734836011311325874120780079555500202475594</span></span><br><span class="line"></span><br><span class="line">gift = gcd(hint1,hint2)</span><br><span class="line"></span><br><span class="line">p = hint2//gift</span><br><span class="line">q = gift // (p+<span class="number">1</span>)</span><br><span class="line">n= p*q</span><br><span class="line">phi = (p-<span class="number">1</span>)*(q-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">d = invert(e,phi)</span><br><span class="line"></span><br><span class="line">flag = <span class="built_in">pow</span>(c,d,n)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(flag))</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -326,6 +341,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 <script src="/js/third-party/comments/livere.js"></script>
