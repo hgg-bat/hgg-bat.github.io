@@ -1096,18 +1096,9 @@ canary
   <entry>
     <title>largebin attack</title>
     <url>/2021/10/20/attack/</url>
-    <content><![CDATA[<hr>
-<p>title: largebin attack<br>
-date: 2021-10-20 13:27:32<br>
-tags:</p>
-<ul>
-<li>笔记<br>
-categories: pwn</li>
-</ul>
-<hr>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
 <p>最近刷题遇到好几道需要large bin attack的题目，且一些漏洞联合利用的方式也要用到large bin attack 故写此博客记录</p>
-<span id="more"></span>
+<!--me-->
 <h2 id="认识largebin"><a class="header-anchor" href="#认识largebin">¶</a>认识largebin</h2>
 <p>先通过一个简单的demo来认识largebin</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> * a = <span class="built_in">malloc</span>(<span class="number">0x430</span>);</span><br><span class="line">  <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">  <span class="keyword">int</span> * b = <span class="built_in">malloc</span>(<span class="number">0x440</span>);</span><br><span class="line">  <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">  <span class="keyword">int</span> * c = <span class="built_in">malloc</span>(<span class="number">0x450</span>);</span><br><span class="line">  <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line">  <span class="built_in">free</span>(b);</span><br><span class="line">  <span class="built_in">free</span>(c);</span><br><span class="line">  <span class="built_in">free</span>(a);</span><br><span class="line">  <span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
