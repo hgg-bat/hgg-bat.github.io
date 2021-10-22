@@ -1145,6 +1145,7 @@ canary
     <content><![CDATA[<h2 id="猜年龄"><a class="header-anchor" href="#猜年龄">¶</a>猜年龄</h2>
 <h3 id="描述"><a class="header-anchor" href="#描述">¶</a>描述</h3>
 <p>美国数学家维纳(N.Wiener)智力早熟，11岁就上了大学。他曾在1935~1936年应邀来中国清华大学讲学。一次，他参加某个重要会议，年轻的脸孔引人注目。于是有人询问他的年龄，他回答说：“我年龄的立方是个4位数。我年龄的4次方是个6位数。这10个数字正好包含了从0到9这10个数字，每个都恰好出现1次。” 请编程输出当年维纳的年龄。</p>
+<span id="more"></span>
 <h3 id="题解"><a class="header-anchor" href="#题解">¶</a>题解</h3>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">for i in range(17,21):</span><br><span class="line">    s = str(i**3) + str(i**4)</span><br><span class="line">    for j in range(10):</span><br><span class="line">        if str(j) not in s:</span><br><span class="line">            break</span><br><span class="line">    	elif i == 9:</span><br><span class="line">        	print(i)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="英寸和厘米的交互（升级版）"><a class="header-anchor" href="#英寸和厘米的交互（升级版）">¶</a>英寸和厘米的交互（升级版）</h2>
