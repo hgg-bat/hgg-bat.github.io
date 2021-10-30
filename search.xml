@@ -1224,6 +1224,16 @@ backdoor<br>
 相当于向target中写入了p2的地址</p>
 <p>程序运行结果如下：<br>
 <img src="http://static.zybuluo.com/hgggg/o5gkhadyyt9y9l9kwdtzebi3/image_1fj24revc10d3vqt14gd1e8d101i9.png" alt="image_1fj24revc10d3vqt14gd1e8d101i9.png-15.3kB"></p>
+<h2 id="例题2"><a class="header-anchor" href="#例题2">¶</a>例题2</h2>
+<h3 id="2021-祥云杯-PassWorbox-ProVersion"><a class="header-anchor" href="#2021-祥云杯-PassWorbox-ProVersion">¶</a>[2021 祥云杯]PassWorbox ProVersion</h3>
+<h4 id="题目分析-v3"><a class="header-anchor" href="#题目分析-v3">¶</a>题目分析</h4>
+<p>这题第一次做时是用的house of banana做出来的，后来看到大佬写的wp发现largebin attack也可以做</p>
+<p>add<br>
+<img src="http://static.zybuluo.com/hgggg/rfpg2n94hrkhqrdjxq9ao891/image_1fj5dk0g2kod1bbl1osd112er0t9.png" alt="image_1fj5dk0g2kod1bbl1osd112er0t9.png-68.8kB"></p>
+<p>限制申请堆块大小只能为large chunk 大小，且会讲content通过encode函数加密</p>
+<p>endcode函数如下<br>
+<img src="http://static.zybuluo.com/hgggg/gpg6bf6nt9a4gfp5g11tzwjt/image_1fj5dvb0319dtkrp8cn1juo1bjrm.png" alt="image_1fj5dvb0319dtkrp8cn1juo1bjrm.png-29kB"><br>
+讲明文分为八位一组与key进行异或加密，且key为rand随机生成</p>
 <h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
 <p><a href="https://blog.csdn.net/zero_lee/article/details/7865481">https://blog.csdn.net/zero_lee/article/details/7865481</a><br>
 <a href="https://www.bilibili.com/video/BV1Uv411j7fr?p=24">https://www.bilibili.com/video/BV1Uv411j7fr?p=24</a><br>
@@ -1238,5 +1248,46 @@ backdoor<br>
       <tags>
         <tag>笔记</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>it项目管理期末复习</title>
+    <url>/2021/10/30/it%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/</url>
+    <content><![CDATA[<h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><h3 id="项目与作业的区分"><a href="#项目与作业的区分" class="headerlink" title="项目与作业的区分"></a>项目与作业的区分</h3><p><img src="http://static.zybuluo.com/hgggg/d8chss6qwzqdg3xyibi5cczw/image.png" alt="image.png-114.9kB"><br><span id="more"></span></p>
+<h3 id="四种核心知识领域"><a href="#四种核心知识领域" class="headerlink" title="四种核心知识领域"></a>四种核心知识领域</h3><p><img src="http://static.zybuluo.com/hgggg/l10aizeuonk5d7z6zy863jbf/image.png" alt="image.png-208.3kB"></p>
+<h3 id="五种辅助知识领域"><a href="#五种辅助知识领域" class="headerlink" title="五种辅助知识领域"></a>五种辅助知识领域</h3><p><img src="http://static.zybuluo.com/hgggg/uwh0tlxmhua8f5m19xwv4c7x/image.png" alt="image.png-525.4kB"></p>
+<h3 id="IT项目的特征"><a href="#IT项目的特征" class="headerlink" title="IT项目的特征"></a>IT项目的特征</h3><p><img src="http://static.zybuluo.com/hgggg/tz6091i5hyimxocmjw6cdho7/image.png" alt="image.png-106.4kB"></p>
+<h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><h3 id="项目的四个阶段"><a href="#项目的四个阶段" class="headerlink" title="项目的四个阶段"></a>项目的四个阶段</h3><p><img src="http://static.zybuluo.com/hgggg/38zocz9tasiz77ptuxch2pro/image.png" alt="image.png-218.1kB"></p>
+<h3 id="项目费用与人力投入的模式"><a href="#项目费用与人力投入的模式" class="headerlink" title="项目费用与人力投入的模式"></a>项目费用与人力投入的模式</h3><p><img src="http://static.zybuluo.com/hgggg/rdw195850x9v4xjfrdl65x9p/image.png" alt="image.png-54.4kB"></p>
+<h3 id="随着项目时间增长，项目变更代价和项目利益相关者的影响的变化"><a href="#随着项目时间增长，项目变更代价和项目利益相关者的影响的变化" class="headerlink" title="随着项目时间增长，项目变更代价和项目利益相关者的影响的变化"></a>随着项目时间增长，项目变更代价和项目利益相关者的影响的变化</h3><p><img src="http://static.zybuluo.com/hgggg/xjk1zrkusulp3bxz8ojuwn6d/image.png" alt="image.png-44.1kB"></p>
+<h3 id="产品生命周期与项目生命周期的关系"><a href="#产品生命周期与项目生命周期的关系" class="headerlink" title="产品生命周期与项目生命周期的关系"></a>产品生命周期与项目生命周期的关系</h3><p><img src="http://static.zybuluo.com/hgggg/q4oz3ijcew8ilwqwt683az7n/image.png" alt="image.png-133.2kB"></p>
+<h3 id="项目组织形式及其特点"><a href="#项目组织形式及其特点" class="headerlink" title="项目组织形式及其特点"></a>项目组织形式及其特点</h3><p><img src="http://static.zybuluo.com/hgggg/lxlelfl92a2pin5gy9ww2j2j/image.png" alt="image.png-120.3kB"></p>
+<h2 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h2><h3 id="项目资源"><a href="#项目资源" class="headerlink" title="项目资源"></a>项目资源<img src="http://static.zybuluo.com/hgggg/tp4ufktjpt7slms4zaijehni/image.png" alt="image.png-99.4kB"></h3><h2 id="第四章"><a href="#第四章" class="headerlink" title="第四章"></a>第四章</h2><h3 id="需求管理的过程"><a href="#需求管理的过程" class="headerlink" title="需求管理的过程"></a>需求管理的过程</h3><p>需求管理的过程：需求收集，需求分析，需求评审，需求跟进，需求变更<br>需求范围管理中必须明确必须做的和不应该做的</p>
+<h3 id="项目范围管理规划与需求管理规划"><a href="#项目范围管理规划与需求管理规划" class="headerlink" title="项目范围管理规划与需求管理规划"></a>项目范围管理规划与需求管理规划</h3><p><img src="http://static.zybuluo.com/hgggg/hzhz63h16ecwwme32mfnya7i/image.png" alt="image.png-277.8kB"></p>
+<h2 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h2><h3 id="掌握前导图和箭线图"><a href="#掌握前导图和箭线图" class="headerlink" title="掌握前导图和箭线图"></a>掌握前导图和箭线图</h3><p><img src="http://static.zybuluo.com/hgggg/jx2ik0t8h41lpj90c71vcr97/image.png" alt="image.png-139.8kB"><br><img src="http://static.zybuluo.com/hgggg/6yhp2z5ol61btzwq9wj3i3z0/image.png" alt="image.png-140.9kB"></p>
+<h3 id="活动时间期望值公式，标准差公式"><a href="#活动时间期望值公式，标准差公式" class="headerlink" title="活动时间期望值公式，标准差公式"></a>活动时间期望值公式，标准差公式</h3><p>最乐观时间：a<br>最正常时间：b<br>最悲观时间：c</p>
+<p>期望值：$\frac{a+4b+c}{6}$<br>标准差：$\frac{c-a}{6}$</p>
+<h3 id="关键路径法"><a href="#关键路径法" class="headerlink" title="关键路径法"></a>关键路径法</h3><p><img src="http://static.zybuluo.com/hgggg/3ai9aiackgfl6rsxcvtay41y/IMG20211030141507.jpg" alt="IMG20211030141507.jpg-3810.2kB"><br>关键路径总是耗时最长的路径，关键路径上的节点一般情况下，总时差和自由时差为0</p>
+<h2 id="第六章"><a href="#第六章" class="headerlink" title="第六章"></a>第六章</h2><h3 id="影响IT项目成本的因素"><a href="#影响IT项目成本的因素" class="headerlink" title="影响IT项目成本的因素"></a>影响IT项目成本的因素</h3><p><img src="http://static.zybuluo.com/hgggg/1z6q5bv0mi2ou4841fgzuh0f/image.png" alt="image.png-275.4kB"></p>
+<h3 id="常见财务术语的概念"><a href="#常见财务术语的概念" class="headerlink" title="常见财务术语的概念"></a>常见财务术语的概念</h3><p><img src="http://static.zybuluo.com/hgggg/qfbzveznq7l6h6apepcigaxb/IMG20211030142413.jpg" alt="IMG20211030142413.jpg-3779.7kB"></p>
+<p><img src="http://static.zybuluo.com/hgggg/3pk82y3z9k7dobz3m0hbw3sv/IMG20211030142637.jpg" alt="IMG20211030142637.jpg-2864.7kB"></p>
+<p><img src="http://static.zybuluo.com/hgggg/hqoiny3sc6deqnl6goy89xku/IMG20211030142611.jpg" alt="IMG20211030142611.jpg-2963.2kB"></p>
+<h3 id="成本估算的常见方法及特征"><a href="#成本估算的常见方法及特征" class="headerlink" title="成本估算的常见方法及特征"></a>成本估算的常见方法及特征</h3><p><img src="http://static.zybuluo.com/hgggg/vv4nczqrga86a2s3yh82lxkr/image.png" alt="image.png-138.3kB"></p>
+<h3 id="挣值分析法及分析过程"><a href="#挣值分析法及分析过程" class="headerlink" title="挣值分析法及分析过程"></a>挣值分析法及分析过程</h3><p><img src="http://static.zybuluo.com/hgggg/mzmuslybl0jn4bb1s32tmam1/image.png" alt="image.png-226.9kB"><br><img src="http://static.zybuluo.com/hgggg/hrccm6kokx8hnxk2afx5vnhw/image.png" alt="image.png-246.1kB"><br><img src="http://static.zybuluo.com/hgggg/ceah6hvyk6i0bpg8sg8bnr77/image.png" alt="image.png-215kB"><br><img src="http://static.zybuluo.com/hgggg/h5q5tjnc10rln1l6wobw02ne/image.png" alt="image.png-89.8kB"></p>
+<h2 id="第七章"><a href="#第七章" class="headerlink" title="第七章"></a>第七章</h2><h3 id="戴明改进循环PDCA的含义"><a href="#戴明改进循环PDCA的含义" class="headerlink" title="戴明改进循环PDCA的含义"></a>戴明改进循环PDCA的含义</h3><p><img src="http://static.zybuluo.com/hgggg/v4r8adicejvs5zj17yvxv1fn/image.png" alt="image.png-302.6kB"></p>
+<h3 id="CMM软件成熟度模型的作用及具体分级"><a href="#CMM软件成熟度模型的作用及具体分级" class="headerlink" title="CMM软件成熟度模型的作用及具体分级"></a>CMM软件成熟度模型的作用及具体分级</h3><p><img src="http://static.zybuluo.com/hgggg/kxw7u9dssd6qeodappe1ex74/image.png" alt="image.png-226.9kB"><br><img src="http://static.zybuluo.com/hgggg/p6bdlb8a2jyt5k3l8iafe1ro/image.png" alt="image.png-211.4kB"></p>
+<h3 id="质量7工具：重点控制图和帕累托图"><a href="#质量7工具：重点控制图和帕累托图" class="headerlink" title="质量7工具：重点控制图和帕累托图"></a>质量7工具：重点控制图和帕累托图</h3><p><img src="http://static.zybuluo.com/hgggg/2kxias8k67p87hy2bcw74uvm/image.png" alt="image.png-98.8kB"><br><img src="http://static.zybuluo.com/hgggg/a5553iv5c8d6ik2p5aqnyr2b/image.png" alt="image.png-55.5kB"></p>
+<h3 id="质量成本"><a href="#质量成本" class="headerlink" title="质量成本"></a>质量成本</h3><p>为了确保产品（或服务）满足规定要求的费用以及没有满足规定要求引起损失，是企业生产总成本的一个组成部分。</p>
+<h2 id="第八章"><a href="#第八章" class="headerlink" title="第八章"></a>第八章</h2><h3 id="项目经理的选择方式"><a href="#项目经理的选择方式" class="headerlink" title="项目经理的选择方式"></a>项目经理的选择方式</h3><p><img src="http://static.zybuluo.com/hgggg/rvsu7brt3rxp3ra7n2fw15i4/image.png" alt="image.png-162.2kB"></p>
+<h3 id="企业外部招聘的渠道"><a href="#企业外部招聘的渠道" class="headerlink" title="企业外部招聘的渠道"></a>企业外部招聘的渠道</h3><p><img src="http://static.zybuluo.com/hgggg/6nloksw3jue58pnxudtjteda/image.png" alt="image.png-176.3kB"><br><img src="http://static.zybuluo.com/hgggg/5yo2hzdp96uguree454iwmxi/image.png" alt="image.png-77.3kB"><br><img src="http://static.zybuluo.com/hgggg/wmes7yhz4rk2ng3ncmvp3f63/image.png" alt="image.png-247.7kB"></p>
+<h3 id="马斯洛需求层次的各层次"><a href="#马斯洛需求层次的各层次" class="headerlink" title="马斯洛需求层次的各层次"></a>马斯洛需求层次的各层次</h3><p><img src="http://static.zybuluo.com/hgggg/6abml644r2pen9wwhzx8xxo3/IMG20211030151640.jpg" alt="IMG20211030151640.jpg-4316kB"></p>
+<h2 id="第九章"><a href="#第九章" class="headerlink" title="第九章"></a>第九章</h2><h3 id="沟通的一般模型"><a href="#沟通的一般模型" class="headerlink" title="沟通的一般模型"></a>沟通的一般模型</h3><p><img src="http://static.zybuluo.com/hgggg/xyy37ks58kplpu4at9yimuee/image.png" alt="image.png-180.4kB"></p>
+<h3 id="沟通网络"><a href="#沟通网络" class="headerlink" title="沟通网络"></a>沟通网络</h3><p><img src="http://static.zybuluo.com/hgggg/v55zrwn23h8mhp88afevgz9i/image.png" alt="image.png-206.2kB"></p>
+<h3 id="不同沟通方式的适用场景"><a href="#不同沟通方式的适用场景" class="headerlink" title="不同沟通方式的适用场景"></a>不同沟通方式的适用场景</h3><p><img src="http://static.zybuluo.com/hgggg/3qlnhx4wi7yyzx2pm9nchz3n/IMG20211030153852_1.jpg" alt="IMG20211030153852_1.jpg-3690.6kB"><br><img src="http://static.zybuluo.com/hgggg/jirn2qiv77wes4wze741tigr/IMG20211030153908.jpg" alt="IMG20211030153908.jpg-3699.7kB"></p>
+<h2 id="第十章"><a href="#第十章" class="headerlink" title="第十章"></a>第十章</h2><h3 id="风险承受类型"><a href="#风险承受类型" class="headerlink" title="风险承受类型"></a>风险承受类型</h3><p><img src="http://static.zybuluo.com/hgggg/vcmmq6i6yw7lax13olaebsyq/image.png" alt="image.png-56.1kB"></p>
+<h3 id="风险管理的主要过程"><a href="#风险管理的主要过程" class="headerlink" title="风险管理的主要过程"></a>风险管理的主要过程</h3><p><img src="http://static.zybuluo.com/hgggg/xdqfuumisp22uq1uanibqrea/image.png" alt="image.png-237.1kB"></p>
+<h3 id="期望值法与决策树法"><a href="#期望值法与决策树法" class="headerlink" title="期望值法与决策树法"></a>期望值法与决策树法</h3><p>决策树<br><img src="http://static.zybuluo.com/hgggg/xjls1a1145yk29728y04c5oe/image.png" alt="image.png-87.8kB"><br>期望值<br>$EMV  =\sum_{i=1}^nP{i}X{i}$</p>
+<h2 id="第十一章"><a href="#第十一章" class="headerlink" title="第十一章"></a>第十一章</h2><h3 id="IT项目采购方式"><a href="#IT项目采购方式" class="headerlink" title="IT项目采购方式"></a>IT项目采购方式</h3><p><img src="http://static.zybuluo.com/hgggg/xk2v3hjnaf5nwa6619wliguo/image.png" alt="image.png-218.1kB"></p>
+<h3 id="招标方式"><a href="#招标方式" class="headerlink" title="招标方式"></a>招标方式</h3><p><img src="http://static.zybuluo.com/hgggg/ynxaspjsa3asmmjb8ymmhs63/image.png" alt="image.png-224.3kB"></p>
+]]></content>
   </entry>
 </search>
