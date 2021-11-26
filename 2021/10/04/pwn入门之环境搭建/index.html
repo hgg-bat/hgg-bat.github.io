@@ -22,19 +22,19 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="VMware下的ctf(pwn)入门环境搭建工具VMware15 unbuntu20.0镜像 下载地址： http:&#x2F;&#x2F;mirrors.163.com&#x2F;ubuntu-releases&#x2F;20.04&#x2F; 详情请见https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_44169941&#x2F;article&#x2F;details&#x2F;109263134">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pwn入门之环境搭建">
 <meta property="og:url" content="https://hgg-bat.github.io/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Haruki">
-<meta property="og:description" content="VMware下的ctf(pwn)入门环境搭建工具VMware15 unbuntu20.0镜像 下载地址： http:&#x2F;&#x2F;mirrors.163.com&#x2F;ubuntu-releases&#x2F;20.04&#x2F; 详情请见https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_44169941&#x2F;article&#x2F;details&#x2F;109263134">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/30.jpg">
 <meta property="article:published_time" content="2021-10-04T02:32:23.000Z">
-<meta property="article:modified_time" content="2021-10-04T09:54:31.533Z">
+<meta property="article:modified_time" content="2021-11-25T14:10:56.804Z">
 <meta property="article:author" content="haruki">
 <meta property="article:tag" content="pwn笔记">
 <meta property="article:tag" content="环境搭建">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Nss-harukii/images/raw/master/30.jpg">
 
 
 <link rel="canonical" href="https://hgg-bat.github.io/2021/10/04/pwn%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
@@ -122,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VMware%E4%B8%8B%E7%9A%84ctf-pwn-%E5%85%A5%E9%97%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text">VMware下的ctf(pwn)入门环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.</span> <span class="nav-text">pwn环境搭建</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">pwn环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85vscode"><span class="nav-number">2.1.</span> <span class="nav-text">安装vscode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85gcc"><span class="nav-number">2.2.</span> <span class="nav-text">安装gcc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE32%E4%BD%8D%E7%8E%AF%E5%A2%83"><span class="nav-number">2.3.</span> <span class="nav-text">配置32位环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85vim"><span class="nav-number">2.4.</span> <span class="nav-text">安装vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85git"><span class="nav-number">2.5.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85pwntools"><span class="nav-number">2.6.</span> <span class="nav-text">安装pwntools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85pwndbg-pwngdb-%E8%81%94%E5%90%88%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="nav-number">2.7.</span> <span class="nav-text">安装pwndbg + pwngdb 联合调试环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85docker"><span class="nav-number">2.8.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85seccomp-tools"><span class="nav-number">2.9.</span> <span class="nav-text">安装seccomp-tools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85one-gadget"><span class="nav-number">2.10.</span> <span class="nav-text">安装one_gadget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85LibcSearcher"><span class="nav-number">2.11.</span> <span class="nav-text">安装LibcSearcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85main-arena-offset"><span class="nav-number">2.12.</span> <span class="nav-text">安装main_arena_offset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E7%9A%84libc%E7%8E%AF%E5%A2%83"><span class="nav-number">2.13.</span> <span class="nav-text">安装本地调试不同版本的libc环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEpython2"><span class="nav-number">2.14.</span> <span class="nav-text">安装并配置python2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85alpha3"><span class="nav-number">2.15.</span> <span class="nav-text">安装alpha3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E5%BB%BAdocker%E7%94%A8%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">2.16.</span> <span class="nav-text">搭建docker用的镜像</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -237,10 +237,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-10-04 10:32:23 / 修改时间：17:54:31" itemprop="dateCreated datePublished" datetime="2021-10-04T10:32:23+08:00">2021-10-04</time>
+      <time title="创建时间：2021-10-04 10:32:23" itemprop="dateCreated datePublished" datetime="2021-10-04T10:32:23+08:00">2021-10-04</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-11-25 22:10:56" itemprop="dateModified" datetime="2021-11-25T22:10:56+08:00">2021-11-25</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -261,43 +267,56 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="VMware下的ctf-pwn-入门环境搭建"><a href="#VMware下的ctf-pwn-入门环境搭建" class="headerlink" title="VMware下的ctf(pwn)入门环境搭建"></a>VMware下的ctf(pwn)入门环境搭建</h1><h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>VMware15</p>
+        <p><img src="https://gitee.com/Nss-harukii/images/raw/master/30.jpg" alt="pic"></p>
+<span id="more"></span>
+<h2 id="工具"><a class="header-anchor" href="#工具">¶</a>工具</h2>
+<p>VMware15</p>
 <p>unbuntu20.0镜像 下载地址：</p>
 <pre><code>http://mirrors.163.com/ubuntu-releases/20.04/
-</code></pre><p>详情请见<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44169941/article/details/109263134">https://blog.csdn.net/weixin_44169941/article/details/109263134</a> </p>
-<span id="more"></span>   
-<h2 id="pwn环境搭建"><a href="#pwn环境搭建" class="headerlink" title="pwn环境搭建"></a>pwn环境搭建</h2><p>1.安装vscode</p>
+</code></pre>
+<p>详情请见https://blog.csdn.net/weixin_44169941/article/details/109263134</p>
+<h2 id="pwn环境搭建"><a class="header-anchor" href="#pwn环境搭建">¶</a>pwn环境搭建</h2>
+<h3 id="安装vscode"><a class="header-anchor" href="#安装vscode">¶</a>安装vscode</h3>
 <pre><code>直接在Ubuntu software 安装就行
-</code></pre><p>2.安装gcc</p>
+</code></pre>
+<h3 id="安装gcc"><a class="header-anchor" href="#安装gcc">¶</a>安装gcc</h3>
 <pre><code>sudo apt install gcc
 gcc --version  
-</code></pre><p>3.配置32位环境</p>
+</code></pre>
+<h3 id="配置32位环境"><a class="header-anchor" href="#配置32位环境">¶</a>配置32位环境</h3>
 <pre><code>sudo dpkg --add-architecture i386
 sudo apt-get update
 sudo apt install build-essential
 sudo apt install gcc-multilib
-</code></pre><p>4.安装vim</p>
+</code></pre>
+<h3 id="安装vim"><a class="header-anchor" href="#安装vim">¶</a>安装vim</h3>
 <pre><code>sudo apt install vim
-</code></pre><p>5.安装git</p>
+</code></pre>
+<h3 id="安装git"><a class="header-anchor" href="#安装git">¶</a>安装git</h3>
 <pre><code>sudo apt install git
-</code></pre><p>6.安装pwntools</p>
+</code></pre>
+<h3 id="安装pwntools"><a class="header-anchor" href="#安装pwntools">¶</a>安装pwntools</h3>
 <pre><code>sudo apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential
 sudo python3 -m pip install --upgrade pip
 sudo python3 -m pip install --upgrade pwntools
-</code></pre><p>7.安装pwndbg + pwngdb 联合调试环境</p>
+</code></pre>
+<h3 id="安装pwndbg-pwngdb-联合调试环境"><a class="header-anchor" href="#安装pwndbg-pwngdb-联合调试环境">¶</a>安装pwndbg + pwngdb 联合调试环境</h3>
 <p>pwngdb</p>
 <pre><code>cd ~/
 git clone https://github.com/scwuaptx/Pwngdb.git 
 cp ~/Pwngdb/.gdbinit ~/
-</code></pre><p>pwndbg</p>
+</code></pre>
+<p>pwndbg</p>
 <pre><code>git clone https://github.com/pwndbg/pwndbg
 cd pwndbg
 ./setup.sh
-</code></pre><p>联合使用</p>
+</code></pre>
+<p>联合使用</p>
 <pre><code>vim ~/.gdbinit
 注释掉第一行 然后在第二行写入
 source ~/pwndbg/gdbinit.py
-</code></pre><p>食用方法汇总（持续）</p>
+</code></pre>
+<p>食用方法汇总（持续）</p>
 <pre><code>1.带源码调试: gdb -q [file] -d [path]（默认为.）
 2.下断点: b address
 3.运行: r
@@ -313,28 +332,37 @@ source ~/pwndbg/gdbinit.py
 13.查看地址：telescoope address
 14.查看hex: hex address
 15.格式化字符串偏移地址: fmtarg 
-</code></pre><p>8.安装docker</p>
+</code></pre>
+<h3 id="安装docker"><a class="header-anchor" href="#安装docker">¶</a>安装docker</h3>
 <pre><code>sudo apt install docker.io
-</code></pre><p>9.安装seccomp-tools</p>
+</code></pre>
+<h3 id="安装seccomp-tools"><a class="header-anchor" href="#安装seccomp-tools">¶</a>安装seccomp-tools</h3>
 <pre><code>sudo apt install gcc ruby-dev
 gem install seccomp-tools
-</code></pre><p>10.安装one_gadget</p>
+</code></pre>
+<h3 id="安装one-gadget"><a class="header-anchor" href="#安装one-gadget">¶</a>安装one_gadget</h3>
 <pre><code>sudo gem install one_gadget
-</code></pre><p>11.安装LibcSearcher</p>
+</code></pre>
+<h3 id="安装LibcSearcher"><a class="header-anchor" href="#安装LibcSearcher">¶</a>安装LibcSearcher</h3>
 <pre><code>sudo pip3 install LibcSearcher
 sudo pip3 install -U LibcSearcher
-</code></pre><p>12.安装main_arena_offset</p>
+</code></pre>
+<h3 id="安装main-arena-offset"><a class="header-anchor" href="#安装main-arena-offset">¶</a>安装main_arena_offset</h3>
 <pre><code>git clone https://github.com/dev2ero/py_main_arena_offset.git
 cd py_main_arena_offset
 sudo python3 setup.py develop
-</code></pre><p>食用方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymao <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">libc = <span class="string">&quot;./libc.so.6&quot;</span></span><br><span class="line">main_arena_offset = gmao( libc )</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(main_arena_offset))</span><br></pre></td></tr></table></figure><br>13.安装本地调试不同版本的libc环境</p>
+</code></pre>
+<p>食用方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymao <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">libc = <span class="string">&quot;./libc.so.6&quot;</span></span><br><span class="line">main_arena_offset = gmao( libc )</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(main_arena_offset))</span><br></pre></td></tr></table></figure>
+<h3 id="安装本地调试不同版本的libc环境"><a class="header-anchor" href="#安装本地调试不同版本的libc环境">¶</a>安装本地调试不同版本的libc环境</h3>
 <p>glibc-all-in-one</p>
 <pre><code>git clone https://github.com/matrix1001/glibc-all-in-one.git
 cd glibc-all-in-one
 python3 update_list
 cat list
  ./download [libc-version]
-</code></pre><p>patchelf</p>
+</code></pre>
+<p>patchelf</p>
 <pre><code>git clone https://github.com/NixOS/patchelf.git
 cd patchelf
 sudo apt-get install autoconf automake libtool
@@ -342,15 +370,17 @@ sudo apt-get install autoconf automake libtool
 ./configure
 make
 sudo make install
-</code></pre><p>食用方法</p>
+</code></pre>
+<p>食用方法</p>
 <pre><code>patchelf --replace-needed libc.so.6 [your-libc-path] [yourelf]
 patchelf --set-interpreter [libc-ld-path] [elf]
 cp -r ~/Desktop/glibc-all-in-one/libs/[libcfolderpath]/.debug/ ./debug
 gdb [elf]
 # set debug-file-directory ./debug/
 如果要debug不同版本的libc的程序具体可以看这篇博客：https://bbs.pediy.com/thread-254868.htm
-如果上述博客中方法不可行，则可以修改~/pwndbg/pwndbg/symbol.py 最后两行为set_directory(&#39;./debug/&#39;)
-</code></pre><p>14.安装并配置python2</p>
+如果上述博客中方法不可行，则可以修改~/pwndbg/pwndbg/symbol.py 最后两行为set_directory('./debug/')
+</code></pre>
+<h3 id="安装并配置python2"><a class="header-anchor" href="#安装并配置python2">¶</a>安装并配置python2</h3>
 <pre><code>#安装
 sudo apt install python2 
 #设置优先级
@@ -364,13 +394,16 @@ sudo apt-get install curl
 sudo curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 sudo python get-pip.py
 pip install pwntoola
-</code></pre><p>15.安装alpha3</p>
+</code></pre>
+<h3 id="安装alpha3"><a class="header-anchor" href="#安装alpha3">¶</a>安装alpha3</h3>
 <pre><code>git clone https://github.com/TaQini/alpha3.git
 cd alpha3
 python ./ALPHA3.py x64 ascii mixedcase rax --input=&quot;sc.bin&quot; &gt; out.bin
-</code></pre><p>16.搭建docker用的镜像</p>
+</code></pre>
+<h3 id="搭建docker用的镜像"><a class="header-anchor" href="#搭建docker用的镜像">¶</a>搭建docker用的镜像</h3>
 <pre><code>https://github.com/DASCTF-Base
 </code></pre>
+
     </div>
 
     

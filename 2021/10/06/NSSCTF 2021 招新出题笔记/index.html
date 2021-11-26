@@ -22,21 +22,20 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前言这是我第二次为团队招新赛出题，这次一开始听xenny老板说要搞个校外赛道，好家伙，这次招新四舍五入就成了一个小型的公开赛了，当时正在套">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NSSCTF 2021 招新出题笔记">
 <meta property="og:url" content="https://hgg-bat.github.io/2021/10/06/NSSCTF%202021%20%E6%8B%9B%E6%96%B0%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Haruki">
-<meta property="og:description" content="前言这是我第二次为团队招新赛出题，这次一开始听xenny老板说要搞个校外赛道，好家伙，这次招新四舍五入就成了一个小型的公开赛了，当时正在套">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/27.jpg">
 <meta property="og:image" content="http://static.zybuluo.com/hgggg/kgn1pamo0ny94c70oeuysz33/Cache_-36b9d8e9cc4ee054..jpg">
 <meta property="og:image" content="http://static.zybuluo.com/hgggg/kgn1pamo0ny94c70oeuysz33/Cache_-36b9d8e9cc4ee054..jpg">
 <meta property="article:published_time" content="2021-10-06T08:01:38.000Z">
-<meta property="article:modified_time" content="2021-10-12T14:48:23.259Z">
+<meta property="article:modified_time" content="2021-11-25T13:55:11.071Z">
 <meta property="article:author" content="haruki">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://static.zybuluo.com/hgggg/kgn1pamo0ny94c70oeuysz33/Cache_-36b9d8e9cc4ee054..jpg">
+<meta name="twitter:image" content="https://gitee.com/Nss-harukii/images/raw/master/27.jpg">
 
 
 <link rel="canonical" href="https://hgg-bat.github.io/2021/10/06/NSSCTF%202021%20%E6%8B%9B%E6%96%B0%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/">
@@ -247,7 +246,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-12 22:48:23" itemprop="dateModified" datetime="2021-10-12T22:48:23+08:00">2021-10-12</time>
+        <time title="修改时间：2021-11-25 21:55:11" itemprop="dateModified" datetime="2021-11-25T21:55:11+08:00">2021-11-25</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,7 +268,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是我第二次为团队招新赛出题，这次一开始听xenny老板说要搞个校外赛道，好家伙，这次招新四舍五入就成了一个小型的公开赛了，当时正在套<span id="more"></span>模板题的手微微颤抖，有那么一瞬间在想要不要整点活，但想到这比赛是面向新生的最终还是没有整（主要还是菜，整不出来）</p>
+        <p><img src="https://gitee.com/Nss-harukii/images/raw/master/27.jpg" alt="pic"></p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是我第二次为团队招新赛出题，这次一开始听xenny老板说要搞个校外赛道，好家伙，这次招新四舍五入就成了一个小型的公开赛了，当时正在套模板题的手微微颤抖，有那么一瞬间在想要不要整点活，但想到这比赛是面向新生的最终还是没有整（主要还是菜，整不出来）</p>
 <p>这次的题目我负责的是pwn1-5,以及密码学方向的1-5（现代密码部分）, 本来一开始的时候是没有打算出pwn题的，因为新生大部分都是还没有接触过CTF的小白，我觉得新生通过自学把环境搭建好就差不多了，最终还是迫于wdljt老板的淫威出了五个白给pwn。</p>
 <h2 id="出题思路"><a href="#出题思路" class="headerlink" title="出题思路"></a>出题思路</h2><h3 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h3><p>团队里面搞现代密码的就两个人，另外一个师傅要加班出misc，现代密码就只有我来，又因为赶着第二天上题，就直接摆烂水了5个题</p>
 <p>这五个密码题都是模板题，改都不带改的，这五个密码题出题加起来也就花了不到20分钟，难度都不大，每个题应该都能百度到原题。</p>
