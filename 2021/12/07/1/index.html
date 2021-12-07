@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/lll.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/lll.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hgg-bat.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="¶title: 大数据复习（考完就删） date: 2021-12-02 08:43:12 tags:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1">
+<meta property="og:url" content="https://hgg-bat.github.io/2021/12/07/1/index.html">
+<meta property="og:site_name" content="Haruki">
+<meta property="og:description" content="¶title: 大数据复习（考完就删） date: 2021-12-02 08:43:12 tags:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/50.jpg">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/51.png">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/52.png">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/53.png">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/54.png">
+<meta property="og:image" content="https://gitee.com/Nss-harukii/images/raw/master/55.png">
+<meta property="article:published_time" content="2021-12-07T10:43:59.000Z">
+<meta property="article:modified_time" content="2021-12-07T10:44:05.700Z">
+<meta property="article:author" content="haruki">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Nss-harukii/images/raw/master/50.jpg">
+
+
+<link rel="canonical" href="https://hgg-bat.github.io/2021/12/07/1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hgg-bat.github.io/2021/12/07/1/","path":"2021/12/07/1/","title":"1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>1 | Haruki</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+  <a target="_blank" rel="noopener" href="https://github.com/hgg-bat" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Haruki</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#title-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%8D%E4%B9%A0%EF%BC%88%E8%80%83%E5%AE%8C%E5%B0%B1%E5%88%A0%EF%BC%89date-2021-12-02-08-43-12tags"><span class="nav-number">1.</span> <span class="nav-text">title: 大数据复习（考完就删）
+
+date: 2021-12-02 08:43:12
+
+tags:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">集群与分布式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">分布式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4"><span class="nav-number">2.2.</span> <span class="nav-text">集群</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop"><span class="nav-number">3.</span> <span class="nav-text">Hadoop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop%E7%94%9F%E6%80%81%E5%9C%88%EF%BC%88%E8%BD%AC%E8%87%AA%E9%93%BE%E6%8E%A5%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">Hadoop生态圈（转自链接）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop%E9%9B%86%E7%BE%A4"><span class="nav-number">3.3.</span> <span class="nav-text">Hadoop集群</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDFS"><span class="nav-number">4.</span> <span class="nav-text">HDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-v2"><span class="nav-number">4.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-number">4.2.</span> <span class="nav-text">端口号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%90%88-%E4%B8%8D%E9%80%82%E5%90%88"><span class="nav-number">4.3.</span> <span class="nav-text">适合&amp;不适合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">4.4.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hdfs%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">4.5.</span> <span class="nav-text">hdfs常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce"><span class="nav-number">5.</span> <span class="nav-text">MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-v3"><span class="nav-number">5.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%90%88-%E4%B8%8D%E9%80%82%E5%90%88-v2"><span class="nav-number">5.2.</span> <span class="nav-text">适合&amp;不适合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">5.3.</span> <span class="nav-text">序列化与反序列化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yarn"><span class="nav-number">6.</span> <span class="nav-text">Yarn</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-v4"><span class="nav-number">6.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9"><span class="nav-number">6.2.</span> <span class="nav-text">节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hive"><span class="nav-number">7.</span> <span class="nav-text">hive</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-v5"><span class="nav-number">7.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.2.1.</span> <span class="nav-text">基本数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E5%90%88"><span class="nav-number">7.2.2.</span> <span class="nav-text">集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E8%A7%84%E5%88%99"><span class="nav-number">7.2.3.</span> <span class="nav-text">隐式类型转换规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-number">7.2.4.</span> <span class="nav-text">强制转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DDL"><span class="nav-number">7.3.</span> <span class="nav-text">DDL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-number">7.3.1.</span> <span class="nav-text">库操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">7.3.2.</span> <span class="nav-text">表操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8"><span class="nav-number">7.3.2.1.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8"><span class="nav-number">7.3.2.2.</span> <span class="nav-text">查看表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8"><span class="nav-number">7.3.2.3.</span> <span class="nav-text">修改表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8"><span class="nav-number">7.3.2.4.</span> <span class="nav-text">删除表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DML"><span class="nav-number">7.4.</span> <span class="nav-text">DML</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5"><span class="nav-number">7.4.1.</span> <span class="nav-text">数据导入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA"><span class="nav-number">7.4.2.</span> <span class="nav-text">数据导出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">7.5.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">7.5.1.</span> <span class="nav-text">内置函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-number">7.5.2.</span> <span class="nav-text">自定义函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#json%E8%A7%A3%E6%9E%90"><span class="nav-number">7.6.</span> <span class="nav-text">json解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AD%97%E8%8A%82%E5%88%86%E9%9A%94%E7%AC%A6%E8%A7%A3%E6%9E%90%EF%BC%9A"><span class="nav-number">7.7.</span> <span class="nav-text">多字节分隔符解析：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="nav-number">7.8.</span> <span class="nav-text">窗口函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%A1%AB%E7%A9%BA%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">程序填空题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WordjJob"><span class="nav-number">8.1.</span> <span class="nav-text">WordjJob</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OrderJob"><span class="nav-number">8.2.</span> <span class="nav-text">OrderJob</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HiveTest"><span class="nav-number">8.3.</span> <span class="nav-text">HiveTest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HdfsTest"><span class="nav-number">8.4.</span> <span class="nav-text">HdfsTest</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="haruki"
+      src="/images/tou.png">
+  <p class="site-author-name" itemprop="name">haruki</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hgg-bat" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hgg-bat" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/jingyue425105@163.com" title="E-Mail → jingyue425105@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://hgg-bat.github.io/" title="https:&#x2F;&#x2F;hgg-bat.github.io">haruki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wp.dkymore.com/" title="https:&#x2F;&#x2F;wp.dkymore.com" rel="noopener" target="_blank">dkymore</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.wd-ljt.com/" title="https:&#x2F;&#x2F;www.wd-ljt.com" rel="noopener" target="_blank">WDLJT</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/M1sceden4/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;M1sceden4&#x2F;" rel="noopener" target="_blank">M1sceden4</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hgg-bat.github.io/2021/12/07/1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tou.png">
+      <meta itemprop="name" content="haruki">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haruki">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-07 18:43:59 / 修改时间：18:44:05" itemprop="dateCreated datePublished" datetime="2021-12-07T18:43:59+08:00">2021-12-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <hr>
+<h2 id="title-大数据复习（考完就删）date-2021-12-02-08-43-12tags"><a class="header-anchor" href="#title-大数据复习（考完就删）date-2021-12-02-08-43-12tags">¶</a>title: 大数据复习（考完就删）<br>
+date: 2021-12-02 08:43:12<br>
+tags:</h2>
+<p><img src="https://gitee.com/Nss-harukii/images/raw/master/50.jpg" alt="pic"></p>
+<span id="more"></span>
+<h2 id="集群与分布式"><a class="header-anchor" href="#集群与分布式">¶</a>集群与分布式</h2>
+<h3 id="分布式"><a class="header-anchor" href="#分布式">¶</a>分布式</h3>
+<pre><code>分布式是指通过网络连接的多个组件，通过交换信息协作而形成的系统
+</code></pre>
+<p><img src="https://gitee.com/Nss-harukii/images/raw/master/51.png" alt="pic"></p>
+<h3 id="集群"><a class="header-anchor" href="#集群">¶</a>集群</h3>
+<pre><code>集群是指同一种组件的多个实例，形成的逻辑上的整体
+</code></pre>
+<p><img src="https://gitee.com/Nss-harukii/images/raw/master/52.png" alt="pic"></p>
+<h2 id="Hadoop"><a class="header-anchor" href="#Hadoop">¶</a>Hadoop</h2>
+<h3 id="简介"><a class="header-anchor" href="#简介">¶</a>简介</h3>
+<pre><code>Hadoop的框架最核心的设计就是：HDFS和MapReduce。
+HDFS为海量的数据提供了存储，则MapReduce为海量的数据提供了计算
+</code></pre>
+<h3 id="Hadoop生态圈（转自链接）"><a class="header-anchor" href="#Hadoop生态圈（转自链接）">¶</a>Hadoop生态圈（转自<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9918fb395d1e">链接</a>）</h3>
+<pre><code>我们通常说到的hadoop包括两部分，一是Hadoop核心技术（或者说狭义上的hadoop），对应为apache开源社区的一个项目，主要包括三部分内容：hdfs，mapreduce，yarn。其中hdfs用来存储海量数据，mapreduce用来对海量数据进行计算，yarn是一个通用的资源调度框架（是在hadoop2.0中产生的）。
+
+另一部分指广义的，广义上指一个生态圈，泛指大数据技术相关的开源组件或产品，如hbase、hive、spark、pig、zookeeper、kafka、flume、phoenix、sqoop等。
+
+生态圈中的这些组件或产品相互之间会有依赖，但又各自独立。比如habse和kafka会依赖zookeeper，hive会依赖mapreduce。
+</code></pre>
+<p><img src="https://gitee.com/Nss-harukii/images/raw/master/53.png" alt="pic"></p>
+<h3 id="Hadoop集群"><a class="header-anchor" href="#Hadoop集群">¶</a>Hadoop集群</h3>
+<p>1.<code>NameNode</code>它是<code>hadoop</code>中的主服务器，管理文件系统名称空间和对集群中存储的文件的访问，保存有<code>metadata</code>(元数据)。</p>
+<p>2.<code>SecondaryNameNode</code>它不是<code>namenode</code>的冗余守护进程，而是提供周期检查点和清理任务。帮助<code>NameNode</code>合并<code>editslog</code>，减少<code>NameNode</code>启动时间。(具体了解<code>SecondaryNameNode</code>见<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4ff4b5461d35">链接</a>)</p>
+<p>3.<code>DataNode</code>它负责管理连接到节点的存储（一个集群中可以有多个节点）。每个存储数据的节点运行一个<code>datanode</code>守护进程。(<code>NameNode</code>和<code>DataNode</code>详情见<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jackchen-Net/p/6506321.html">链接</a>)</p>
+<p>4.<code>ResourceManager</code>（JobTracker）是一个仲裁整个集群可用资源的主节点，帮助<code>YARN</code>系统管理其上的分布式应用，负责全局的资源管理和任务调度，把整个集群当成计算资源池，只关注分配，不管应用，且不负责容错。(详细见<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/hadoop/bkfj1p3m.html">链接</a>)</p>
+<p>5.<code>NodeManager</code>（TaskTracker）是运行在单个节点上的代理，它管理<code>Hadoop</code>集群中单个计算节点(详情见<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangykaifa/p/7015598.html">链接</a>)</p>
+<h2 id="HDFS"><a class="header-anchor" href="#HDFS">¶</a>HDFS</h2>
+<h3 id="简介-v2"><a class="header-anchor" href="#简介-v2">¶</a>简介</h3>
+<pre><code>Hadoop分布式文件系统
+</code></pre>
+<p><img src="https://gitee.com/Nss-harukii/images/raw/master/54.png" alt="pic"></p>
+<h3 id="端口号"><a class="header-anchor" href="#端口号">¶</a>端口号</h3>
+<pre><code>9000端口：是HDFS默认的端口号，提供文件系统的端口供client角色寻找namenode角色的端口号，是进程之间的调用
+50070端口：是NameNode的WebUI默认端口
+8020端口：是namenode节点active状态下的端口号
+50090端口号：namenode的secondarynamenode的端口号
+9083端口号：hive数据仓库元数据metastore的端口号
+6379：Redis的端口号
+60010：HBASE的端口号
+8485:journalnode默认的端口号
+9092：kafka的端口号
+41414：flume监控的端口
+2181：zookeeper的端口号
+</code></pre>
+<h3 id="适合-不适合"><a class="header-anchor" href="#适合-不适合">¶</a>适合&amp;不适合</h3>
+<pre><code>适合：大文件存储、流式数据访问
+不适合：大量小文件存储、随机写入（不支持修改内容，但是支持追加内容）、低延迟读取
+</code></pre>
+<h3 id="特点"><a class="header-anchor" href="#特点">¶</a>特点</h3>
+<pre><code>应用程序采用WORM（write once read many）（一次写入，多次读取）的数据读写模型，文件仅支持追加，而不支持修改。
+HDFS易于运行不同的平台上
+block size允许修改，2.7.7版本默认大小是128M
+</code></pre>
+<h3 id="hdfs常用命令"><a class="header-anchor" href="#hdfs常用命令">¶</a>hdfs常用命令</h3>
+<pre><code>	帮助
+	hdfs dfs -help
+	查看文件系统目录下的目录和文件
+	hdfs dfs -ls [-h] [-r] &lt;path&gt;
+	查看文件内容
+	hdfs dfs -cat &lt;hdfsfile&gt;
+	新建目录
+	hdfs dfs -mkdir &lt;path&gt;
+	创建多级目录
+	hdfs dfs -mkdir -p &lt;path&gt;
+	新建一个空文件
+	hdfs dfs -touchz &lt;filename&gt;
+	上传本地文件到hdfs
+	hdfs dfs -put [-f]  &lt;local src&gt; ...  &lt;hdfs dst&gt;
+	删除文件或目录
+	hdfs dfs -rm [-r] [-f] [-skipTrash] &lt;hdfs path&gt;
+	将hdfs文件下载到本地
+	hdfs dfs -get &lt; hdfs path&gt; &lt; localpath&gt;
+</code></pre>
+<h2 id="MapReduce"><a class="header-anchor" href="#MapReduce">¶</a>MapReduce</h2>
+<h3 id="简介-v3"><a class="header-anchor" href="#简介-v3">¶</a>简介</h3>
+<pre><code>分布式计算模型，由Google提出，主要用于搜索领域，解决海量数据的计算问题。
+MapReduce由两个阶段组成：Map和Reduce，用户只需要实现map()和reduce()两个函数，即可实现分布式计算
+Mapper负责“分”，即把复杂的任务分解为若干个“简单的任务”来处理。“简单的任务”包含三层含义：一是数据或计算的规模相对原任务要大大缩小；二是就近计算原则，即任务会分配到存放着所需数据的节点上进行计算；三是这些小任务可以并行计算，彼此间几乎没有依赖关系。
+Reducer负责对map阶段的结果进行汇总。至于需要多少个Reducer，用户可以根据具体问题，通过在mapred-site.xml配置文件里设置参数mapred.reduce.tasks的值，缺省值为1。
+</code></pre>
+<h3 id="适合-不适合-v2"><a class="header-anchor" href="#适合-不适合-v2">¶</a>适合&amp;不适合</h3>
+<pre><code>适合：大规模数据集的离线批处理计算
+不适合:实时的交互式计算，要求快速响应，低延迟
+</code></pre>
+<h3 id="序列化与反序列化"><a class="header-anchor" href="#序列化与反序列化">¶</a>序列化与反序列化</h3>
+<pre><code>序列化是指把结构化对象转化为字节流。
+反序列化是序列化的逆过程。即把字节流转回结构化对象。
+Hadoop框架本身实现序列化的接口是Writable
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/klionl/article/details/105395340">Hadoop序列化</a></p>
+<h2 id="Yarn"><a class="header-anchor" href="#Yarn">¶</a>Yarn</h2>
+<h3 id="简介-v4"><a class="header-anchor" href="#简介-v4">¶</a>简介</h3>
+<pre><code>是Hadoop2.0中的资源管理系统，它是一个通用的资源管理模块，可为各类应用程序进行资源管理和调度
+</code></pre>
+<h3 id="节点"><a class="header-anchor" href="#节点">¶</a>节点</h3>
+<pre><code>ResourceManager节点负责集群资源统一管理和计算框架管理，主要包括调度与应用程序管理
+NodeManager节点是节点资源管理监控和容器管理
+AppMaster各种计算框架的实现（例如MRAppMaster）向ResourceManager申请资源，通知NodeManager管理相应的资源
+Container：Yarn中的资源抽象，它封装了某个节点上的多维度资源，如内存、 CPU、磁盘、网络，端口（BY KAI ZHAO）等
+</code></pre>
+<h2 id="hive"><a class="header-anchor" href="#hive">¶</a>hive</h2>
+<h3 id="简介-v5"><a class="header-anchor" href="#简介-v5">¶</a>简介</h3>
+<pre><code>Hive是基于Hadoop的一个数据仓库工具，用来进行数据提取、转化、加载，这是一种可以存储、查询和分析存储在Hadoop中的大规模数据的机制。
+hive数据仓库工具能将结构化的数据文件映射为一张数据库表，并提供SQL查询功能，能将SQL语句转变成MapReduce任务来执行
+</code></pre>
+<h3 id="数据类型"><a class="header-anchor" href="#数据类型">¶</a>数据类型</h3>
+<h4 id="基本数据类型"><a class="header-anchor" href="#基本数据类型">¶</a>基本数据类型</h4>
+<pre><code>对于Hive的String类型相当于数据库的varchar类型该类型是一个可变的字符串，不过它不能声明其中最多能存储多少个字符，理论上它可以存储2GB的字符数。
+</code></pre>
+<h4 id="集合"><a class="header-anchor" href="#集合">¶</a>集合</h4>
+<pre><code>STRUCT:数据类型描述字面语法示例和C语言中的struct或者“对象”类似，都可以通过“点”符号访问元素内容。例如，如果某个列的数据类型是 STRUCT &#123; first STRING , last STRING&#125; ，那么第 1 个元素可以通过字段名.first来引用
+MAP:MAP 是一组键一值对元组集合，使用数组表示法(例如['key']) 可以访问元素。例如，如果某个列的数据类型是 MAP ，其中键 值对是'first' -&gt; 'John' 和'last' -&gt; 'Doe'，那么可以通过字段名['last']获取最后 1 个元素
+ARRAY:数组是一组具有相同类型和名称的变量的集合。这些变量称为数组的元素，每个数组元素都有一个编号，编号从零开始。例如，数组值为［'John', 'Doe'] , 那么第 2 个元素可以通过数组名[1]进行引用
+</code></pre>
+<h4 id="隐式类型转换规则"><a class="header-anchor" href="#隐式类型转换规则">¶</a>隐式类型转换规则</h4>
+<pre><code>（1）任何整数类型都可以隐式地转换为一个范围更广的类型，如TINYINT可以转换成INT，INT可以转换成BIGINT。
+（2）所有整数类型、FLOAT和STRING（数值型）类型都可以隐式地转换成DOUBLE。
+（3）TINYINT、SMALLINT、INT都可以转换为FLOAT。
+（4）BOOLEAN类型不可以转换为任何其它的类型
+</code></pre>
+<h4 id="强制转换"><a class="header-anchor" href="#强制转换">¶</a>强制转换</h4>
+<pre><code>可以使用CAST操作显示进行数据类型转换，例如CAST('1' AS INT)将把字符串'1' 转换成整数1；如果强制类型转换失败，如执行CAST('X' AS INT)，表达式返回空值 NULL
+</code></pre>
+<h3 id="DDL"><a class="header-anchor" href="#DDL">¶</a>DDL</h3>
+<h4 id="库操作"><a class="header-anchor" href="#库操作">¶</a>库操作</h4>
+<pre><code>创建数据库：CREATE DATABASE|SCHEMA [IF NOT EXISTS] &lt;database name&gt;
+查看数据库：SHOW DATABASES
+查看数据库的描述信息和文件目录位置路径信息：DESCRIBE DATABASE [EXTENDED] db_name;
+删库：DROP (DATABASE|SCHEMA) [IF EXISTS] database_name [RESTRICT|CASCADE];
+修改数据库信息：ALTER (DATABASE|SCHEMA) database_name SET DBPROPERTIES (property_name=property_value, ...);ALTER (DATABASE|SCHEMA) database_name SET OWNER [USER|ROLE] user_or_role;ALTER (DATABASE|SCHEMA) database_name SET LOCATION hdfs_path; 
+切换数据库：USE database_name;
+</code></pre>
+<h4 id="表操作"><a class="header-anchor" href="#表操作">¶</a>表操作</h4>
+<h5 id="创建表"><a class="header-anchor" href="#创建表">¶</a>创建表</h5>
+<p>临时表：</p>
+<pre><code>CREATE TEMPORARY TABLE ...  Hive从0.14.0开始提供创建临时表的功能，表只对当前session有效，session退出后，表自动删除。
+如果创建的临时表表名已存在，那么当前session引用到该表名时实际用的是临时表，只有drop或rename临时表名才能使用原始表；
+临时表限制：不支持分区字段和创建索引。
+</code></pre>
+<p>内部表和外部表：</p>
+<pre><code>create table managed_table ... create external table external_table ...
+它俩的主要区别在于：当我们drop表时，Managed Table会同时删去data（存储在HDFS上）和meta data（存储在MySQL），而External Table只会删meta data。
+</code></pre>
+<p>分区表：</p>
+<pre><code>分区最重要的原因是为了更快的查询。比如数据按天组织的话（通常是日志），查询的时候，只需要把天作为分区条件，每次只查询指定范围的日期，底层也只返回指定日期的数据，会大大提高了效率。从文件上来看，分区是 hdfs 的一个目录，可以指定多个分区，这样在插入数据的时候，hdfs 会产生多个目录。
+</code></pre>
+<p>语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> if <span class="keyword">not</span> <span class="keyword">exists</span> par_test(</span><br><span class="line"> name string,</span><br><span class="line"> nid <span class="type">int</span>,</span><br><span class="line"> phone string,</span><br><span class="line"> ntime <span class="type">date</span></span><br><span class="line"> )</span><br><span class="line"> partitioned <span class="keyword">by</span> (<span class="keyword">year</span> string,<span class="keyword">month</span> string) </span><br><span class="line"> <span class="type">row</span> format delimited </span><br><span class="line"> fields terminated <span class="keyword">by</span> &quot;|&quot;</span><br><span class="line"> lines terminated <span class="keyword">by</span> &quot;\n&quot;</span><br><span class="line"> stored <span class="keyword">as</span> textfile;</span><br></pre></td></tr></table></figure>
+<pre><code>静态分区和动态分区：
+静态分区需要手动指定分区名，而动态分区是根据查询语句自动生成分区名
+静态分区中的某个分区有可能一条数据都没有，而动态分区的每一个分区都至少包含一条数据
+动态分区比静态分区消耗更多性能
+</code></pre>
+<p>分桶表：</p>
+<pre><code>分桶表的实质，就是对分桶的字段做了hash 然后存放到对应文件中，也就是说向分桶表中插入数据的时候必然要执行一次MAPREDUCE,所以分桶表的数据只能通过从结果集查询插入的方式进行导入。
+</code></pre>
+<p>语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> bck_student(</span><br><span class="line">  id <span class="type">int</span>,</span><br><span class="line">  name string,</span><br><span class="line">  sex string, </span><br><span class="line">  age <span class="type">int</span>,</span><br><span class="line">  department string) </span><br><span class="line">  clustered <span class="keyword">by</span>(sex) <span class="keyword">into</span> <span class="number">2</span> buckets </span><br><span class="line">  <span class="type">row</span> format delimited </span><br><span class="line">  fields terminated  <span class="keyword">by</span> &quot;,&quot;;</span><br></pre></td></tr></table></figure>
+<p>主要注意的地方就是  clustered by(sex) into 2 buckets ，这里声明了对 sex 分桶，并且分成 2 份。</p>
+<p>表复制:</p>
+<pre><code>复制整张表：create table [tb_name] as select * from [table];
+复制一些字段：create table [tb_name] as select [column1],[column2] from [table];
+只拷贝表结构:create table [tb_name] like [table]; 注意这里创建的是内部表
+</code></pre>
+<h5 id="查看表"><a class="header-anchor" href="#查看表">¶</a>查看表</h5>
+<pre><code>SHOW TABLES [IN database_name] ['identifier_with_wildcards'];
+SHOW CREATE TABLE ([db_name.]table_name|view_name);
+</code></pre>
+<h5 id="修改表"><a class="header-anchor" href="#修改表">¶</a>修改表</h5>
+<p>修改表名：</p>
+<pre><code>ALTER TABLE table_name RENAME TO new_table_name;
+ALTER TABLE table_name SET TBLPROPERTIES table_properties;
+table_properties:: (property_name = property_value, property_name = property_value, ... )
+ALTER TABLE table_name SET TBLPROPERTIES ('comment' = new_comment);
+</code></pre>
+<p>修改字段：</p>
+<pre><code>ALTER TABLE [table_name] CHANGE [old_column_name] [new_column_name] [datatype]
+</code></pre>
+<p>添加列：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hive<span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span> employee <span class="keyword">ADD</span> COLUMNS ( </span><br><span class="line">   <span class="operator">&gt;</span> dept STRING COMMENT <span class="string">&#x27;Department name&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>替换列：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hive<span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span> employee REPLACE COLUMNS ( </span><br><span class="line">   <span class="operator">&gt;</span> eid <span class="type">INT</span> empid <span class="type">Int</span>, </span><br><span class="line">   <span class="operator">&gt;</span> ename STRING name String);</span><br></pre></td></tr></table></figure>
+<p>清空表：</p>
+<pre><code>truncate table tablename [partition partition_spec]；
+</code></pre>
+<h5 id="删除表"><a class="header-anchor" href="#删除表">¶</a>删除表</h5>
+<pre><code>truncate table tablename [partition partition_spec]；
+1.指定PURGE后，数据不会放到回收箱，会直接删除。
+2.DROP TABLE删除此表的元数据和数据。如果配置了垃圾箱（并且未指定PURGE），则实际将数据移至.Trash / Current目录。元数据完全丢失。
+3.删除EXTERNAL表时，表中的数据不会从文件系统中删除。
+</code></pre>
+<h3 id="DML"><a class="header-anchor" href="#DML">¶</a>DML</h3>
+<h4 id="数据导入"><a class="header-anchor" href="#数据导入">¶</a>数据导入</h4>
+<pre><code>从本地导入： load data local inpath ‘/home/1.txt’ (overwrite)into table student;
+从Hdfs导入： load data inpath ‘/user/hive/warehouse/1.txt’ (overwrite)into table student;
+查询导入： create table student1 as select * from student;(也可以具体查询某项数据)
+查询结果导入：insert （overwrite）into table staff select * from track_log;
+</code></pre>
+<h4 id="数据导出"><a class="header-anchor" href="#数据导出">¶</a>数据导出</h4>
+<pre><code>用insert overwrite导出方式导出到本地或者HDFS中
+insert overwrite [local] directory path select_statement
+</code></pre>
+<h3 id="函数"><a class="header-anchor" href="#函数">¶</a>函数</h3>
+<h4 id="内置函数"><a class="header-anchor" href="#内置函数">¶</a>内置函数</h4>
+<p><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/hive_manual/built_in_functions.html">链接</a></p>
+<h4 id="自定义函数"><a class="header-anchor" href="#自定义函数">¶</a>自定义函数</h4>
+<pre><code>UDF：用户自定义函数，user defined function。一对一的输入输出。（最常用的）。
+UDTF：用户自定义表生成函数。user defined table-generate function.一对多的输入输出。lateral view explode
+UDAF：用户自定义聚合函数。user defined aggregate function。多对一的输入输出 count sum max。
+</code></pre>
+<p>详细见<a target="_blank" rel="noopener" href="https://blog.csdn.net/u010839779/article/details/105648412">链接</a></p>
+<h3 id="json解析"><a class="header-anchor" href="#json解析">¶</a>json解析</h3>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yfb918/p/10644262.html">链接</a></p>
+<h3 id="多字节分隔符解析："><a class="header-anchor" href="#多字节分隔符解析：">¶</a>多字节分隔符解析：</h3>
+<p>hive默认序列化类是LazySimpleSerDe,其只支持单字节分隔符来加载文本数据。</p>
+<p>可以用以下方法解决多字节分隔符解析</p>
+<p>解决方案一：替换分隔符。如果数据中的分隔符是多字节分隔符，可以使用程序提前将数据中的多字节分隔符替换为单字节分隔符，然后使用Hive加载，就可以实现正确加载对应的数据。</p>
+<p>解决方案二：RegexSerDe正则加载。Hive提供了一种特殊的Serde来加载特殊数据的问题，使用正则匹配来加载数据，匹配每一列的数据。</p>
+<p>实例</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--如果表已存在就删除表</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> singer;</span><br><span class="line"></span><br><span class="line"><span class="comment">--创建表</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> singer(</span><br><span class="line"></span><br><span class="line"> id string,<span class="comment">--歌手id</span></span><br><span class="line"></span><br><span class="line"> name string,<span class="comment">--歌手名称</span></span><br><span class="line"></span><br><span class="line"> country string,<span class="comment">--国家</span></span><br><span class="line"></span><br><span class="line"> province string,<span class="comment">--省份</span></span><br><span class="line"></span><br><span class="line"> gender string,<span class="comment">--性别</span></span><br><span class="line"></span><br><span class="line"> works string<span class="comment">--作品</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">--指定使用RegexSerde加载数据</span></span><br><span class="line"></span><br><span class="line"><span class="type">ROW</span> FORMAT SERDE <span class="string">&#x27;org.apache.hadoop.hive.serde2.RegexSerDe&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--指定正则表达式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WITH</span> SERDEPROPERTIES (</span><br><span class="line"></span><br><span class="line">  &quot;input.regex&quot; <span class="operator">=</span> &quot;([0-9]*)\\|\\|([^&#125;]*)\\|\\|([^&#125;]*)\\|\\|([^&#125;]*)\\|\\|([^&#125;]*)\\|\\|([^&#125;]*)&quot;</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>解决方案三：自定义InputFormat。Hive中也允许使用自定义InputFormat来解决以上问题，通过在自定义InputFormat，来自定义解析逻辑实现读取每一行的数据。自定义InputFormat继承自TextInputFormat。</p>
+<h3 id="窗口函数"><a class="header-anchor" href="#窗口函数">¶</a>窗口函数</h3>
+<pre><code>ROW_NUMBER()函数作用就是将select查询到的数据进行排序，每一条数据加一个序号，他不能用做于学生成绩的排名，一般多用于分页查询
+rank()：生成数据项在分组中的排名，排名相等会在名次中留下空位。
+dense_rank():生成数据项在分组中的排名，排名相等会在名次中不会留下空位
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31807385/article/details/84783269">链接</a></p>
+<h2 id="程序填空题"><a class="header-anchor" href="#程序填空题">¶</a>程序填空题</h2>
+<h3 id="WordjJob"><a class="header-anchor" href="#WordjJob">¶</a>WordjJob</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 前两个泛型LongWritable, Text代表输入Map程序中的Key-value</span></span><br><span class="line"><span class="comment"> *后两个泛型Text,LongWritable代表输出Map程序中的Key-value--根据需求规定</span></span><br><span class="line"><span class="comment"> * LongWritable→java中的long</span></span><br><span class="line"><span class="comment"> * Text→java中的String</span></span><br><span class="line"><span class="comment"> * 这些类型都是hadoop自已进行特殊序列化之后的类型，不能采用java的原生类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// map</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordmapTest</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">LongWritable</span>,<span class="title">Text</span>,<span class="title">Text</span>,<span class="title">LongWritable</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(LongWritable key, Text value, Context context)</span> <span class="keyword">throws</span> IOException,InterrUptedException</span>&#123;</span><br><span class="line"></span><br><span class="line">		Syetem.out.println(key.toString());</span><br><span class="line">		String[] words = value.toString().split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">		<span class="keyword">for</span> (String word : words)&#123;</span><br><span class="line">			context.write(<span class="keyword">new</span> Text(word),<span class="keyword">new</span> LongWritable(<span class="number">1</span>))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//reduce</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordReduceTest</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span>, <span class="title">LongWritable</span>,<span class="title">Text</span>,<span class="title">LongWritable</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterable&lt;LongWritable&gt; values, Context context)</span> <span class="keyword">throws</span> IOException,InterrUptException</span>&#123;</span><br><span class="line">		<span class="keyword">long</span> result=<span class="number">0L</span>;</span><br><span class="line">		<span class="keyword">for</span>(LongWritable lw:value)&#123;</span><br><span class="line">			result+= lw.get();</span><br><span class="line">		&#125;</span><br><span class="line">		context.write(key,<span class="keyword">new</span> LongWritable(result));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line"><span class="comment">//wordjob</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordJob</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(Sting argc[])</span></span>&#123;</span><br><span class="line">		<span class="keyword">try</span>&#123;</span><br><span class="line">			Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">			Job job = Job.getInstance(conf);</span><br><span class="line">			job.setJobName(<span class="string">&quot;单词统计测试&quot;</span>)；</span><br><span class="line">			job.setJarByClass(WordJob.class);</span><br><span class="line">			job.setMapperClsee(WordMapTest.class);</span><br><span class="line">			job.setReducerClass(WordReduceTest.class);</span><br><span class="line">			job.setMapOutputKeyClass(Text.class);</span><br><span class="line">			job.setMapOutputValueClass(LongWritable.class);</span><br><span class="line">			job.setOutputKeyClass(Text.class);</span><br><span class="line">			job.setOutputValueClass(LongWritable.class);</span><br><span class="line">			FileInputFormat.addInputPath(job,<span class="keyword">new</span> Path(<span class="string">&quot;/word.txt&quot;</span>));</span><br><span class="line">			Path path = <span class="keyword">new</span> Path(<span class="string">&quot;./word_result&quot;</span>);</span><br><span class="line">			FileSyetrm fs = FileSystem.get(conf);</span><br><span class="line">			<span class="keyword">if</span> fs.exists(path)&#123;</span><br><span class="line">				fs.delete(path,<span class="keyword">true</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			FileOutputFormat.setOutputPath(job,path);</span><br><span class="line">			<span class="keyword">boolean</span> flag = job.waitForCompletion(<span class="keyword">true</span>);</span><br><span class="line">			<span class="keyword">if</span>(flag)&#123;</span><br><span class="line">				System.out.println(<span class="string">&quot;执行完成&quot;</span>)；</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(InterruptException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(ClassNotFoundException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="OrderJob"><a class="header-anchor" href="#OrderJob">¶</a>OrderJob</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> ...</span><br><span class="line"><span class="keyword">import</span> ...</span><br><span class="line"><span class="comment">//OrderWritable</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderWritable</span> <span class="keyword">implements</span> <span class="title">Writable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> price;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> num;</span><br><span class="line">	<span class="keyword">private</span> totalPrice;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getPrice</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> price;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrice</span><span class="params">(<span class="keyword">double</span> price)</span></span>&#123;<span class="keyword">this</span>.price = price;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> num;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNum</span><span class="params">(<span class="keyword">int</span> num)</span></span>&#123;<span class="keyword">this</span>.num = num;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getTotalPrice</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> price;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotalPrice</span><span class="params">(<span class="keyword">double</span> totalPrice)</span></span>&#123;<span class="keyword">this</span>.totalPrice = totalPrice;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> price + <span class="string">&#x27;/t&#x27;</span> + num + <span class="string">&#x27;/t&#x27;</span> + totalPrice;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(DataOutput dataoutput)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">		dataoutput.writeDouble(price);</span><br><span class="line">		dataoutput.writeInt(num);</span><br><span class="line">		dataoutput.writeDouble(totalPrice);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readFiles</span><span class="params">(DataInput datainput)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">		price = datainput.readDouble(price);</span><br><span class="line">		price = datainput.readInt(num);</span><br><span class="line">		price = datainput.readDouble(totalPrice);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//map</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderMap</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">LongWritable</span> , <span class="title">Text</span> , <span class="title">Text</span> , <span class="title">LongWritable</span>&gt;</span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(LongWritable key, Text values, Context context)</span> <span class="keyword">throws</span> IOException ,InterruptException</span>&#123;</span><br><span class="line">		String[] orders = values.toString().split(<span class="string">&quot;\t&quot;</span>);</span><br><span class="line">		OrderWritable ow = <span class="keyword">new</span> OrderWritable(values);</span><br><span class="line">		ow.setPrice(Double.parseDouble(orders[<span class="number">1</span>]));</span><br><span class="line">		ow.setNum(Int.parseInt(orders[<span class="number">2</span>]));</span><br><span class="line">		ow.setTotalPrice(Double.parseDouble(orders[<span class="number">3</span>]));</span><br><span class="line">		context.write(<span class="keyword">new</span> Text(orders[<span class="number">0</span>]),ow);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//reduce </span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderReduce</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span> , <span class="title">LongWritable</span> ,<span class="title">Text</span> ,<span class="title">LongWritable</span>&gt;</span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterable&lt;LongWritable&gt; values ,Context context)</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(OrderWritable ow:value)&#123;</span><br><span class="line">			ow.setPrice(ow.getPrice()*<span class="number">2</span>);</span><br><span class="line">			ow.setTotalPrice(ow.setPrice()*ow.setNum)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//OrderJob</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderJob</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(Sting[] argc)</span></span>&#123;</span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">			conf.set(<span class="string">&quot;fs.defaultFS&quot;</span>,<span class="string">&quot;hdfs://192.168.200.11:9000&quot;</span>);</span><br><span class="line">			conf.set(<span class="string">&quot;dfs.replication&quot;</span>,<span class="string">&quot;1&quot;</span>);</span><br><span class="line">			Job job = <span class="keyword">new</span> Job.getInstance(conf,<span class="string">&quot;订单案例&quot;</span>)；</span><br><span class="line">			job.setJarByClass(OrderJob.class);</span><br><span class="line">			job.setMapperClass(OrderMap.class);</span><br><span class="line">			job.setReducerClass(OrderReduce.class);</span><br><span class="line">			job.setMapOutputKeyClass(Text.class);</span><br><span class="line">			job.setMapOutputValueClass(OrderWritable.class);</span><br><span class="line">			job.setOutputKeyClass(Text.class);</span><br><span class="line">			job.setMapOutputValueClass(OrderWritable.class);</span><br><span class="line">			FileInputFormat.addInputPath(job,<span class="keyword">new</span> Path(<span class="string">&quot;/order.txt&quot;</span>));</span><br><span class="line">			Path path = <span class="keyword">new</span> Path(<span class="string">&quot;/order_result&quot;</span>);</span><br><span class="line">			FileSyetrm fs = FileSystem.get(conf);</span><br><span class="line">			<span class="keyword">if</span>(fs.exists(path))&#123;</span><br><span class="line">				fs.delete(path,<span class="keyword">true</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			FileOutputFormat.setOutputPath(job.path)</span><br><span class="line">			<span class="keyword">boolean</span> flag = job.waitForCOmpletion(<span class="keyword">true</span>);</span><br><span class="line">			<span class="keyword">if</span>(flag)&#123;</span><br><span class="line">				Syetem.out.println(<span class="string">&quot;yes&quot;</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(InterruptException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(ClassNotFoundException e)&#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="HiveTest"><a class="header-anchor" href="#HiveTest">¶</a>HiveTest</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyUdf</span> <span class="keyword">extends</span> <span class="title">UDF</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">evaluate</span><span class="params">(<span class="keyword">double</span> a, <span class="keyword">double</span> b ,<span class="keyword">double</span> c)</span></span>&#123;<span class="keyword">return</span> a+b+c;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">evaluate</span><span class="params">(<span class="keyword">double</span> a, <span class="keyword">double</span> b )</span></span>&#123;<span class="keyword">return</span> a+b;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="HdfsTest"><a class="header-anchor" href="#HdfsTest">¶</a>HdfsTest</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHdfsTest</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argc)</span></span>&#123;</span><br><span class="line">		Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">		FileSyetrm fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">&quot;hdfs://192.168.200.11:9000&quot;</span>),conf,<span class="string">&quot;root&quot;</span>);</span><br><span class="line">		BufferedInputStream in = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:/NOTICE.txt&quot;</span>));</span><br><span class="line">		FsDataOutputStream out = fs.append(<span class="keyword">new</span> Path(<span class="string">&quot;aaa/out.txt&quot;</span>));</span><br><span class="line">		IOUtils.copyBytes(in , out , <span class="number">4096</span>);</span><br><span class="line">		fs.close();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>a) 均值为 29.962962962962962,中位数为25</p>
+<p>b) 众数是25 35 ， 二模</p>
+<p>c)41.5</p>
+<p>d)Q1 = 20 Q3 = 35</p>
+<p>e) 13 , 20 , 25 , 35 , 70</p>
+<p>f)<img src="https://gitee.com/Nss-harukii/images/raw/master/55.png" alt=""></p>
+<p>g)分位数图是一种图形方法，用于显示单变量分布中小于或等于自变量的值的近似百分比。因此，它将显示所有数据的分位数信息，其中针对自变量测量的值将相对于其相应分位数进行绘制。但是，分位数-分位数图将一个单变量分布的分位数与另一单变量分布的相应分位数作图。两个轴均显示针对其相应分布的测量值范围，并绘制对应于两个分布的分位数的点。一条线（y = x）可以与代表第一，第二和第三分位数的位置的点一起添加到图形中，以增加图形的信息价值。在同一分位数上，位于这条线上方的点表示在y轴上绘制的分布的值比在x轴上绘制的分布的值更高。相反的效果对于位于此线下方的点适用。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/22/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84Android%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E7%AC%AC%E4%B8%80%E4%B8%AAAndroid%E7%A8%8B%E5%BA%8F/" rel="prev" title="从0开始的Android安全学习之第一个Android程序">
+                  <i class="fa fa-chevron-left"></i> 从0开始的Android安全学习之第一个Android程序
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NDQxMC8zMDg4MQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">haruki</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>
